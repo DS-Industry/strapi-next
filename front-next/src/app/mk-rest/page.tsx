@@ -1,6 +1,7 @@
 'use client'
 
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface IModifiendData {
@@ -10,6 +11,8 @@ interface IModifiendData {
 }
 
 const MakeRestaurant: React.FC = () => {
+
+  const router = useRouter();
 
     useEffect(() => {
         const getAsyncData = async () => {
@@ -44,6 +47,7 @@ const MakeRestaurant: React.FC = () => {
             data: modifiedData,
           });
           console.log(response);
+          router.push('/');
         } catch (error) {
          console.log(error);
         }

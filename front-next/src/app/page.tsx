@@ -1,9 +1,12 @@
-
+import { Button } from '@/components/client/button';
 import axios from 'axios';
 import Image from 'next/image'
 
 export default async function Home() {
+
+  console.log('message server');
   const restaurants = await getRestaurants();
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -74,7 +77,7 @@ export default async function Home() {
             </span>
           </h2>
           <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
+            Learn about Next.js in an interactive course with &nbsp; quizzes!
           </p>
         </a>
 
@@ -112,6 +115,7 @@ export default async function Home() {
           </p>
         </a>
       </div>
+    <Button/>
       <div>
             <ul>
             {restaurants && restaurants.data ? 
@@ -125,7 +129,9 @@ export default async function Home() {
 }
 
 async function getRestaurants () {
-  const res = await axios.get('http://127.0.0.1:1337/api/restaurants');
+  const res = await axios.get('http://127.0.0.1:1337/api/restaurants',{
+    withCredentials: false,
+  });
   const restaurants = res.data;
   return restaurants;
 }

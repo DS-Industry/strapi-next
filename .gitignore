@@ -1,118 +1,158 @@
 node_modules
 
-# STRAPI API 
+############### STRAPI API STRART ################
 
 ############################
 # OS X
 ############################
 
-/strapi-api/.DS_Store
-/strapi-api/.AppleDouble
-/strapi-api/.LSOverride
-/strapi-api/Icon
-/strapi-api/.Spotlight-V100
-/strapi-api/.Trashes
-/strapi-api/._*
+strapi-api/.DS_Store
+strapi-api/.AppleDouble
+strapi-api/.LSOverride
+strapi-api/Icon
+strapi-api/.Spotlight-V100
+strapi-api/.Trashes
+strapi-api/._*
 
 
 ############################
 # Linux
 ############################
 
-/strapi-api/*~
+strapi-api/*~
 
 
 ############################
 # Windows
 ############################
 
-/strapi-api/Thumbs.db
-/strapi-api/ehthumbs.db
-/strapi-api/Desktop.ini
-/strapi-api/$RECYCLE.BIN/
-/strapi-api/*.cab
-/strapi-api/*.msi
-/strapi-api/*.msm
-/strapi-api/*.msp
+strapi-api/Thumbs.db
+strapi-api/ehthumbs.db
+strapi-api/Desktop.ini
+strapi-api/$RECYCLE.BIN/
+strapi-api/*.cab
+strapi-api/*.msi
+strapi-api/*.msm
+strapi-api/*.msp
 
 
 ############################
 # Packages
 ############################
 
-/strapi-api/*.7z
-/strapi-api/*.csv
-/strapi-api/*.dat
-/strapi-api/*.dmg
-/strapi-api/*.gz
-/strapi-api/*.iso
-/strapi-api/*.jar
-/strapi-api/*.rar
-/strapi-api/*.tar
-/strapi-api/*.zip
-/strapi-api/*.com
-/strapi-api/*.class
-/strapi-api/*.dll
-/strapi-api/*.exe
-/strapi-api/*.o
-/strapi-api/*.seed
-/strapi-api/*.so
-/strapi-api/*.swo
-/strapi-api/*.swp
-/strapi-api/*.swn
-/strapi-api/*.swm
-/strapi-api/*.out
-/strapi-api/*.pid
+strapi-api/*.7z
+strapi-api/*.csv
+strapi-api/*.dat
+strapi-api/*.dmg
+strapi-api/*.gz
+strapi-api/*.iso
+strapi-api/*.jar
+strapi-api/*.rar
+strapi-api/*.tar
+strapi-api/*.zip
+strapi-api/*.com
+strapi-api/*.class
+strapi-api/*.dll
+strapi-api/*.exe
+strapi-api/*.o
+strapi-api/*.seed
+strapi-api/*.so
+strapi-api/*.swo
+strapi-api/*.swp
+strapi-api/*.swn
+strapi-api/*.swm
+strapi-api/*.out
+strapi-api/*.pid
 
 
 ############################
 # Logs and databases
 ############################
 
-/strapi-api/.tmp
-/strapi-api/*.log
-/strapi-api/*.sql
-/strapi-api/*.sqlite
-/strapi-api/*.sqlite3
+strapi-api/.tmp
+strapi-api/*.log
+strapi-api/*.sql
+strapi-api/*.sqlite
+strapi-api/*.sqlite3
 
 
 ############################
 # Misc.
 ############################
 
-/strapi-api/*#
-/strapi-api/ssl
-/strapi-api/.idea
-/strapi-api/nbproject
-/strapi-api/public/uploads/*
-/strapi-api/!public/uploads/.gitkeep
+strapi-api/*#
+strapi-api/ssl
+strapi-api/.idea
+strapi-api/nbproject
+strapi-api/public/uploads/*
+strapi-api/!public/uploads/.gitkeep
 
 ############################
 # Node.js
 ############################
 
-/strapi-api/lib-cov
-/strapi-api/lcov.info
-/strapi-api/pids
-/strapi-api/logs
-/strapi-api/results
-/strapi-api/node_modules
-/strapi-api/.node_history
+strapi-api/lib-cov
+strapi-api/lcov.info
+strapi-api/pids
+strapi-api/logs
+strapi-api/results
+strapi-api/node_modules
+strapi-api/.node_history
 
 ############################
 # Tests
 ############################
 
-/strapi-api/coverage
+strapi-api/coverage
 
 ############################
 # Strapi
 ############################
 
-/strapi-api/.env
-/strapi-api/license.txt
-/strapi-api/exports
-/strapi-api/*.cache
-/strapi-api/dist
-/strapi-api/build
-/strapi-api/.strapi-updater.json
+strapi-api/.env
+strapi-api/license.txt
+strapi-api/exports
+strapi-api/*.cache
+strapi-api/dist
+strapi-api/build
+strapi-api/.strapi-updater.json
+
+############### STRAPI API END ################
+
+############### NEXT JS STRART ################
+
+# dependencies
+front-next/node_modules
+front-next/.pnp
+front-next/.pnp.js
+
+# testing
+front-next/coverage
+
+# next.js
+front-next/.next/
+front-next/out/
+
+# production
+front-next/build
+
+# misc
+front-next/.DS_Store
+front-next/*.pem
+
+# debug
+front-next/npm-debug.log*
+front-next/yarn-debug.log*
+front-next/yarn-error.log*
+
+# local env files
+front-next/.env*.local
+
+# vercel
+front-next/.vercel
+
+# typescript
+front-next/*.tsbuildinfo
+front-next/next-env.d.ts
+
+############### NEXT JS END ################
