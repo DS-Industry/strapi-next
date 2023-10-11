@@ -713,6 +713,38 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
 }
 
+export interface ApiProtectedArticlesProtectedArticles
+  extends Schema.CollectionType {
+  collectionName: 'protectedarticles';
+  info: {
+    singularName: 'protected-articles';
+    pluralName: 'protectedarticles';
+    displayName: 'protected-articles';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    article: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::protected-articles.protected-articles',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::protected-articles.protected-articles',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiRestaurantRestaurant extends Schema.CollectionType {
   collectionName: 'restaurants';
   info: {
@@ -767,6 +799,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
       'api::category.category': ApiCategoryCategory;
+      'api::protected-articles.protected-articles': ApiProtectedArticlesProtectedArticles;
       'api::restaurant.restaurant': ApiRestaurantRestaurant;
     }
   }
