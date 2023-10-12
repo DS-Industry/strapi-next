@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tickets",
+  "info": {
+    "singularName": "ticket",
+    "pluralName": "tickets",
+    "displayName": "ticket",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "body": {
+      "type": "string",
+      "required": true
+    },
+    "ticketComments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ticket-comment.ticket-comment",
+      "mappedBy": "ticket"
+    },
+    "ticketSource": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::ticket-source.ticket-source",
+      "inversedBy": "tickets"
+    },
+    "carWash": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::car-wash.car-wash",
+      "inversedBy": "tickets"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "tickets"
+    },
+    "department": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::department.department",
+      "inversedBy": "tickets"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "tickets"
+    },
+    "ticketType": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::ticket-type.ticket-type",
+      "inversedBy": "tickets"
+    },
+    "ticketTask": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::ticket-task.ticket-task",
+      "inversedBy": "tickets"
+    }
+  }
+}
