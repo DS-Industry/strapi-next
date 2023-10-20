@@ -615,25 +615,40 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    firstname: Attribute.String;
+    name: Attribute.String;
     lastname: Attribute.String;
     lastLoginAt: Attribute.DateTime;
+    avatar: Attribute.Media;
     department: Attribute.Relation<
       'plugin::users-permissions.user',
-      'manyToOne',
+      'oneToOne',
       'api::department.department'
     >;
-    ticketComments: Attribute.Relation<
+    todos: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
-      'api::ticket-comment.ticket-comment'
+      'api::todo.todo'
+    >;
+    todos_executed: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::todo.todo'
+    >;
+    todo_templates: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::todo-template.todo-template'
     >;
     tickets: Attribute.Relation<
       'plugin::users-permissions.user',
-      'manyToMany',
+      'oneToMany',
       'api::ticket.ticket'
     >;
-    avatar: Attribute.Media;
+    comments: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::comment.comment'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -710,22 +725,15 @@ export interface ApiCarWashCarWash extends Schema.CollectionType {
     name: Attribute.String & Attribute.Required & Attribute.Unique;
     address: Attribute.String & Attribute.Required & Attribute.Unique;
     city: Attribute.String & Attribute.Required;
+    carWashtype: Attribute.Enumeration<['selfService', 'robot']> &
+      Attribute.Required;
+    slug: Attribute.UID<'api::car-wash.car-wash', 'name'>;
+    latitude: Attribute.Float;
+    lonitude: Attribute.Float;
     tickets: Attribute.Relation<
       'api::car-wash.car-wash',
       'oneToMany',
       'api::ticket.ticket'
-    >;
-    carWashtype: Attribute.Enumeration<['selfService', 'robot']> &
-      Attribute.Required;
-    ticketStatus: Attribute.Relation<
-      'api::car-wash.car-wash',
-      'manyToOne',
-      'api::ticket-status.ticket-status'
-    >;
-    ticketPriority: Attribute.Relation<
-      'api::car-wash.car-wash',
-      'manyToOne',
-      'api::ticket-priority.ticket-priority'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -758,27 +766,26 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String & Attribute.Required & Attribute.Unique;
-    restaurants: Attribute.Relation<
-      'api::category.category',
-      'manyToMany',
-      'api::restaurant.restaurant'
-    >;
-    code: Attribute.String & Attribute.Required & Attribute.Unique;
-    description: Attribute.String;
-    ticketTypes: Attribute.Relation<
+    slug: Attribute.UID<'api::category.category', 'name'> & Attribute.Required;
+    todos: Attribute.Relation<
       'api::category.category',
       'oneToMany',
-      'api::ticket-type.ticket-type'
+      'api::todo.todo'
     >;
-    department: Attribute.Relation<
+    todo_templates: Attribute.Relation<
+      'api::category.category',
+      'oneToMany',
+      'api::todo-template.todo-template'
+    >;
+    department_id: Attribute.Relation<
       'api::category.category',
       'manyToOne',
       'api::department.department'
     >;
-    tickets: Attribute.Relation<
+    subcategories: Attribute.Relation<
       'api::category.category',
       'oneToMany',
-      'api::ticket.ticket'
+      'api::subcategory.subcategory'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -791,6 +798,54 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCommentComment extends Schema.CollectionType {
+  collectionName: 'comments';
+  info: {
+    singularName: 'comment';
+    pluralName: 'comments';
+    displayName: 'Comment';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    text: Attribute.Text & Attribute.Required;
+    createdCommentAt: Attribute.DateTime;
+    updatedCommentAt: Attribute.DateTime;
+    createdUserBy: Attribute.Relation<
+      'api::comment.comment',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    ticket_id: Attribute.Relation<
+      'api::comment.comment',
+      'manyToOne',
+      'api::ticket.ticket'
+    >;
+    todo_id: Attribute.Relation<
+      'api::comment.comment',
+      'manyToOne',
+      'api::todo.todo'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::comment.comment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::comment.comment',
       'oneToOne',
       'admin::user'
     > &
@@ -803,29 +858,30 @@ export interface ApiDepartmentDepartment extends Schema.CollectionType {
   info: {
     singularName: 'department';
     pluralName: 'departments';
-    displayName: 'department';
-    description: '';
+    displayName: 'Department';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
-    code: Attribute.String & Attribute.Required;
-    users: Attribute.Relation<
+    slug: Attribute.UID<'api::department.department', 'name'>;
+    createdDepartmentAt: Attribute.DateTime;
+    updatedDepartmentAt: Attribute.DateTime;
+    todos: Attribute.Relation<
       'api::department.department',
       'oneToMany',
-      'plugin::users-permissions.user'
+      'api::todo.todo'
+    >;
+    todo_templates: Attribute.Relation<
+      'api::department.department',
+      'oneToMany',
+      'api::todo-template.todo-template'
     >;
     categories: Attribute.Relation<
       'api::department.department',
       'oneToMany',
       'api::category.category'
-    >;
-    tickets: Attribute.Relation<
-      'api::department.department',
-      'oneToMany',
-      'api::ticket.ticket'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -845,31 +901,45 @@ export interface ApiDepartmentDepartment extends Schema.CollectionType {
   };
 }
 
-export interface ApiProtectedArticlesProtectedArticles
-  extends Schema.CollectionType {
-  collectionName: 'protectedarticles';
+export interface ApiPriorityPriority extends Schema.CollectionType {
+  collectionName: 'priorities';
   info: {
-    singularName: 'protected-articles';
-    pluralName: 'protectedarticles';
-    displayName: 'protected-articles';
+    singularName: 'priority';
+    pluralName: 'priorities';
+    displayName: 'Priority';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    title: Attribute.String;
-    article: Attribute.String;
+    name: Attribute.String;
+    slug: Attribute.UID<'api::priority.priority', 'name'>;
+    todos: Attribute.Relation<
+      'api::priority.priority',
+      'oneToMany',
+      'api::todo.todo'
+    >;
+    todo_templates: Attribute.Relation<
+      'api::priority.priority',
+      'oneToMany',
+      'api::todo-template.todo-template'
+    >;
+    tickets: Attribute.Relation<
+      'api::priority.priority',
+      'oneToMany',
+      'api::ticket.ticket'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::protected-articles.protected-articles',
+      'api::priority.priority',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::protected-articles.protected-articles',
+      'api::priority.priority',
       'oneToOne',
       'admin::user'
     > &
@@ -891,11 +961,6 @@ export interface ApiRestaurantRestaurant extends Schema.CollectionType {
   attributes: {
     name: Attribute.String & Attribute.Required & Attribute.Unique;
     description: Attribute.RichText;
-    categories: Attribute.Relation<
-      'api::restaurant.restaurant',
-      'manyToMany',
-      'api::category.category'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -907,6 +972,95 @@ export interface ApiRestaurantRestaurant extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::restaurant.restaurant',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiStatusStatus extends Schema.CollectionType {
+  collectionName: 'statuses';
+  info: {
+    singularName: 'status';
+    pluralName: 'statuses';
+    displayName: 'Status';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    slug: Attribute.UID<'api::status.status', 'name'>;
+    todos: Attribute.Relation<
+      'api::status.status',
+      'oneToMany',
+      'api::todo.todo'
+    >;
+    tickets: Attribute.Relation<
+      'api::status.status',
+      'oneToMany',
+      'api::ticket.ticket'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::status.status',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::status.status',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSubcategorySubcategory extends Schema.CollectionType {
+  collectionName: 'subcategories';
+  info: {
+    singularName: 'subcategory';
+    pluralName: 'subcategories';
+    displayName: 'Subcategory';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::subcategory.subcategory', 'name'> &
+      Attribute.Required;
+    todos: Attribute.Relation<
+      'api::subcategory.subcategory',
+      'oneToMany',
+      'api::todo.todo'
+    >;
+    todo_templates: Attribute.Relation<
+      'api::subcategory.subcategory',
+      'oneToMany',
+      'api::todo-template.todo-template'
+    >;
+    category_id: Attribute.Relation<
+      'api::subcategory.subcategory',
+      'manyToOne',
+      'api::category.category'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::subcategory.subcategory',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::subcategory.subcategory',
       'oneToOne',
       'admin::user'
     > &
@@ -928,298 +1082,188 @@ export interface ApiTicketTicket extends Schema.CollectionType {
   attributes: {
     name: Attribute.String & Attribute.Required;
     body: Attribute.String & Attribute.Required;
-    ticketComments: Attribute.Relation<
+    slug: Attribute.UID<'api::ticket.ticket', 'name'> & Attribute.Required;
+    isClosed: Attribute.Boolean;
+    createdDate: Attribute.DateTime;
+    closedDate: Attribute.DateTime;
+    timeSpent: Attribute.BigInteger;
+    attachments: Attribute.Media;
+    todos: Attribute.Relation<
       'api::ticket.ticket',
       'oneToMany',
-      'api::ticket-comment.ticket-comment'
+      'api::todo.todo'
     >;
-    ticketSource: Attribute.Relation<
+    createdUserBy: Attribute.Relation<
       'api::ticket.ticket',
       'manyToOne',
-      'api::ticket-source.ticket-source'
+      'plugin::users-permissions.user'
     >;
-    carWash: Attribute.Relation<
+    priority_id: Attribute.Relation<
+      'api::ticket.ticket',
+      'manyToOne',
+      'api::priority.priority'
+    >;
+    car_wash_id: Attribute.Relation<
       'api::ticket.ticket',
       'manyToOne',
       'api::car-wash.car-wash'
     >;
-    users: Attribute.Relation<
+    status_id: Attribute.Relation<
       'api::ticket.ticket',
+      'manyToOne',
+      'api::status.status'
+    >;
+    comments: Attribute.Relation<
+      'api::ticket.ticket',
+      'oneToMany',
+      'api::comment.comment'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::ticket.ticket',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::ticket.ticket',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTodoTodo extends Schema.CollectionType {
+  collectionName: 'todos';
+  info: {
+    singularName: 'todo';
+    pluralName: 'todos';
+    displayName: 'Todo';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::todo.todo', 'name'>;
+    CreatedAt: Attribute.DateTime;
+    UpdatedAt: Attribute.DateTime;
+    body: Attribute.Text;
+    attachments: Attribute.Media;
+    status_id: Attribute.Relation<
+      'api::todo.todo',
+      'manyToOne',
+      'api::status.status'
+    >;
+    createdUserBy: Attribute.Relation<
+      'api::todo.todo',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    executed_bies: Attribute.Relation<
+      'api::todo.todo',
       'manyToMany',
       'plugin::users-permissions.user'
     >;
-    department: Attribute.Relation<
-      'api::ticket.ticket',
+    ticket_id: Attribute.Relation<
+      'api::todo.todo',
+      'manyToOne',
+      'api::ticket.ticket'
+    >;
+    department_id: Attribute.Relation<
+      'api::todo.todo',
       'manyToOne',
       'api::department.department'
     >;
-    category: Attribute.Relation<
-      'api::ticket.ticket',
+    category_id: Attribute.Relation<
+      'api::todo.todo',
       'manyToOne',
       'api::category.category'
     >;
-    ticketType: Attribute.Relation<
-      'api::ticket.ticket',
+    subcategory_id: Attribute.Relation<
+      'api::todo.todo',
       'manyToOne',
-      'api::ticket-type.ticket-type'
+      'api::subcategory.subcategory'
     >;
-    ticketTask: Attribute.Relation<
-      'api::ticket.ticket',
+    priority_id: Attribute.Relation<
+      'api::todo.todo',
       'manyToOne',
-      'api::ticket-task.ticket-task'
+      'api::priority.priority'
+    >;
+    comments: Attribute.Relation<
+      'api::todo.todo',
+      'oneToMany',
+      'api::comment.comment'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::ticket.ticket',
-      'oneToOne',
-      'admin::user'
-    > &
+    createdBy: Attribute.Relation<'api::todo.todo', 'oneToOne', 'admin::user'> &
       Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::ticket.ticket',
-      'oneToOne',
-      'admin::user'
-    > &
+    updatedBy: Attribute.Relation<'api::todo.todo', 'oneToOne', 'admin::user'> &
       Attribute.Private;
   };
 }
 
-export interface ApiTicketCommentTicketComment extends Schema.CollectionType {
-  collectionName: 'ticket_comments';
+export interface ApiTodoTemplateTodoTemplate extends Schema.CollectionType {
+  collectionName: 'todo_templates';
   info: {
-    singularName: 'ticket-comment';
-    pluralName: 'ticket-comments';
-    displayName: 'ticketComment';
+    singularName: 'todo-template';
+    pluralName: 'todo-templates';
+    displayName: 'TodoTemplate';
     description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    body: Attribute.String & Attribute.Required;
-    user: Attribute.Relation<
-      'api::ticket-comment.ticket-comment',
+    name: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::todo-template.todo-template', 'name'>;
+    created_user_by: Attribute.Relation<
+      'api::todo-template.todo-template',
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    ticket: Attribute.Relation<
-      'api::ticket-comment.ticket-comment',
+    assign_to_users: Attribute.Relation<
+      'api::todo-template.todo-template',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    department_id: Attribute.Relation<
+      'api::todo-template.todo-template',
       'manyToOne',
-      'api::ticket.ticket'
+      'api::department.department'
     >;
-    ceratedAt: Attribute.DateTime;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::ticket-comment.ticket-comment',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::ticket-comment.ticket-comment',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiTicketPriorityTicketPriority extends Schema.CollectionType {
-  collectionName: 'ticket_priorities';
-  info: {
-    singularName: 'ticket-priority';
-    pluralName: 'ticket-priorities';
-    displayName: 'ticketPriority';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String & Attribute.Required & Attribute.Unique;
-    code: Attribute.String & Attribute.Required & Attribute.Unique;
-    car_washes: Attribute.Relation<
-      'api::ticket-priority.ticket-priority',
-      'oneToMany',
-      'api::car-wash.car-wash'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::ticket-priority.ticket-priority',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::ticket-priority.ticket-priority',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiTicketSourceTicketSource extends Schema.CollectionType {
-  collectionName: 'ticket_sources';
-  info: {
-    singularName: 'ticket-source';
-    pluralName: 'ticket-sources';
-    displayName: 'ticketSource';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String & Attribute.Required & Attribute.Unique;
-    code: Attribute.String & Attribute.Required & Attribute.Unique;
-    tickets: Attribute.Relation<
-      'api::ticket-source.ticket-source',
-      'oneToMany',
-      'api::ticket.ticket'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::ticket-source.ticket-source',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::ticket-source.ticket-source',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiTicketStatusTicketStatus extends Schema.CollectionType {
-  collectionName: 'ticket_statuses';
-  info: {
-    singularName: 'ticket-status';
-    pluralName: 'ticket-statuses';
-    displayName: 'ticketStatus';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String & Attribute.Required & Attribute.Unique;
-    code: Attribute.String & Attribute.Required & Attribute.Unique;
-    car_washes: Attribute.Relation<
-      'api::ticket-status.ticket-status',
-      'oneToMany',
-      'api::car-wash.car-wash'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::ticket-status.ticket-status',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::ticket-status.ticket-status',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiTicketTaskTicketTask extends Schema.CollectionType {
-  collectionName: 'ticket_tasks';
-  info: {
-    singularName: 'ticket-task';
-    pluralName: 'ticket-tasks';
-    displayName: 'ticketTask';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String & Attribute.Required & Attribute.Unique;
-    code: Attribute.String & Attribute.Required & Attribute.Unique;
-    ticketType: Attribute.Relation<
-      'api::ticket-task.ticket-task',
+    priority_id: Attribute.Relation<
+      'api::todo-template.todo-template',
       'manyToOne',
-      'api::ticket-type.ticket-type'
+      'api::priority.priority'
     >;
-    tickets: Attribute.Relation<
-      'api::ticket-task.ticket-task',
-      'oneToMany',
-      'api::ticket.ticket'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::ticket-task.ticket-task',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::ticket-task.ticket-task',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiTicketTypeTicketType extends Schema.CollectionType {
-  collectionName: 'ticket_types';
-  info: {
-    singularName: 'ticket-type';
-    pluralName: 'ticket-types';
-    displayName: 'ticketType';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String & Attribute.Required & Attribute.Unique;
-    code: Attribute.String & Attribute.Required & Attribute.Unique;
-    ticketTasks: Attribute.Relation<
-      'api::ticket-type.ticket-type',
-      'oneToMany',
-      'api::ticket-task.ticket-task'
-    >;
-    category: Attribute.Relation<
-      'api::ticket-type.ticket-type',
+    category_id: Attribute.Relation<
+      'api::todo-template.todo-template',
       'manyToOne',
       'api::category.category'
     >;
-    tickets: Attribute.Relation<
-      'api::ticket-type.ticket-type',
-      'oneToMany',
-      'api::ticket.ticket'
+    subcategory_id: Attribute.Relation<
+      'api::todo-template.todo-template',
+      'manyToOne',
+      'api::subcategory.subcategory'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::ticket-type.ticket-type',
+      'api::todo-template.todo-template',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::ticket-type.ticket-type',
+      'api::todo-template.todo-template',
       'oneToOne',
       'admin::user'
     > &
@@ -1245,16 +1289,15 @@ declare module '@strapi/types' {
       'plugin::i18n.locale': PluginI18NLocale;
       'api::car-wash.car-wash': ApiCarWashCarWash;
       'api::category.category': ApiCategoryCategory;
+      'api::comment.comment': ApiCommentComment;
       'api::department.department': ApiDepartmentDepartment;
-      'api::protected-articles.protected-articles': ApiProtectedArticlesProtectedArticles;
+      'api::priority.priority': ApiPriorityPriority;
       'api::restaurant.restaurant': ApiRestaurantRestaurant;
+      'api::status.status': ApiStatusStatus;
+      'api::subcategory.subcategory': ApiSubcategorySubcategory;
       'api::ticket.ticket': ApiTicketTicket;
-      'api::ticket-comment.ticket-comment': ApiTicketCommentTicketComment;
-      'api::ticket-priority.ticket-priority': ApiTicketPriorityTicketPriority;
-      'api::ticket-source.ticket-source': ApiTicketSourceTicketSource;
-      'api::ticket-status.ticket-status': ApiTicketStatusTicketStatus;
-      'api::ticket-task.ticket-task': ApiTicketTaskTicketTask;
-      'api::ticket-type.ticket-type': ApiTicketTypeTicketType;
+      'api::todo.todo': ApiTodoTodo;
+      'api::todo-template.todo-template': ApiTodoTemplateTodoTemplate;
     }
   }
 }

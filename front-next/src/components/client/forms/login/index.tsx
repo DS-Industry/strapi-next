@@ -1,5 +1,6 @@
 "use client";
 
+import { Divider } from "@/components/styled/divider";
 import { signIn } from "next-auth/react";
 
 import { useSearchParams, useRouter } from "next/navigation";
@@ -8,15 +9,18 @@ import { ChangeEvent, useState } from "react";
 export const LoginForm = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [isOk, setIsOk] = useState<boolean>(false);
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
   });
   const [error, setError] = useState("");
+  
+  const handleReturnBack = () => {
+    router.push('/')
+  }
 
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/protected/profile";
+  let callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,9 +39,14 @@ export const LoginForm = () => {
 
       console.log(res);
       if (res?.ok) {
-        console.log('here');
-        setIsOk(res?.ok);
+        console.log(callbackUrl);
+        console.log(process.env.NEXT_PUBLIC_URL);
+        if (callbackUrl === process.env.NEXT_PUBLIC_URL) {
+          console.log('here');
+          callbackUrl += 'protected/home';
+        }
         router.refresh();
+        console.log(callbackUrl);
         router.push(`${callbackUrl}`);
       } else {
         setError("invalid email or password");
@@ -54,35 +63,37 @@ export const LoginForm = () => {
   };
 
   const input_style =
-    "w-full px-4 py-5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none";
+    "w-full px-4 py-5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none";
 
   return (
-    <form onSubmit={onSubmit} className=" flex flex-col justify-center items-center bg-slate-300 w-1/2 h-1/2 p-5">
+    <form onSubmit={onSubmit} className=" flex flex-col justify-between rounded-3xl items-center bg-gray-100 w-1/4 h-2/3 p-5">
       {error && (
         <p className="text-center w-full bg-red-300 py-2 mb-6 rounded-full">{error}</p>
       )}
-      <div className="mb-6 w-full">
-        <input
-          required
-          type="email"
-          name="email"
-          value={formValues.email}
-          onChange={handleChange}
-          placeholder="Почта"
-          className={`${input_style}`}
-        />
-      </div>
-      <div className="mb-6 w-full">
-        <input
-          required
-          type="password"
-          name="password"
-          value={formValues.password}
-          onChange={handleChange}
-          placeholder="Пароль"
-          className={`${input_style}`}
-        />
-      </div>
+      <div className="w-full">
+        <div className="mb-6 w-full">
+          <input
+            required
+            type="email"
+            name="email"
+            value={formValues.email}
+            onChange={handleChange}
+            placeholder="Почта"
+            className={`${input_style}`}
+          />
+        </div>
+        <div className="mb-6 w-full">
+          <input
+            required
+            type="password"
+            name="password"
+            value={formValues.password}
+            onChange={handleChange}
+            placeholder="Пароль"
+            className={`${input_style}`}
+          />
+        </div>
+
       <button
         type="submit"
         style={{ backgroundColor: `${loading ? "#ccc" : "#3446eb"}` }}
@@ -91,9 +102,9 @@ export const LoginForm = () => {
       >
         {loading ? "loading..." : "Sign In"}
       </button>
-      <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
-        <p className="text-center font-semibold mx-4 mb-0 text-black">OR</p>
+      <button className=" mt-5 hover:shadow-md px-4 rounded-xl bg-zinc-300" onClick={handleReturnBack}>Return back</button>
       </div>
+      <Divider />
     </form>
   );
 };

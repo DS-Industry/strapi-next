@@ -65,7 +65,7 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "firstname": {
+    "name": {
       "type": "string"
     },
     "lastname": {
@@ -74,33 +74,51 @@
     "lastLoginAt": {
       "type": "datetime"
     },
-    "department": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::department.department",
-      "inversedBy": "users"
-    },
-    "ticketComments": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::ticket-comment.ticket-comment",
-      "mappedBy": "user"
-    },
-    "tickets": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::ticket.ticket",
-      "inversedBy": "users"
-    },
     "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "department": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::department.department"
+    },
+    "todos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::todo.todo",
+      "mappedBy": "createdUserBy"
+    },
+    "todos_executed": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::todo.todo",
+      "mappedBy": "executed_bies"
+    },
+    "todo_templates": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::todo-template.todo-template",
+      "mappedBy": "assign_to_users"
+    },
+    "tickets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ticket.ticket",
+      "mappedBy": "createdUserBy"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "createdUserBy"
     }
   }
 }

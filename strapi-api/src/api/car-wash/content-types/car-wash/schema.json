@@ -27,12 +27,6 @@
       "unique": false,
       "required": true
     },
-    "tickets": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::ticket.ticket",
-      "mappedBy": "carWash"
-    },
     "carWashtype": {
       "type": "enumeration",
       "enum": [
@@ -41,17 +35,21 @@
       ],
       "required": true
     },
-    "ticketStatus": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::ticket-status.ticket-status",
-      "inversedBy": "car_washes"
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
     },
-    "ticketPriority": {
+    "latitude": {
+      "type": "float"
+    },
+    "lonitude": {
+      "type": "float"
+    },
+    "tickets": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::ticket-priority.ticket-priority",
-      "inversedBy": "car_washes"
+      "relation": "oneToMany",
+      "target": "api::ticket.ticket",
+      "mappedBy": "car_wash_id"
     }
   }
 }

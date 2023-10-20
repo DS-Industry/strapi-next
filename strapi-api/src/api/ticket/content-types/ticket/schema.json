@@ -20,53 +20,69 @@
       "type": "string",
       "required": true
     },
-    "ticketComments": {
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "isClosed": {
+      "type": "boolean"
+    },
+    "createdDate": {
+      "type": "datetime"
+    },
+    "closedDate": {
+      "type": "datetime"
+    },
+    "timeSpent": {
+      "type": "biginteger"
+    },
+    "attachments": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "todos": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::ticket-comment.ticket-comment",
-      "mappedBy": "ticket"
+      "target": "api::todo.todo",
+      "mappedBy": "ticket_id"
     },
-    "ticketSource": {
+    "createdUserBy": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::ticket-source.ticket-source",
+      "target": "plugin::users-permissions.user",
       "inversedBy": "tickets"
     },
-    "carWash": {
+    "priority_id": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::priority.priority",
+      "inversedBy": "tickets"
+    },
+    "car_wash_id": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::car-wash.car-wash",
       "inversedBy": "tickets"
     },
-    "users": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "tickets"
-    },
-    "department": {
+    "status_id": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::department.department",
+      "target": "api::status.status",
       "inversedBy": "tickets"
     },
-    "category": {
+    "comments": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::category.category",
-      "inversedBy": "tickets"
-    },
-    "ticketType": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::ticket-type.ticket-type",
-      "inversedBy": "tickets"
-    },
-    "ticketTask": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::ticket-task.ticket-task",
-      "inversedBy": "tickets"
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "ticket_id"
     }
   }
 }

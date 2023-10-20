@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "priorities",
+  "info": {
+    "singularName": "priority",
+    "pluralName": "priorities",
+    "displayName": "Priority"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "todos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::todo.todo",
+      "mappedBy": "priority_id"
+    },
+    "todo_templates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::todo-template.todo-template",
+      "mappedBy": "priority_id"
+    },
+    "tickets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ticket.ticket",
+      "mappedBy": "priority_id"
+    }
+  }
+}

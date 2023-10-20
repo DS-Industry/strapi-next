@@ -12,7 +12,8 @@ export const authOptions: NextAuthOptions = {
         strategy: "jwt",
     },
     pages: {
-        signIn: "/auth/login"
+        signIn: "/auth/login",
+        signOut: "http://localhost:3000/"
     }, 
 
     callbacks: {
@@ -58,7 +59,6 @@ export const authOptions: NextAuthOptions = {
                     identifier: credentials && credentials.email,
                     password: credentials && credentials.password
                 })
-                console.log('you are in auth options '.toUpperCase());
                 console.log(data);
                 return data ? data.user : null
             } catch (error: any) {

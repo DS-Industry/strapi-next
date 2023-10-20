@@ -4,8 +4,7 @@
   "info": {
     "singularName": "department",
     "pluralName": "departments",
-    "displayName": "department",
-    "description": ""
+    "displayName": "Department"
   },
   "options": {
     "draftAndPublish": true
@@ -16,27 +15,33 @@
       "type": "string",
       "required": true
     },
-    "code": {
-      "type": "string",
-      "required": true
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
     },
-    "users": {
+    "createdDepartmentAt": {
+      "type": "datetime"
+    },
+    "updatedDepartmentAt": {
+      "type": "datetime"
+    },
+    "todos": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "department"
+      "target": "api::todo.todo",
+      "mappedBy": "department_id"
+    },
+    "todo_templates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::todo-template.todo-template",
+      "mappedBy": "department_id"
     },
     "categories": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::category.category",
-      "mappedBy": "department"
-    },
-    "tickets": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::ticket.ticket",
-      "mappedBy": "department"
+      "mappedBy": "department_id"
     }
   }
 }

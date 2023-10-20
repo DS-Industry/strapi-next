@@ -1,44 +1,39 @@
-import { Button } from '@/components/client/buttons';
-import axios from 'axios';
-import Header from '@/components/client/header';
+import { Footer } from '@/components/server/footer';
+import Image from 'next/image';
+import Hero from './../../public/hero_1.svg'
+import { GeneralLayout } from '@/components/client/layout/general-layout';
 
 export default async function Home() {
 
-  console.log('message server');
-  const restaurants = await getRestaurants();
-
-
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify center">
-      <Header />
-      <div className="mb-32 text-center pt-32">
-        <div
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
+    <GeneralLayout pageName={'landing'}>
+    <main className="flex flex-col items-center justify center">
+      <div className="mb-32 text-center pt-16">
+          <h2 className={` text-2xl font-semibold`}>
             Добро пожаловать в HELP DESK!
           </h2>
-        </div>
       </div>
-
-    <Button/>
-      <div>
-            <ul>
-            {restaurants && restaurants.data ? 
-                restaurants.data.map((restaurant: any) => (
-                <li key={restaurant.id}>{restaurant.attributes.name}</li>
-            )) : <h3>Загрузка ...</h3>}
-            </ul>
+      <div className=' flex justify-evenly items-center'>
+        <div className=' w-1/3'>
+          <p className=' text-5xl'>Lorem ipsum dolor sit amet consectetur</p>
+          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem voluptate sunt dolor neque ea consectetur. Nesciunt tempore, itaque fuga saepe, incidunt obcaecati nostrum tempora at explicabo rem numquam quasi magni. Praesentium, vero hic dolores in, deserunt nihil optio, incidunt autem obcaecati veritatis ipsam nulla. Iste dolor, soluta aspernatur ipsa fugiat neque aut?</p>
         </div>
+        <Image className=' w-1/3 h-1/3' src={Hero} alt='hero img' />
+      </div>  
+      <div className="mb-32 text-center pt-16">
+          <h2 className={` text-2xl font-semibold`}>
+            Добро пожаловать в HELP DESK!
+          </h2>
+      </div>
+      <div className=' flex justify-evenly items-center'>
+        <div className=' w-1/3'>
+          <p className=' text-5xl'>Lorem ipsum dolor sit amet consectetur</p>
+          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem voluptate sunt dolor neque ea consectetur. Nesciunt tempore, itaque fuga saepe, incidunt obcaecati nostrum tempora at explicabo rem numquam quasi magni. Praesentium, vero hic dolores in, deserunt nihil optio, incidunt autem obcaecati veritatis ipsam nulla. Iste dolor, soluta aspernatur ipsa fugiat neque aut?</p>
+        </div>
+        <Image className=' w-1/3 h-1/3' src={Hero} alt='hero img' />
+      </div>   
     </main>
+    </GeneralLayout>
   )
-}
-
-async function getRestaurants () {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurants`,{
-    withCredentials: false,
-  });
-  const restaurants = res.data;
-  return restaurants;
 }
 

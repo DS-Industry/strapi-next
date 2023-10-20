@@ -1,13 +1,12 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/config/nextauth/auth";
-import Header from "@/components/client/header";
-import { Session } from "next-auth";
+import { MenuAuthLayout } from "@/components/client/layout/auth-layout";
 
 export default async function Home () {
     const session = await getServerSession(authOptions);
     return (
+        <MenuAuthLayout pageName={"home"}>
         <main>
-            <Header/>
             { !session ? 
                 (
                     <h1>You should login</h1>
@@ -15,12 +14,11 @@ export default async function Home () {
                 (
                     <div>
                         <h1>Hello, {session.user?.email}</h1> 
-                        <pre>{JSON.stringify(session)}</pre>                       
                     </div>
 
                 )
             }
         </main>
-
+    </MenuAuthLayout>
     )
 }

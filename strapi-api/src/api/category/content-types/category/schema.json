@@ -17,37 +17,34 @@
       "required": true,
       "unique": true
     },
-    "restaurants": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::restaurant.restaurant",
-      "inversedBy": "categories"
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
     },
-    "code": {
-      "type": "string",
-      "required": true,
-      "unique": true
-    },
-    "description": {
-      "type": "string"
-    },
-    "ticketTypes": {
+    "todos": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::ticket-type.ticket-type",
-      "mappedBy": "category"
+      "target": "api::todo.todo",
+      "mappedBy": "category_id"
     },
-    "department": {
+    "todo_templates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::todo-template.todo-template",
+      "mappedBy": "category_id"
+    },
+    "department_id": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::department.department",
       "inversedBy": "categories"
     },
-    "tickets": {
+    "subcategories": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::ticket.ticket",
-      "mappedBy": "category"
+      "target": "api::subcategory.subcategory",
+      "mappedBy": "category_id"
     }
   }
 }
