@@ -59,10 +59,17 @@ export const authOptions: NextAuthOptions = {
                     identifier: credentials && credentials.email,
                     password: credentials && credentials.password
                 })
-                console.log(data);
-                return data ? data.user : null
+                const { data : role } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me?populate=role`, {
+                    headers: {
+                        Authorization: `Bearer ${data.jwt}`
+                    }
+                }) 
+                const fullDataUser = Object.assign(data.user, role);
+                console.log(fullDataUser);
+                return fullDataUser ? fullDataUser : null
             } catch (error: any) {
                 const errorMessage = error.response.data.message[0].messages[0].message
+                console.log(error);
                 throw Error(errorMessage);
             }
         }

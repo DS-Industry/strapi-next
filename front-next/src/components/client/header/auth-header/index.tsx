@@ -1,43 +1,37 @@
-'use client'
-
 import { Divider } from "@/components/styled/divider";
-import { signIn, signOut, useSession } from "next-auth/react"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
+import Hero from "./../../../../../public/hero_1.svg"
+import { getServerSession } from "next-auth";
+import HideButton from "../../buttons/hide-button";
 
 interface IHeader {
     className : string
 }
 
-export default function Header ({ className } : IHeader) {
-    const {data: session} = useSession();
+export default async function Header ({ className } : IHeader) {
+    const session = await getServerSession();
+    const activeStyle = 'text-accentColor text-center';
+    const hoverStyle = 'transition ease-in-out hover:text-accentColor text-center';
     return (
-        <header className=" h-screen pt-5 bg-gradient-to-b from-slate-300 from-40% via-slate-100 flex flex-col justify-between ">
+        <header className=" h-screen pt-5 bg-gradient-to-b from-primaryColor from-40% to-secondaryColor flex flex-col justify-between ">
             <nav className="flex flex-col justify-evenly">
             <Link className=' text-3xl text-center' href={'/protected/home'}>HELPDESK</Link>
             <Divider/>
-            <Link className={className === 'home' ? ' text-violet-600 text-center' : ' transition ease-in-out delay-150 hover:text-violet-600 text-center'} href={'/protected/home'}>Home</Link>
-            <Link className={className === 'profile' ? 'text-violet-600 text-center' : ' transition ease-in-out delay-150 hover:text-violet-600 text-center'} href={'/protected/profile'}>Profile</Link>              
+            <Link className={className === 'home' ? activeStyle : hoverStyle} href={'/protected/home'}>Home</Link>
+            <Link className={className === 'ticketlist' ? activeStyle : hoverStyle} href={'/protected/ticketlist'}>Ticket List</Link>
+            <Link className={className === 'todolist' ? activeStyle : hoverStyle} href={'/protected/todolist'}>Todo List</Link>
+            <Link className={className === 'createticket' ? activeStyle : hoverStyle} href={'/protected/createticket'}>Ticket Creation</Link>
+            <Link className={className === 'createtodo' ? activeStyle : hoverStyle} href={'/protected/createtodo'}>Todo Creation</Link>
+            <Link className={className === 'instruction' ? activeStyle : hoverStyle} href={'/protected/instruction'}>Instructions</Link>      
+            <Link className={className === 'createuser' ? activeStyle : hoverStyle} href={'/protected/instruction'}>User Creation</Link>      
             </nav>
             <div className=" w-full flex flex-col items-center">
-            {session && session.user ? 
-                <div>
-                    <p className=" text-center mb-5">Hello, {session.user.username}</p>
-                    <button className=" h-10 w-48 rounded-xl bg-violet-600 text-white hover:bg-violet-800" onClick={() => {
-                        signOut({
-                            callbackUrl: `${process.env.NEXT_PUBLIC_URL}`
-                        });
-                        }}
-                        >
-                        Sign Out
-                    </button>
-                </div>
-                    :
-                <button className=" h-10 w-48 rounded-xl bg-violet-600 text-white hover:bg-violet-800" onClick={() => { signIn()}}>
-                    Sign In
-                </button>
-            }
-            <Divider/>
-            <button className="mt-0">Hide</button>
+                <Link className=" w-full flex items-center justify-evenly mb-2" href="/protected/profile">
+                    <Image alt="avatar" src={session?.user.image ? session?.user.image : Hero} className=" w-16 h-16 shadow-2xl rounded-full"/>
+                    <p className=" text-center ">Profile</p>
+                </Link>
+                <HideButton/>
             </div>
         </header>
     )

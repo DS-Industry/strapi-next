@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
+import Toast from "../../toast";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -24,9 +25,11 @@ export const LoginForm = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('here');
     try {
       setLoading(true);
-      setFormValues({ email: "", password: "" });
+      //setFormValues({ email: "", password: "" });
+
 
       const res = await signIn("credentials", {
         redirect: false,
@@ -36,17 +39,13 @@ export const LoginForm = () => {
       });
 
       setLoading(false);
-
-      console.log(res);
       if (res?.ok) {
-        console.log(callbackUrl);
         console.log(process.env.NEXT_PUBLIC_URL);
         if (callbackUrl === process.env.NEXT_PUBLIC_URL) {
           console.log('here');
           callbackUrl += 'protected/home';
         }
         router.refresh();
-        console.log(callbackUrl);
         router.push(`${callbackUrl}`);
       } else {
         setError("invalid email or password");
@@ -63,13 +62,11 @@ export const LoginForm = () => {
   };
 
   const input_style =
-    "w-full px-4 py-5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none";
+    "w-full px-4 py-5 text-sm font-normal text-textColor bg-accentColor bg-clip-padding border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-textColor focus:bg-white focus:border-focusColor focus:outline-none";
 
   return (
-    <form onSubmit={onSubmit} className=" flex flex-col justify-between rounded-3xl items-center bg-gray-100 w-1/4 h-2/3 p-5">
-      {error && (
-        <p className="text-center w-full bg-red-300 py-2 mb-6 rounded-full">{error}</p>
-      )}
+    <form onSubmit={onSubmit} className=" flex flex-col justify-between rounded-3xl items-center bg-formColor w-1/4 h-2/3 p-5">
+      <Toast closeToast={setError} text={error} type="error" />
       <div className="w-full">
         <div className="mb-6 w-full">
           <input

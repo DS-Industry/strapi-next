@@ -1,5 +1,5 @@
 import { Footer } from "@/components/server/footer";
-import { GeneralHeader } from "../../header/not-auth-header";
+import { GeneralHeader } from "../../header/general-header";
 
 interface IMenuLayout {
     children: React.ReactNode,

@@ -7,17 +7,10 @@ export default async function Home () {
     return (
         <MenuAuthLayout pageName={"home"}>
         <main>
-            { !session ? 
-                (
-                    <h1>You should login</h1>
-                ) :
-                (
-                    <div>
-                        <h1>Hello, {session.user?.email}</h1> 
-                    </div>
-
-                )
-            }
+            <div>
+                <h1>Hello, {session?.user?.email}</h1> 
+            </div>
+            <></>
         </main>
     </MenuAuthLayout>
     )
