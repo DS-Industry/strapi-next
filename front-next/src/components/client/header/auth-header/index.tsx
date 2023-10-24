@@ -24,7 +24,7 @@ export default async function Header ({ className } : IHeader) {
             <Link className={className === 'createticket' ? activeStyle : hoverStyle} href={'/protected/createticket'}>Ticket Creation</Link>
             <Link className={className === 'createtodo' ? activeStyle : hoverStyle} href={'/protected/createtodo'}>Todo Creation</Link>
             <Link className={className === 'instruction' ? activeStyle : hoverStyle} href={'/protected/instruction'}>Instructions</Link>      
-            <Link className={className === 'createuser' ? activeStyle : hoverStyle} href={'/protected/instruction'}>User Creation</Link>      
+            <Link className={className === 'createuser' ? activeStyle : hoverStyle} href={'/protected/createuser'}>User Creation</Link>      
             </nav>
             <div className=" w-full flex flex-col items-center">
                 <Link className=" w-full flex items-center justify-evenly mb-2" href="/protected/profile">

@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import Hero from './../../public/hero_1.svg'
 import { GeneralLayout } from '@/components/client/layout/general-layout';
+import StyledLayout from '@/components/server/layout';
 
 export default async function Home() {
 
   return (
-    <GeneralLayout pageName={'landing'}>
+    <GeneralLayout pageName='landing'>
     <main className="flex h-full flex-col items-center justify center">
       <div className="mb-32 text-center pt-16">
           <h2 className={` text-2xl font-semibold`}>
