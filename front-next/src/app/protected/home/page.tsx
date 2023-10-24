@@ -1,6 +1,5 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/config/nextauth/auth";
-import { MenuAuthLayout } from "@/components/client/layout/auth-layout";
 
 export default async function Home () {
     const session = await getServerSession(authOptions);

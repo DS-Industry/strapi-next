@@ -947,38 +947,6 @@ export interface ApiPriorityPriority extends Schema.CollectionType {
   };
 }
 
-export interface ApiRestaurantRestaurant extends Schema.CollectionType {
-  collectionName: 'restaurants';
-  info: {
-    singularName: 'restaurant';
-    pluralName: 'restaurants';
-    displayName: 'Restaurant';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String & Attribute.Required & Attribute.Unique;
-    description: Attribute.RichText;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::restaurant.restaurant',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::restaurant.restaurant',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface ApiStatusStatus extends Schema.CollectionType {
   collectionName: 'statuses';
   info: {
@@ -1292,7 +1260,6 @@ declare module '@strapi/types' {
       'api::comment.comment': ApiCommentComment;
       'api::department.department': ApiDepartmentDepartment;
       'api::priority.priority': ApiPriorityPriority;
-      'api::restaurant.restaurant': ApiRestaurantRestaurant;
       'api::status.status': ApiStatusStatus;
       'api::subcategory.subcategory': ApiSubcategorySubcategory;
       'api::ticket.ticket': ApiTicketTicket;

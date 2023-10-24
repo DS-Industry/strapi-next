@@ -1,5 +1,3 @@
-import { MenuAuthLayout } from "@/components/client/layout/auth-layout";
-
 export default function CreateUserPage () {
     return (
             <main>

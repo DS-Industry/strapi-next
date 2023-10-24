@@ -1,7 +1,25 @@
 import { DefaultSession, DefaultUser, User } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 
+
 declare module "next-auth" {
+
+  interface Role {
+    id: number,
+    name: string,
+    ceratedAt: Date,
+    updatedAt: Date
+  }
+  interface Avatar {
+    id: number,
+    name: string,
+    alternativeText: string,
+    mime: string,
+    url: string,
+    createdAt: Date,
+    updatedAt: Date
+  }
+
   interface Session extends DefaultSession {
     user: User,
     jwt: JWT,
@@ -9,13 +27,12 @@ declare module "next-auth" {
   interface User extends DefaultUser {
     id: string,
     username: string,
-    role: any,
-    provider: string,
-    confirmated: string,
-    blocked: boolean,
+    email: string,
+    role: Role,
     createdAt: Date,
     updatedAt: Date,
-  }
+    avatar: Avatar
+  } 
   interface AdapterUser extends User {}
   interface JWT extends DefaultJWT {
     user: User,
