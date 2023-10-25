@@ -60,19 +60,13 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "tickets"
     },
-    "priority_id": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::priority.priority",
-      "inversedBy": "tickets"
-    },
-    "car_wash_id": {
+    "carWash": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::car-wash.car-wash",
       "inversedBy": "tickets"
     },
-    "status_id": {
+    "status": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::status.status",
@@ -83,6 +77,12 @@
       "relation": "oneToMany",
       "target": "api::comment.comment",
       "mappedBy": "ticket_id"
+    },
+    "priority": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::priority.priority",
+      "inversedBy": "tickets"
     }
   }
 }

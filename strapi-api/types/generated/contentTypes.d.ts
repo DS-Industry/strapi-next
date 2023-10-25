@@ -907,6 +907,7 @@ export interface ApiPriorityPriority extends Schema.CollectionType {
     singularName: 'priority';
     pluralName: 'priorities';
     displayName: 'Priority';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -1066,17 +1067,12 @@ export interface ApiTicketTicket extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    priority_id: Attribute.Relation<
-      'api::ticket.ticket',
-      'manyToOne',
-      'api::priority.priority'
-    >;
-    car_wash_id: Attribute.Relation<
+    carWash: Attribute.Relation<
       'api::ticket.ticket',
       'manyToOne',
       'api::car-wash.car-wash'
     >;
-    status_id: Attribute.Relation<
+    status: Attribute.Relation<
       'api::ticket.ticket',
       'manyToOne',
       'api::status.status'
@@ -1085,6 +1081,11 @@ export interface ApiTicketTicket extends Schema.CollectionType {
       'api::ticket.ticket',
       'oneToMany',
       'api::comment.comment'
+    >;
+    priority: Attribute.Relation<
+      'api::ticket.ticket',
+      'manyToOne',
+      'api::priority.priority'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

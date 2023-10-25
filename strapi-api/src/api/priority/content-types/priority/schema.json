@@ -4,7 +4,8 @@
   "info": {
     "singularName": "priority",
     "pluralName": "priorities",
-    "displayName": "Priority"
+    "displayName": "Priority",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -34,7 +35,7 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::ticket.ticket",
-      "mappedBy": "priority_id"
+      "mappedBy": "priority"
     }
   }
 }
