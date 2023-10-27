@@ -28,12 +28,6 @@
     "isClosed": {
       "type": "boolean"
     },
-    "createdDate": {
-      "type": "datetime"
-    },
-    "closedDate": {
-      "type": "datetime"
-    },
     "timeSpent": {
       "type": "biginteger"
     },
@@ -47,12 +41,6 @@
         "videos",
         "audios"
       ]
-    },
-    "todos": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::todo.todo",
-      "mappedBy": "ticket_id"
     },
     "createdUserBy": {
       "type": "relation",
@@ -83,6 +71,21 @@
       "relation": "manyToOne",
       "target": "api::priority.priority",
       "inversedBy": "tickets"
+    },
+    "departments": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::department.department",
+      "inversedBy": "tickets"
+    },
+    "ClosedAt": {
+      "type": "datetime"
+    },
+    "todos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::todo.todo",
+      "mappedBy": "ticketId"
     }
   }
 }

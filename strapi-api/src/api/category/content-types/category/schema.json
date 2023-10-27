@@ -22,12 +22,6 @@
       "targetField": "name",
       "required": true
     },
-    "todos": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::todo.todo",
-      "mappedBy": "category_id"
-    },
     "todo_templates": {
       "type": "relation",
       "relation": "oneToMany",
@@ -45,6 +39,12 @@
       "relation": "oneToMany",
       "target": "api::subcategory.subcategory",
       "mappedBy": "category_id"
+    },
+    "todos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::todo.todo",
+      "mappedBy": "categoryId"
     }
   }
 }

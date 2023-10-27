@@ -58,31 +58,31 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "todos_executed"
     },
-    "ticket_id": {
+    "ticketId": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::ticket.ticket",
       "inversedBy": "todos"
     },
-    "department_id": {
+    "departmentId": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::department.department",
       "inversedBy": "todos"
     },
-    "category_id": {
+    "categoryId": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::category.category",
       "inversedBy": "todos"
     },
-    "subcategory_id": {
+    "subcategoryId": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::subcategory.subcategory",
       "inversedBy": "todos"
     },
-    "priority_id": {
+    "priorityId": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::priority.priority",
