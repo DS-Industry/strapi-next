@@ -21,16 +21,12 @@ export const LoginForm = () => {
   }
 
   const searchParams = useSearchParams();
-  let callbackUrl = searchParams.get("callbackUrl") || "/";
+  let callbackUrl = searchParams.get("callbackUrl") || "/protected/home";
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('here');
     try {
       setLoading(true);
-      //setFormValues({ email: "", password: "" });
-
-
       const res = await signIn("credentials", {
         redirect: false,
         email: formValues.email,
@@ -40,9 +36,7 @@ export const LoginForm = () => {
 
       setLoading(false);
       if (res?.ok) {
-        console.log(process.env.NEXT_PUBLIC_URL);
-        if (callbackUrl === process.env.NEXT_PUBLIC_URL) {
-          console.log('here');
+        if (callbackUrl === `${process.env.NEXT_PUBLIC_URL}/`) {
           callbackUrl += 'protected/home';
         }
         router.refresh();
