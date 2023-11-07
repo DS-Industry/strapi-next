@@ -174,3 +174,19 @@ span.flatpickr-weekday,
 .map-btn .jvectormap-container .jvectormap-zoomin {
   right: 45px;
 }
+
+#quill-editor {
+  display: flex;
+  padding-left: 10px;
+  flex-direction: column;
+  height: 200px;
+  color: black;
+  border-radius: 3rem;
+  border-color: white;
+  background-color: #64748B;
+  background: white;
+}
+
+.ql-snow {
+  border: 0 !important;
+}

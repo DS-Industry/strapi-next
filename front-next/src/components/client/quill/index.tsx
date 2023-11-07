@@ -21,7 +21,7 @@ const modules = {
         { indent: '-1' },
         { indent: '+1' },
       ],
-      ['link', 'image', 'video'],
+      ['link'],
       ['clean'],
     ],
     clipboard: {
@@ -47,23 +47,32 @@ const modules = {
     'bullet',
     'indent',
     'link',
-    'image',
-    'video',
   ]
 
 interface IQuillEditor {
-    handleChange : any
+    handleChange: any,
 }
 
-export default function QuillEditor ({  } : IQuillEditor ) {
+export default function QuillEditor ({ handleChange } : IQuillEditor ) {
 
-    const [ value, setValue ] = useState<string>('');
+  const [value, setValue] = useState<string>('');
 
-    const handleChange = ({target : { value }} : any) => {
-        setValue(value);
-    }
+
+  const handleQuillChange = ( context: string ) => {
+    setValue(context);
+    handleChange(context)
+  }
+
 
     return (
-      <QuillNoSSRWrapper onChange={handleChange} value={value} className=" transition-colors duration-150 mt-5 border-2 border-black hover:border-gray rounded-md bg-white" modules={modules} formats={formats}/>  
+      <div>
+        <QuillNoSSRWrapper
+          placeholder='Write description for task to help your colleages fully understand it'
+          id='quill-editor' 
+          onChange={handleQuillChange} 
+          value={value} 
+          modules={modules} 
+          formats={formats}/>  
+      </div>
     )
 }

@@ -1,7 +1,5 @@
 import Image from "next/image";
-import Breadcrumb from "@/components/server/breadcrumb";
 import Cover from "./../../../../public/cover-01.png";
-import DefaultProfilePh from "./../../../../public/6253ea79989fe6d1893f5ca4_avatar-p-800.jpg";
 import { getServerSession } from "next-auth";
 import { LogoutButton } from "@/components/client/buttons/auth-button";
 import { authOptions } from "@/config/nextauth/auth";
@@ -12,7 +10,6 @@ export default async function Profile () {
 
   return (
     <>
-      <Breadcrumb pageName="Profile" />
 
       <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="relative z-20 h-35 md:h-65">
@@ -26,7 +23,7 @@ export default async function Profile () {
         </div>
         <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
           <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
-            <CustomImage src={`${process.env.NEXT_PUBLIC_API_URL}${session?.user.avatar.url}`}/>
+            <CustomImage src={`${session?.user.avatar}`} />
           </div>
           <div className="mt-4">
             <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">

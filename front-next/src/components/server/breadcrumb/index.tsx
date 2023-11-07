@@ -1,24 +1,23 @@
-import { getServerSession } from "next-auth";
-import Link from "next/link";
-interface BreadcrumbProps {
-  pageName: string;
-}
-export default async function Breadcrumb ({ pageName }: BreadcrumbProps) {
-    const session = await getServerSession();
-  return (
-    <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-        {pageName}
-      </h2>
+'use client'
 
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+
+export default function Breadcrumb () {
+    const {data : session} = useSession();
+    const pathName = usePathname();
+  return (
+    <div className=" flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <nav>
         <ol className="flex items-center gap-2">
           <li>
             <Link className="font-medium" href={`${session?.user ? '/protected/home' : '/home'}`}>
-              Helpdesk /
+              Helpdesk 
             </Link>
           </li>
-          <li className="font-medium text-primary">{pageName}</li>
+          <li className="font-medium text-primary">{pathName.includes('/protected') ? pathName.replace('/protected', '') : pathName }</li>
         </ol>
       </nav>
     </div>

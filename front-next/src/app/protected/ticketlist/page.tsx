@@ -13,7 +13,7 @@ export default async function TicketListPage ({searchParams : { search, sortType
             <p className=" mb-4 text-3xl text-boxdark font-semibold">Department {user.department.name}</p>
             <div className="flex items-center justify-between bg-white dark:bg-gray-900 px-5 py-5">
                 <div className="flex justify-evenly items-center w-1/6">
-                    <DropdownButton />
+                    {/* <DropdownButton /> */}
                     <NavigationButton endpoint="createticket" label="Create!" />
                 </div>
                 <SearchInput />

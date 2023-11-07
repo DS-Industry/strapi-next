@@ -31,7 +31,8 @@ declare module "next-auth" {
     role: Role,
     createdAt: Date,
     updatedAt: Date,
-    avatar: Avatar
+    avatar: Avatar,
+    jwt: string,
   } 
   interface AdapterUser extends User {}
   interface JWT extends DefaultJWT {
