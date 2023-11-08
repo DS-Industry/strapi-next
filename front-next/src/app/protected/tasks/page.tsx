@@ -5,7 +5,7 @@ import Tbody from "@/components/server/table-body";
 import { authOptions } from "@/config/nextauth/auth"
 import { getServerSession } from "next-auth/next"
 
-export default async function TicketListPage ({searchParams : { search, sortType, name }} : {searchParams: { search: string, sortType: string, name: string }}) {
+export default async function TaskListPage ({searchParams : { search, sortType, name }} : {searchParams: { search: string, sortType: string, name: string }}) {
     const { user } : any = await getServerSession(authOptions);
     return (
         <main className="overflow-x-auto shadow-md sm:rounded-lg">
@@ -13,7 +13,7 @@ export default async function TicketListPage ({searchParams : { search, sortType
             <div className="flex items-center justify-between bg-white dark:bg-gray-900 px-5 py-5">
                 <div className="flex justify-evenly items-center w-1/6">
                     {/* <DropdownButton /> */}
-                    <NavigationButton endpoint="createticket" label="Create!" />
+                    <NavigationButton endpoint="createtask" label="Create!" />
                 </div>
                 <SearchInput />
             </div>

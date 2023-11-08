@@ -31,7 +31,7 @@ export default async function Tbody ({ search, sortType, name } : ITbody) {
                         </tr>
                     )
                 }) :
-                <p>Tickets not found</p>
+                <p>Tasks not found</p>
             }
         </tbody>
     )

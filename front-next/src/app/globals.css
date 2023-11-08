@@ -177,7 +177,8 @@ span.flatpickr-weekday,
 
 #quill-editor {
   display: flex;
-  padding-left: 10px;
+  padding-left: 15px;
+  padding-top: 10px;
   flex-direction: column;
   height: 200px;
   color: black;

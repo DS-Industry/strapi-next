@@ -50,17 +50,6 @@ export type TaskAttributes = {
     createdUserBy: StrapiResponseObject<UserAttributes>,
 }
 
-export type TodoAttributes = {
-    name: string,
-    createdAt: Date,
-    updatedAt: Date,
-    publishedAt: Date,
-    slug: UUID,
-    body: string,
-    ticketId: number
-}
-
-
 export type UserAttributes = {
     username: string,
     email: string,

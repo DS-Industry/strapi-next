@@ -2,7 +2,6 @@ import AuthProvider from '@/components/client/providers/sessionProvider'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import StyledLayout from '@/components/server/layout'
 
 const inter = Inter({ subsets: ['latin']})
 

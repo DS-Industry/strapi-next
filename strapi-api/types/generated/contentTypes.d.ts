@@ -624,16 +624,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToOne',
       'api::department.department'
     >;
-    todos_executed: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'manyToMany',
-      'api::todo.todo'
-    >;
-    tickets: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::ticket.ticket'
-    >;
     comments: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',

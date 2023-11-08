@@ -139,13 +139,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               {/* <!-- Menu Item home --> */}
 
-              {/* <!-- Menu Item List of tickets --> */}
+              {/* <!-- Menu Item List of task --> */}
 
               <li>
                 <Link
-                  href="/protected/ticketlist"
+                  href="/protected/tasks"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("ticketlist") &&
+                    pathname.includes("tasks") &&
                     "bg-graydark dark:bg-meta-4"
                   }`}
                 >
@@ -162,10 +162,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       fill=""
                     />
                   </svg>
-                  Ticket list
+                  Task List
                 </Link>
               </li>
-              {/* <!-- Menu Item List of tickets --> */}
+              {/* <!-- Menu Item List of tasks --> */}
 
               {/* <!-- Menu Item Tables --> */}
               <li>
@@ -205,12 +205,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               {/* <!-- Menu Item todo list --> */}
 
-              {/* <!-- Menu Item ticket creation --> */}
+              {/* <!-- Menu Item tasks creation --> */}
               <li>
                 <Link
-                  href="/protected/createticket"
+                  href="/protected/createtask"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("createticket") &&
+                    pathname.includes("createtask") &&
                     "bg-graydark dark:bg-meta-4"
                   }`}
                 >
@@ -243,10 +243,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       </clipPath>
                     </defs>
                   </svg>
-                  Create ticket
+                  Create task
                 </Link>
               </li>
-              {/* <!-- Menu Item ticket creaton --> */}
+              {/* <!-- Menu Item task creaton --> */}
               {/* <!-- Menu Item todo creation --> */}
               <li>
                 <Link

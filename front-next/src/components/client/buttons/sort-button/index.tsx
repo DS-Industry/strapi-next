@@ -28,7 +28,7 @@ export default function SortButton ({name, title} : ISortButton) {
             setType('asc')
         }
         params.set('name',name);
-        router.push(`/protected/ticketlist?${params}`); 
+        router.push(`/protected/tasks?${params}`); 
     }
 
 

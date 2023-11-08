@@ -3,10 +3,10 @@
 import { MdClose } from "react-icons/md"
 
 
-interface ITicketItemList {
-    ticketItems: Array<any>
+interface ITaskItemList {
+    taskItems: Array<any>
     deleteElement: any,
-    name: 'attachments' | 'departments'
+    name: string
 }
 
 const shortingStr = (str: string) => {
@@ -19,15 +19,15 @@ const shortingStr = (str: string) => {
     
 }
 
-export default function TicketItemList ({ticketItems, deleteElement, name} : ITicketItemList) {
+export default function TaskItemList ({taskItems, deleteElement, name} : ITaskItemList) {
     return (
-        <ol className=" flex flex-col w-1/2 mt-5 bg-gray-3 p-1 rounded-md text-black">
+        <ol className={` flex ${name === 'attachments' ? 'flex-col' : 'flex-row' }  w-1/2`}>
             {
-                ticketItems.map((item: any, index: number) => {
+                taskItems.map((item: any, index: number) => {
                     return (
-                        <li key={index}>
+                        <li key={index} className=" bg-gray-3 p-1 rounded-md text-black m-1">
                             <div className="flex justify-between items-center">
-                                <p>{name === 'attachments' ? shortingStr(item.name) : item.split('-')[1]}</p>
+                                <p className=" mr-1">{name === 'attachments' ? shortingStr(item.name) : item.split('-')[1]}</p>
                                 <label>
                                     <MdClose />
                                     <button type="button" className=" hidden" name={name} onClick={deleteElement} value={name === 'attachments' ? item.name : item} ></button>

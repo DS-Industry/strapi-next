@@ -90,18 +90,6 @@
       "relation": "oneToOne",
       "target": "api::department.department"
     },
-    "todos_executed": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::todo.todo",
-      "mappedBy": "executed_bies"
-    },
-    "tickets": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::ticket.ticket",
-      "mappedBy": "createdUserBy"
-    },
     "comments": {
       "type": "relation",
       "relation": "oneToMany",
