@@ -1,0 +1,120 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tasks",
+  "info": {
+    "singularName": "task",
+    "pluralName": "tasks",
+    "displayName": "Task",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "body": {
+      "type": "blocks"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "Обращение",
+        "Задача"
+      ]
+    },
+    "parentTaskId": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::task.task"
+    },
+    "asiignees": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "tasks"
+    },
+    "status": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::status.status",
+      "inversedBy": "tasks"
+    },
+    "department": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::department.department",
+      "inversedBy": "tasks"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "tasks"
+    },
+    "subcategory": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::subcategory.subcategory",
+      "inversedBy": "tasks"
+    },
+    "priority": {
+      "type": "enumeration",
+      "enum": [
+        "Высокий",
+        "Средний",
+        "Низкий"
+      ]
+    },
+    "carWash": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::car-wash.car-wash",
+      "inversedBy": "tasks"
+    },
+    "attachments": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    },
+    "resolution": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::comment.comment"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "task"
+    },
+    "isClosed": {
+      "type": "boolean"
+    },
+    "isDeleted": {
+      "type": "boolean"
+    },
+    "dueDate": {
+      "type": "datetime"
+    },
+    "closedBy": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "timeSpent": {
+      "type": "float"
+    }
+  }
+}

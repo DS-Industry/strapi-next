@@ -649,6 +649,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::comment.comment'
     >;
+    tasks: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::task.task'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -734,6 +739,11 @@ export interface ApiCarWashCarWash extends Schema.CollectionType {
       'api::car-wash.car-wash',
       'oneToMany',
       'api::ticket.ticket'
+    >;
+    tasks: Attribute.Relation<
+      'api::car-wash.car-wash',
+      'oneToMany',
+      'api::task.task'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -835,6 +845,11 @@ export interface ApiCommentComment extends Schema.CollectionType {
       'manyToOne',
       'api::todo.todo'
     >;
+    task: Attribute.Relation<
+      'api::comment.comment',
+      'manyToOne',
+      'api::task.task'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -886,6 +901,11 @@ export interface ApiDepartmentDepartment extends Schema.CollectionType {
       'api::department.department',
       'oneToMany',
       'api::todo.todo'
+    >;
+    tasks: Attribute.Relation<
+      'api::department.department',
+      'oneToMany',
+      'api::task.task'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -975,6 +995,11 @@ export interface ApiStatusStatus extends Schema.CollectionType {
       'oneToMany',
       'api::ticket.ticket'
     >;
+    tasks: Attribute.Relation<
+      'api::status.status',
+      'oneToMany',
+      'api::task.task'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1023,6 +1048,11 @@ export interface ApiSubcategorySubcategory extends Schema.CollectionType {
       'oneToMany',
       'api::todo.todo'
     >;
+    tasks: Attribute.Relation<
+      'api::subcategory.subcategory',
+      'oneToMany',
+      'api::task.task'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1037,6 +1067,99 @@ export interface ApiSubcategorySubcategory extends Schema.CollectionType {
       'oneToOne',
       'admin::user'
     > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTaskTask extends Schema.CollectionType {
+  collectionName: 'tasks';
+  info: {
+    singularName: 'task';
+    pluralName: 'tasks';
+    displayName: 'Task';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    slug: Attribute.UID<'api::task.task', 'title'>;
+    body: Attribute.Blocks;
+    type: Attribute.Enumeration<
+      [
+        '\u041E\u0431\u0440\u0430\u0449\u0435\u043D\u0438\u0435',
+        '\u0417\u0430\u0434\u0430\u0447\u0430'
+      ]
+    >;
+    parentTaskId: Attribute.Relation<
+      'api::task.task',
+      'oneToMany',
+      'api::task.task'
+    >;
+    asiignees: Attribute.Relation<
+      'api::task.task',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    status: Attribute.Relation<
+      'api::task.task',
+      'manyToOne',
+      'api::status.status'
+    >;
+    department: Attribute.Relation<
+      'api::task.task',
+      'manyToOne',
+      'api::department.department'
+    >;
+    category: Attribute.Relation<
+      'api::task.task',
+      'manyToOne',
+      'api::category.category'
+    >;
+    subcategory: Attribute.Relation<
+      'api::task.task',
+      'manyToOne',
+      'api::subcategory.subcategory'
+    >;
+    priority: Attribute.Enumeration<
+      [
+        '\u0412\u044B\u0441\u043E\u043A\u0438\u0439',
+        '\u0421\u0440\u0435\u0434\u043D\u0438\u0439',
+        '\u041D\u0438\u0437\u043A\u0438\u0439'
+      ]
+    >;
+    carWash: Attribute.Relation<
+      'api::task.task',
+      'manyToOne',
+      'api::car-wash.car-wash'
+    >;
+    attachments: Attribute.Media;
+    resolution: Attribute.Relation<
+      'api::task.task',
+      'oneToOne',
+      'api::comment.comment'
+    >;
+    comments: Attribute.Relation<
+      'api::task.task',
+      'oneToMany',
+      'api::comment.comment'
+    >;
+    isClosed: Attribute.Boolean;
+    isDeleted: Attribute.Boolean;
+    dueDate: Attribute.DateTime;
+    closedBy: Attribute.Relation<
+      'api::task.task',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    timeSpent: Attribute.Float;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::task.task', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::task.task', 'oneToOne', 'admin::user'> &
       Attribute.Private;
   };
 }
@@ -1230,6 +1353,11 @@ export interface ApiTodoTemplateTodoTemplate extends Schema.CollectionType {
       'manyToOne',
       'api::subcategory.subcategory'
     >;
+    tasks: Attribute.Relation<
+      'api::category.category',
+      'oneToMany',
+      'api::task.task'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1271,6 +1399,7 @@ declare module '@strapi/types' {
       'api::priority.priority': ApiPriorityPriority;
       'api::status.status': ApiStatusStatus;
       'api::subcategory.subcategory': ApiSubcategorySubcategory;
+      'api::task.task': ApiTaskTask;
       'api::ticket.ticket': ApiTicketTicket;
       'api::todo.todo': ApiTodoTodo;
       'api::todo-template.todo-template': ApiTodoTemplateTodoTemplate;

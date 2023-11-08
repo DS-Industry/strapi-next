@@ -33,11 +33,11 @@
       "target": "api::category.category",
       "inversedBy": "subcategories"
     },
-    "todos": {
+    "tasks": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::todo.todo",
-      "mappedBy": "subcategoryId"
+      "target": "api::task.task",
+      "mappedBy": "subcategory"
     }
   }
 }

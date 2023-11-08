@@ -29,6 +29,12 @@
       "relation": "oneToMany",
       "target": "api::ticket.ticket",
       "mappedBy": "status"
+    },
+    "tasks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::task.task",
+      "mappedBy": "status"
     }
   }
 }

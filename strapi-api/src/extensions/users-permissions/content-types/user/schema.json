@@ -119,6 +119,12 @@
       "relation": "oneToMany",
       "target": "api::comment.comment",
       "mappedBy": "createdUserBy"
+    },
+    "tasks": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::task.task",
+      "mappedBy": "asiignees"
     }
   }
 }
