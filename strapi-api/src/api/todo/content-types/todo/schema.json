@@ -76,12 +76,6 @@
       "target": "api::category.category",
       "inversedBy": "todos"
     },
-    "subcategoryId": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::subcategory.subcategory",
-      "inversedBy": "todos"
-    },
     "priorityId": {
       "type": "relation",
       "relation": "manyToOne",

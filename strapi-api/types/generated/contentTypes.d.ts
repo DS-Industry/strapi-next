@@ -777,6 +777,11 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   attributes: {
     name: Attribute.String & Attribute.Required & Attribute.Unique;
     slug: Attribute.UID<'api::category.category', 'name'> & Attribute.Required;
+    todos: Attribute.Relation<
+      'api::category.category',
+      'oneToMany',
+      'api::todo.todo'
+    >;
     todo_templates: Attribute.Relation<
       'api::category.category',
       'oneToMany',
@@ -792,10 +797,10 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       'oneToMany',
       'api::subcategory.subcategory'
     >;
-    todos: Attribute.Relation<
+    tasks: Attribute.Relation<
       'api::category.category',
       'oneToMany',
-      'api::todo.todo'
+      'api::task.task'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -874,7 +879,6 @@ export interface ApiDepartmentDepartment extends Schema.CollectionType {
     singularName: 'department';
     pluralName: 'departments';
     displayName: 'Department';
-    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -882,6 +886,13 @@ export interface ApiDepartmentDepartment extends Schema.CollectionType {
   attributes: {
     name: Attribute.String & Attribute.Required;
     slug: Attribute.UID<'api::department.department', 'name'>;
+    createdDepartmentAt: Attribute.DateTime;
+    updatedDepartmentAt: Attribute.DateTime;
+    todos: Attribute.Relation<
+      'api::department.department',
+      'oneToMany',
+      'api::todo.todo'
+    >;
     todo_templates: Attribute.Relation<
       'api::department.department',
       'oneToMany',
@@ -891,16 +902,6 @@ export interface ApiDepartmentDepartment extends Schema.CollectionType {
       'api::department.department',
       'oneToMany',
       'api::category.category'
-    >;
-    tickets: Attribute.Relation<
-      'api::department.department',
-      'manyToMany',
-      'api::ticket.ticket'
-    >;
-    todos: Attribute.Relation<
-      'api::department.department',
-      'oneToMany',
-      'api::todo.todo'
     >;
     tasks: Attribute.Relation<
       'api::department.department',
@@ -1042,11 +1043,6 @@ export interface ApiSubcategorySubcategory extends Schema.CollectionType {
       'api::subcategory.subcategory',
       'manyToOne',
       'api::category.category'
-    >;
-    todos: Attribute.Relation<
-      'api::subcategory.subcategory',
-      'oneToMany',
-      'api::todo.todo'
     >;
     tasks: Attribute.Relation<
       'api::subcategory.subcategory',
@@ -1207,11 +1203,6 @@ export interface ApiTicketTicket extends Schema.CollectionType {
       'manyToOne',
       'api::priority.priority'
     >;
-    departments: Attribute.Relation<
-      'api::ticket.ticket',
-      'manyToMany',
-      'api::department.department'
-    >;
     ClosedAt: Attribute.DateTime;
     todos: Attribute.Relation<
       'api::ticket.ticket',
@@ -1284,11 +1275,6 @@ export interface ApiTodoTodo extends Schema.CollectionType {
       'manyToOne',
       'api::category.category'
     >;
-    subcategoryId: Attribute.Relation<
-      'api::todo.todo',
-      'manyToOne',
-      'api::subcategory.subcategory'
-    >;
     priorityId: Attribute.Relation<
       'api::todo.todo',
       'manyToOne',
@@ -1352,11 +1338,6 @@ export interface ApiTodoTemplateTodoTemplate extends Schema.CollectionType {
       'api::todo-template.todo-template',
       'manyToOne',
       'api::subcategory.subcategory'
-    >;
-    tasks: Attribute.Relation<
-      'api::category.category',
-      'oneToMany',
-      'api::task.task'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

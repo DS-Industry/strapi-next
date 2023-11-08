@@ -72,12 +72,6 @@
       "target": "api::priority.priority",
       "inversedBy": "tickets"
     },
-    "departments": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::department.department",
-      "inversedBy": "tickets"
-    },
     "ClosedAt": {
       "type": "datetime"
     },
