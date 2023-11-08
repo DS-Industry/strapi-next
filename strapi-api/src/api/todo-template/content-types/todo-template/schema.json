@@ -4,7 +4,7 @@
   "info": {
     "singularName": "todo-template",
     "pluralName": "todo-templates",
-    "displayName": "TodoTemplate",
+    "displayName": "TaskTemplate",
     "description": ""
   },
   "options": {
@@ -20,41 +20,41 @@
       "type": "uid",
       "targetField": "name"
     },
-    "created_user_by": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "todo_templates"
-    },
-    "assign_to_users": {
+    "assignToUsers": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
-      "inversedBy": "todo_templates"
+      "inversedBy": "todoTemplates"
     },
-    "department_id": {
+    "department": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::department.department",
-      "inversedBy": "todo_templates"
+      "inversedBy": "taskTemplates"
     },
-    "priority_id": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::priority.priority",
-      "inversedBy": "todo_templates"
-    },
-    "category_id": {
+    "category": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::category.category",
-      "inversedBy": "todo_templates"
+      "inversedBy": "taskTemplates"
     },
-    "subcategory_id": {
+    "status": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::status.status",
+      "inversedBy": "taskTemplates"
+    },
+    "priority": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::priority.priority",
+      "inversedBy": "taskTemplates"
+    },
+    "subcategory": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::subcategory.subcategory",
-      "inversedBy": "todo_templates"
+      "inversedBy": "taskTemplates"
     }
   }
 }

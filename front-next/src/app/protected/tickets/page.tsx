@@ -1,4 +1,3 @@
-import DropdownButton from "@/components/client/buttons/dropdown-button";
 import NavigationButton from "@/components/client/buttons/navigate-button";
 import SortButton from "@/components/client/buttons/sort-button";
 import SearchInput from "@/components/client/inputs/search-input";

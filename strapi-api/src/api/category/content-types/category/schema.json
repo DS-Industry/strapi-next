@@ -22,34 +22,28 @@
       "targetField": "name",
       "required": true
     },
-    "todos": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::todo.todo",
-      "mappedBy": "category_id"
-    },
-    "todo_templates": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::todo-template.todo-template",
-      "mappedBy": "category_id"
-    },
-    "department_id": {
+    "department": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::department.department",
       "inversedBy": "categories"
     },
-    "subcategories": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::subcategory.subcategory",
-      "mappedBy": "category_id"
-    },
     "tasks": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::task.task",
+      "mappedBy": "category"
+    },
+    "subcategories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subcategory.subcategory",
+      "mappedBy": "category"
+    },
+    "taskTemplates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::todo-template.todo-template",
       "mappedBy": "category"
     }
   }

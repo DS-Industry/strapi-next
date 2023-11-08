@@ -12,7 +12,7 @@ export async function GET(
 
     const searchParam = search !== 'undefined' ? `&filters[name][$containsi]=${search}` : '';
     const sortParam = sortType !== 'undefined' ? sortType !== 'init' ? `&sort=${name}:${sortType}` : '' : '';
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/tickets?populate=*${searchParam}${sortParam}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/tasks?populate=*${searchParam}${sortParam}`;
 
     const { data } = await axios.get(url, {
             headers: {

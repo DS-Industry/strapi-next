@@ -27,7 +27,7 @@
       "unique": false,
       "required": true
     },
-    "carWashtype": {
+    "type": {
       "type": "enumeration",
       "enum": [
         "selfService",
@@ -45,17 +45,11 @@
     "lonitude": {
       "type": "float"
     },
-    "tickets": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::ticket.ticket",
-      "mappedBy": "carWash"
-    },
     "tasks": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::task.task",
-      "mappedBy": "carWash"
+      "mappedBy": "carWashes"
     }
   }
 }

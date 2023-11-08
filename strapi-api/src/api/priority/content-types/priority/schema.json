@@ -19,23 +19,11 @@
       "type": "uid",
       "targetField": "name"
     },
-    "todo_templates": {
+    "taskTemplates": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::todo-template.todo-template",
-      "mappedBy": "priority_id"
-    },
-    "tickets": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::ticket.ticket",
       "mappedBy": "priority"
-    },
-    "todos": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::todo.todo",
-      "mappedBy": "priorityId"
     }
   }
 }

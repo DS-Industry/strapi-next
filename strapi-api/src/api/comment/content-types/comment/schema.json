@@ -16,28 +16,10 @@
       "type": "text",
       "required": true
     },
-    "createdCommentAt": {
-      "type": "datetime"
-    },
-    "updatedCommentAt": {
-      "type": "datetime"
-    },
     "createdUserBy": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
-      "inversedBy": "comments"
-    },
-    "ticket_id": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::ticket.ticket",
-      "inversedBy": "comments"
-    },
-    "todo_id": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::todo.todo",
       "inversedBy": "comments"
     },
     "task": {

@@ -1,3 +1,4 @@
+import { StrapiData, TaskAttributes } from "@/types/types";
 import { dateToString } from "@/utils/util"
 import axios from "axios"
 
@@ -9,9 +10,6 @@ interface ITbody {
 
 export default async function Tbody ({ search, sortType, name } : ITbody) {
 
-    console.log('sort type in TBODY => ',sortType);
-
-
     const { data } = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}`);
 
     console.log(' this is data', data);
@@ -19,17 +17,17 @@ export default async function Tbody ({ search, sortType, name } : ITbody) {
     return (
         <tbody>
             {data ? 
-                data.map((ticket : any, index: number) => {
+                data.map((task : StrapiData<TaskAttributes>, index: number) => {
                     return (
                         <tr key={index} className="bg-white border-b dark:bg-boxdark-2 dark:border-boxdark hover:bg-gray dark:hover:bg-graydark">
-                            <td className="px-6 py-4">{ticket.attributes.slug}</td>
-                            <td className="px-6 py-4">{ticket.attributes.name}</td>
-                            <td className="px-6 py-4">{ticket.attributes.createdUserBy.data.attributes.username}</td>
-                            <td className="px-6 py-4">{ticket.attributes.departments.data[0].attributes.name}</td>
-                            <td className="px-6 py-4">{ticket.attributes.carWash.data.attributes.slug}</td>
-                            <td className="px-6 py-4">{ticket.attributes.priority.data.attributes.name}</td>
-                            <td className="px-6 py-4">{ticket.attributes.status.data.attributes.name}</td>
-                            <td className="px-6 py-4">{dateToString(ticket.attributes.createdAt)}</td>
+                            <td className="px-6 py-4">{task.attributes.slug}</td>
+                            <td className="px-6 py-4">{task.attributes.title}</td>
+                            <td className="px-6 py-4">{task.attributes.createdUserBy.data.attributes.username}</td>
+                            <td className="px-6 py-4">{task.attributes.departments.data[0].attributes.name}</td>
+                            <td className="px-6 py-4">{task.attributes.carWashes.data[0].attributes.slug}</td>
+                            <td className="px-6 py-4">{task.attributes.priority}</td>
+                            <td className="px-6 py-4">{task.attributes.status.data.attributes.name}</td>
+                            <td className="px-6 py-4">{dateToString(task.attributes.createdAt)}</td>
                         </tr>
                     )
                 }) :

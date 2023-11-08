@@ -90,23 +90,11 @@
       "relation": "oneToOne",
       "target": "api::department.department"
     },
-    "todos": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::todo.todo",
-      "mappedBy": "createdUserBy"
-    },
     "todos_executed": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::todo.todo",
       "mappedBy": "executed_bies"
-    },
-    "todo_templates": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::todo-template.todo-template",
-      "mappedBy": "assign_to_users"
     },
     "tickets": {
       "type": "relation",
@@ -125,6 +113,18 @@
       "relation": "manyToMany",
       "target": "api::task.task",
       "mappedBy": "asiignees"
+    },
+    "todoTemplates": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::todo-template.todo-template",
+      "mappedBy": "assignToUsers"
+    },
+    "createdTasks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::task.task",
+      "mappedBy": "createdUserBy"
     }
   }
 }

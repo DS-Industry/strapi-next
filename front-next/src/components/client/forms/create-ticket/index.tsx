@@ -5,7 +5,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import QuillEditor from "../../quill";
 import AttachmentsInput from "../../inputs/attachments-input";
 import CreateButton from "../../buttons/create-button";
-import { CarWashAttributes, DepartmentAttributes, PriorityAttributes, StrapiData } from "@/types/ticket";
+import { CarWashAttributes, DepartmentAttributes, PriorityAttributes, StrapiData } from "@/types/types";
 import Select from "../../select";
 import TicketItemList from "../../ticket-item-list";
 import { useRouter } from "next/navigation";
