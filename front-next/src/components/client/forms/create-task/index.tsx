@@ -176,7 +176,6 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
             taskDataArray = taskData.asiignees
             break;
         }
-        console.log(taskDataArray);
         const filteredItemsArr = taskDataArray.filter((item : any) => {
             if (typeof item === 'object') {
                 return item.name !== value                
@@ -219,7 +218,6 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                         "Content-Type": "multipart/form-data"
                     }
                 });
-                console.log(response);
                 router.refresh();
                 router.push('/protected/tasks')
             } catch (error) {

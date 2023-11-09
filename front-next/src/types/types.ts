@@ -36,6 +36,7 @@ export type TaskAttributes = {
     isDeleted: boolean,
     dueDate: Date,
     timeSpent: number,
+    deadline: Date,
     parentTask: StrapiResponseObject<TaskAttributes>,
     asiignees: StrapiResponseArray<UserAttributes>,
     status: StrapiResponseObject<StatusAttributes>,

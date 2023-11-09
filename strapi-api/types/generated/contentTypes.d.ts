@@ -1101,6 +1101,7 @@ export interface ApiTaskTask extends Schema.CollectionType {
       'plugin::users-permissions.user'
     >;
     body: Attribute.RichText;
+    deadline: Attribute.DateTime;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

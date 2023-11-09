@@ -1,3 +1,5 @@
+import NavigationButton from "@/components/client/buttons/navigate-button";
+import { RiExternalLinkLine } from 'react-icons/ri'
 import { StrapiData, TaskAttributes } from "@/types/types";
 import { dateToString } from "@/utils/util"
 import axios from "axios"
@@ -20,7 +22,9 @@ export default async function Tbody ({ search, sortType, name } : ITbody) {
                 data.map((task : StrapiData<TaskAttributes>, index: number) => {
                     return (
                         <tr key={index} className="bg-white border-b dark:bg-boxdark-2 dark:border-boxdark hover:bg-gray dark:hover:bg-graydark">
-                            <td className="px-6 py-4">{task.attributes.slug}</td>
+                            <td className="px-6 py-4">
+                                <NavigationButton endpoint={`tasks/${task.id}`} label={<RiExternalLinkLine />}/>
+                            </td>
                             <td className="px-6 py-4">{task.attributes.title}</td>
                             <td className="px-6 py-4">{task.attributes.createdUserBy.data.attributes.username}</td>
                             <td className="px-6 py-4">{task.attributes.department.data.attributes.name}</td>

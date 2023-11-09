@@ -122,6 +122,9 @@
     },
     "body": {
       "type": "richtext"
+    },
+    "deadline": {
+      "type": "datetime"
     }
   }
 }
