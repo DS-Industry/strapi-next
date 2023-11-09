@@ -20,12 +20,6 @@
       "type": "uid",
       "targetField": "name"
     },
-    "tasks": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::task.task",
-      "mappedBy": "departments"
-    },
     "categories": {
       "type": "relation",
       "relation": "oneToMany",
@@ -36,6 +30,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::todo-template.todo-template",
+      "mappedBy": "department"
+    },
+    "tasks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::task.task",
       "mappedBy": "department"
     }
   }

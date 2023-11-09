@@ -10,7 +10,7 @@ export async function GET(
         jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjk4MTU1NjExLCJleHAiOjE3MDA3NDc2MTF9.wzyI5f1cEN6RpirHjJAyTmth95uDmuEd9DDqHvLcylI',
     }
 
-    const searchParam = search !== 'undefined' ? `&filters[name][$containsi]=${search}` : '';
+    const searchParam = search !== 'undefined' ? `&filters[title][$containsi]=${search}` : '';
     const sortParam = sortType !== 'undefined' ? sortType !== 'init' ? `&sort=${name}:${sortType}` : '' : '';
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/tasks?populate=*${searchParam}${sortParam}`;
 

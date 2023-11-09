@@ -16,7 +16,7 @@ export default function Select ({ dataArr, name, label, handleChange } : ISelect
                 { dataArr &&
                     dataArr.map((dataElement : any, index: number) => {
                         return (
-                            <option key={dataElement.id} value={`${dataElement.id}-${name !== 'asiignees' ? dataElement.attributes.name : dataElement.username}`}>{ name !== 'asiignees' ? dataElement.attributes.name : dataElement.username}</option>
+                            <option key={dataElement.id} value={`${dataElement.id}_${name !== 'asiignees' ? dataElement.attributes.name : dataElement.username}`}>{ name !== 'asiignees' ? dataElement.attributes.name : dataElement.username}</option>
                         )
                     })
                 }

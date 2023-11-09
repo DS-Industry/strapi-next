@@ -24,10 +24,10 @@ export default function DropdownButton () {
     return (
         <div>
             <button id="dropdownActionButton" 
-            className="inline-flex items-center bg-white text-graydark border border-bodydark2 hover:bg-stroke font-medium rounded-lg text-sm px-3 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button" 
+            className="inline-flex items-center bg-primary text-white border-2 border-white hover:border-primary hover:border-2 font-medium rounded-lg text-sm px-3 py-2 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button" 
                 onClick={() => {setDropdownOpen(!dropdownOpen)}}
                 >
-                Action
+                Создать!
                 <svg className={`w-2.5 h-2.5 ml-2.5 ${dropdownOpen && 'rotate-180'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
                 </svg>
@@ -39,18 +39,12 @@ export default function DropdownButton () {
                 className={`z-10 absolute pt-3 ${!dropdownOpen && 'hidden'} bg-white divide-y divide-black rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600`}>
                 <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton">
                     <li>
-                        <Link href="#" className="block px-4 py-2 hover:bg-bodydark text-graydark dark:bg-bodydark2 dark:hover:text-white">Reward</Link>
+                        <Link href="tasks/create?type=appeal" className="block px-4 py-2 hover:bg-bodydark text-graydark dark:bg-bodydark2 dark:hover:text-white">Создать обращение</Link>
                     </li>
                     <li>
-                        <Link href="#" className="block px-4 py-2 hover:bg-bodydark1 dark:hover:bg-gray-600 dark:hover:text-white">Promote</Link>
-                    </li>
-                    <li>
-                        <Link href="#" className="block px-4 py-2 hover:bg-bodydark1 dark:hover:bg-gray-600 dark:hover:text-white">Activate account</Link>
+                        <Link href="tasks/create?type=task" className="block px-4 py-2 hover:bg-bodydark text-graydark dark:bg-bodydark2 dark:hover:text-white">Создать задачу</Link>
                     </li>
                 </ul>
-                <div className="py-1">
-                    <Link href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-bodydark1 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete User</Link>
-                </div>
             </div>
         </div>
     )

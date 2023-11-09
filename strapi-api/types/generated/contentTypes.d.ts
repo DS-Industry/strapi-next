@@ -854,11 +854,6 @@ export interface ApiDepartmentDepartment extends Schema.CollectionType {
   attributes: {
     name: Attribute.String & Attribute.Required;
     slug: Attribute.UID<'api::department.department', 'name'>;
-    tasks: Attribute.Relation<
-      'api::department.department',
-      'manyToMany',
-      'api::task.task'
-    >;
     categories: Attribute.Relation<
       'api::department.department',
       'oneToMany',
@@ -868,6 +863,11 @@ export interface ApiDepartmentDepartment extends Schema.CollectionType {
       'api::department.department',
       'oneToMany',
       'api::todo-template.todo-template'
+    >;
+    tasks: Attribute.Relation<
+      'api::department.department',
+      'oneToMany',
+      'api::task.task'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1027,7 +1027,6 @@ export interface ApiTaskTask extends Schema.CollectionType {
   attributes: {
     title: Attribute.String;
     slug: Attribute.UID<'api::task.task', 'title'>;
-    body: Attribute.Blocks;
     type: Attribute.Enumeration<
       [
         '\u041E\u0431\u0440\u0430\u0449\u0435\u043D\u0438\u0435',
@@ -1049,9 +1048,9 @@ export interface ApiTaskTask extends Schema.CollectionType {
       'manyToOne',
       'api::status.status'
     >;
-    departments: Attribute.Relation<
+    department: Attribute.Relation<
       'api::task.task',
-      'manyToMany',
+      'manyToOne',
       'api::department.department'
     >;
     subcategory: Attribute.Relation<
@@ -1101,6 +1100,7 @@ export interface ApiTaskTask extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    body: Attribute.RichText;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

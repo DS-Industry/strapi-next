@@ -19,9 +19,6 @@
       "type": "uid",
       "targetField": "title"
     },
-    "body": {
-      "type": "blocks"
-    },
     "type": {
       "type": "enumeration",
       "enum": [
@@ -46,9 +43,9 @@
       "target": "api::status.status",
       "inversedBy": "tasks"
     },
-    "departments": {
+    "department": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "manyToOne",
       "target": "api::department.department",
       "inversedBy": "tasks"
     },
@@ -122,6 +119,9 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "createdTasks"
+    },
+    "body": {
+      "type": "richtext"
     }
   }
 }

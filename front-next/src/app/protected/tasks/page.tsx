@@ -1,3 +1,4 @@
+import DropdownButton from "@/components/client/buttons/dropdown-button";
 import NavigationButton from "@/components/client/buttons/navigate-button";
 import SortButton from "@/components/client/buttons/sort-button";
 import SearchInput from "@/components/client/inputs/search-input";
@@ -12,8 +13,8 @@ export default async function TaskListPage ({searchParams : { search, sortType, 
             <p className=" mb-4 text-3xl text-boxdark font-semibold">Department {user.department.name}</p>
             <div className="flex items-center justify-between bg-white dark:bg-gray-900 px-5 py-5">
                 <div className="flex justify-evenly items-center w-1/6">
-                    {/* <DropdownButton /> */}
-                    <NavigationButton endpoint="createtask" label="Create!" />
+                    <DropdownButton />
+                    {/* <NavigationButton endpoint="tasks/create" label="Create!" /> */}
                 </div>
                 <SearchInput />
             </div>
@@ -24,7 +25,7 @@ export default async function TaskListPage ({searchParams : { search, sortType, 
                             Key
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            <SortButton title="Name" name="name"/>
+                            <SortButton title="Name" name="title"/>
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Creator
