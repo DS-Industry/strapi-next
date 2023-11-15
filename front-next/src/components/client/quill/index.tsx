@@ -3,11 +3,16 @@
 import 'react-quill/dist/quill.snow.css';
 
 import dynamic from "next/dynamic";
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
+import { LuPencilLine } from "react-icons/lu"
 
 const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
     ssr: false,
-    loading: () => <p>Loading</p>
+    loading: () => {
+      return (
+        <div className=" animate-pulse h-80 mt-4 w-full bg-bodydark1 rounded-md">
+        </div>
+      ) }
 })
 
 const modules = {
@@ -56,6 +61,8 @@ interface IQuillEditor {
 export default function QuillEditor ({ handleChange } : IQuillEditor ) {
 
   const [value, setValue] = useState<string>('');
+  const [openEditor, setOpenEditor] = useState<boolean>(false);
+
 
 
   const handleQuillChange = ( context: string ) => {
@@ -63,16 +70,31 @@ export default function QuillEditor ({ handleChange } : IQuillEditor ) {
     handleChange(context)
   }
 
+  const handleClick = () => {
+    setOpenEditor(true);
+  }
+
 
     return (
       <div>
-        <QuillNoSSRWrapper
-          placeholder='Write description for task to help your colleages fully understand it'
-          id='quill-editor' 
-          onChange={handleQuillChange} 
-          value={value} 
-          modules={modules} 
-          formats={formats}/>  
+        {
+          !openEditor ? (
+            <button 
+              className=' group w-full text-sm text-left opacity-50 px-2 py-2 text-opacity-50 transition-colors duration-150 rounded-md text-black hover:bg-bodydark1 hover:text-opacity-100 flex flex-row justify-between pr-5'
+              onClick={handleClick }>
+              <p>Добавте описание задачи, чтобы исполнителю было понятно, что нужно сделать в этой задаче</p>
+              <LuPencilLine className='text-lg opacity-0 group-hover:opacity-100' />
+            </button>
+          ) : (
+            <QuillNoSSRWrapper
+              placeholder='Напишите описание здесь'
+              id='quill-editor' 
+              onChange={handleQuillChange} 
+              value={value} 
+              modules={modules} 
+              formats={formats}/>  
+          )
+        }
       </div>
     )
 }

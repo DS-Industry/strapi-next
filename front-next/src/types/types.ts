@@ -26,7 +26,7 @@ type TaskBody = Array<{
 export type TaskAttributes = {
     title: string,
     slug: UUID,
-    body: TaskBody,
+    body: string,
     type: string,
     createdAt: Date,
     updatedAt: Date,
@@ -41,7 +41,7 @@ export type TaskAttributes = {
     asiignees: StrapiResponseArray<UserAttributes>,
     status: StrapiResponseObject<StatusAttributes>,
     department: StrapiResponseObject<DepartmentAttributes>,    
-    subCategory: StrapiResponseObject<SubCategoryAttributes>,
+    subcategory: StrapiResponseObject<SubCategoryAttributes>,
     attachments: StrapiResponseArray<any> | null,
     resolution: StrapiResponseObject<CommentAttributes>,  
     comments: StrapiResponseArray<CommentAttributes>,      
@@ -151,6 +151,15 @@ export type AttachmentsAttributes = {
     mime: string,
     size: number,
     url: string,
+    formats: {
+        [type in 'thumbnail' | 'small' | 'medium' | 'large'] : {
+            name: string,
+            width: number,
+            height: number,
+            url: string,
+            mime: string
+        }
+    }
 }
 
 export type TaskTemplateAttributes = {

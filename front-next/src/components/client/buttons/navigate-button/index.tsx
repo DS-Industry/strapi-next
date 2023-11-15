@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 
 interface INavigationButton {
     endpoint: string,
-    label: string | any
+    label: string | any,
 }
 
 export default function NavigationButton ({endpoint, label} : INavigationButton ) {

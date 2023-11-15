@@ -177,12 +177,13 @@ span.flatpickr-weekday,
 
 #quill-editor {
   display: flex;
+  margin-top: 1rem;
   padding-left: 15px;
   padding-top: 10px;
   flex-direction: column;
-  height: 200px;
+  height: 300px;
   color: black;
-  border-radius: 3rem;
+  border-radius: 0.5rem;
   border-color: white;
   background-color: #64748B;
   background: white;

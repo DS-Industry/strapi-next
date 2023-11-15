@@ -6,17 +6,18 @@ import QuillEditor from "../../quill";
 import AttachmentsInput from "../../inputs/attachments-input";
 import CreateButton from "../../buttons/create-button";
 import { CarWashAttributes, CategoryAttributes, DepartmentAttributes, StrapiData, SubCategoryAttributes, UserAttributes } from "@/types/types";
-import Select from "../../select";
 import { useRouter } from "next/navigation";
 import TaskItemList from "../../task-item-list";
-import Radio from "../../radio";
 import axios from "axios";
+import DropdownList from "../../buttons/dropdown-list";
+import DataTimePicker from "../../datatime-picker";
 
 interface ITaskCreationForm {
     departmentArr: Array<StrapiData<DepartmentAttributes>>,
     carWashArr: Array<StrapiData<CarWashAttributes>>,
     userArr: Array<StrapiData<UserAttributes>>,
     type: string,
+    parentTask: number,
 }
 
 interface ITaskData {
@@ -34,7 +35,12 @@ interface ITaskData {
     attachments: Array<any>,
     status: number | null,
     isClosed: boolean,
-    isDeleted: boolean
+    isDeleted: boolean,
+    deadline: { 
+        startDate: string,
+        endDate: string
+    },
+    parentTaskId: number | null
 
 }
 
@@ -43,8 +49,7 @@ interface ICategories  {
     subcategoryArr: Array<StrapiData<SubCategoryAttributes>>
 }
 
-export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, type } : ITaskCreationForm) {
-
+export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, type, parentTask } : ITaskCreationForm) {
     const priorityArr = [
         {
             color: 'text-meta-3',
@@ -83,6 +88,11 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
         status: null,
         isClosed: false,
         isDeleted: false,
+        deadline: {
+            startDate: '', 
+            endDate: ''
+        },
+        parentTaskId: parentTask ? parentTask : null
     })
 
     useEffect(() => {
@@ -105,16 +115,22 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
             setCategoryArrs({
                 ...categoryArrs,
                 categoryArr: [...response.data.data]
-            });          
+            }); 
+            setTaskData({
+                ...taskData,
+                category: '',
+                subcategory: ''
+            });         
         }
-        if (taskData.department) {
-            console.log(taskData.department);
-            getCategoryAsync();            
+        if(taskData.department) {
+          getCategoryAsync();   
         }
+        
+
     },[taskData.department])
 
     useEffect(() => {
-        const getCategoryAsync = async () => {
+        const getSubCategoryAsync = async () => {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/subcategories?populate[0]=category&filters[category][id][$eq]=${taskData.category}`, {
                 headers: {
                     Authorization: `Bearer ${session?.user.jwt}`
@@ -123,11 +139,14 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
             setCategoryArrs({
                 ...categoryArrs,
                 subcategoryArr: [...response.data.data]
-            });          
+            });
+            setTaskData({
+                ...taskData,
+                subcategory: ''
+            });           
         }
-        if (taskData.department) {
-            console.log(taskData.department);
-            getCategoryAsync();            
+        if (taskData.category) {
+            getSubCategoryAsync();            
         }
     },[taskData.category])
 
@@ -144,13 +163,12 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                 ...taskData,
                 [name] : [...taskData[name], files[0]]
             })
-        } else if (name === 'title' || name === 'body' || name === 'priority' || name === 'type') {
+        } else if (name === 'title' || name === 'body' || name === 'priority' || name === 'deadline') {
             setTaskData({
                 ...taskData,
                 [name]: value
             });            
         } else {
-            console.log(value);
             setTaskData({
                 ...taskData,
                 [name]: Number(value.split('_')[0])
@@ -163,6 +181,13 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
         setTaskData({
             ...taskData,
             body : context
+        })
+    }
+
+    const handleDataChange = (newValue: {startDate: string, endDate: string}) => {
+        setTaskData({
+            ...taskData,
+            deadline: newValue
         })
     }
 
@@ -201,6 +226,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                     asiignees: taskData.asiignees.map((department: string) => Number(department.split('_')[0])),
                     carWashes: taskData.carWashes.map((carwash: string) => Number(carwash.split('_')[0])),
                     isClosed : false,
+                    deadline: taskData.deadline.startDate,
                     status: 1,
                     slug: uuid,
                     attachments: null,
@@ -236,12 +262,15 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                 <div className=" pr-5 w-8/12">
                     <div className=" h-1/2">
                         <input 
+                            autoFocus
                             type="text"
                             name="title" 
                             value={taskData.title}
-                            placeholder="Inter task name"
+                            placeholder="Введите название задачи"
                             onChange={handleChange} 
-                            className=" w-full mb-3 transition-colors duration-150 h-10 border-2 bg-gray text-black border-white pl-2 rounded-md hover:border-bodydark1" />
+                            className=" w-full 
+                                mb-3 transition-colors duration-150 h-10 bg-gray border-bodydark2 text-black pl-2 rounded-md 
+                               hover:border-gray focus:border hover:bg-bodydark1 focus:border-bodydark2 focus:outline-none" />
                         <QuillEditor handleChange={handleQuillChange} />
                         <AttachmentsInput handleChange={handleChange} />
                       {taskData.attachments.length ?
@@ -251,22 +280,23 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                     <CreateButton label="Create task" />
                     </div>
                 </div>
-                <div className=" bg-black text-white w-4/12 flex flex-col  p-5 h-auto rounded-md">
-                    <Radio name="priority" label="Priority" valueArr={priorityArr} handleChange={handleChange} />
-                    <Select handleChange={handleChange} dataArr={departmentArr} name="department" label="Department" />
-                    <Select handleChange={handleChange} dataArr={categoryArrs.categoryArr} name="category" label="Category" />
-                    <Select handleChange={handleChange} dataArr={categoryArrs.subcategoryArr} name="subcategory" label="Subcategory" />
-                    <Select handleChange={handleChange} dataArr={userArr} name="asiignees" label="Users" />
-                    {/* <Datalist userArr={userArr} handleChange={handleChange}/> */}
+                <div className=" border bg-black text-white w-4/12 flex flex-col h-125 justify-between p-5 rounded-md">
+                    <DropdownList taskData={taskData} handleChange={handleChange} name="priority" label="Приоритет" dataArr={priorityArr} />
+                    <DropdownList taskData={taskData} handleChange={handleChange} name='department' label="Отдел" dataArr={departmentArr} />
+                    <DropdownList taskData={taskData} handleChange={handleChange} name='category' label="Категория" dataArr={categoryArrs.categoryArr} />
+                    <DropdownList taskData={taskData} handleChange={handleChange} name='subcategory' label="Подкатегория" dataArr={categoryArrs.subcategoryArr} />
+                    <DropdownList taskData={taskData} handleChange={handleChange} name='asiignees' label="Исполнители" dataArr={userArr} />
                     {taskData.asiignees.length ?
                             <TaskItemList taskItems={taskData.asiignees} deleteElement={deleteElement} name="asiignees" />  
                             : ''            
                         }
-                    <Select handleChange={handleChange} dataArr={carWashArr} name="carWashes" label='Carwash' />
+                    <DropdownList taskData={taskData} handleChange={handleChange} name='carWashes' label="АМС" dataArr={carWashArr} />
                     {taskData.carWashes.length ?
                             <TaskItemList taskItems={taskData.carWashes} deleteElement={deleteElement} name="carWashes" />  
                             : ''            
                         }
+                    <DataTimePicker handleChange={handleDataChange} name='deadline' value={taskData.deadline} />
+
                 </div>
             </form>
         </main>

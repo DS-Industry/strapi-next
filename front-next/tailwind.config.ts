@@ -1,11 +1,14 @@
 import type { Config } from 'tailwindcss'
+import colors from 'tailwindcss/colors'
 import defaultTheme  from 'tailwindcss/defaultTheme'
 
 const config: Config = {
   content: [
+    '../node_modules/react-tailwindcss-datepicker/dist/index.esm.js',
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,jsx,ts,tsx}',
   ],
   darkMode: "class",
   theme: {
@@ -48,6 +51,8 @@ const config: Config = {
       success: "#219653",
       danger: "#D34053",
       warning: "#FFA70B",
+      indigo: colors.indigo
+      
     },
     screens: {
       "2xsm": "375px",
