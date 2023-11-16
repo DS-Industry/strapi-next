@@ -4,6 +4,10 @@ export function dateToString (data : Date): string {
     return result;
 }
 
-export function sort () : any {
-    
+export function convertToDateString(inputDate: string): string {
+    const [datePart, timePart] = inputDate.split(' ');
+    const [day, month, year] = datePart.split('.');
+    const dateString = `${month}/${day}/${year} ${timePart}`;
+
+    return dateString;
 }

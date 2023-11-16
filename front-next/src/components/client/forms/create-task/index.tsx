@@ -11,6 +11,8 @@ import TaskItemList from "../../task-item-list";
 import axios from "axios";
 import DropdownList from "../../buttons/dropdown-list";
 import DataTimePicker from "../../datatime-picker";
+import TaskParameters from "../../task-parameters";
+import { convertToDateString } from "@/utils/util";
 
 interface ITaskCreationForm {
     departmentArr: Array<StrapiData<DepartmentAttributes>>,
@@ -36,10 +38,8 @@ interface ITaskData {
     status: number | null,
     isClosed: boolean,
     isDeleted: boolean,
-    deadline: { 
-        startDate: string,
-        endDate: string
-    },
+    deadlineDate: string,
+    deadlineTime: string,
     parentTaskId: number | null
 
 }
@@ -69,7 +69,8 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
     const [ categoryArrs, setCategoryArrs ] = useState<ICategories>({
         categoryArr: [],
         subcategoryArr: [],
-    })
+    });
+
     const router = useRouter();
 
     const [ taskData, setTaskData ] = useState<ITaskData>({
@@ -88,10 +89,8 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
         status: null,
         isClosed: false,
         isDeleted: false,
-        deadline: {
-            startDate: '', 
-            endDate: ''
-        },
+        deadlineDate: '',
+        deadlineTime: '',
         parentTaskId: parentTask ? parentTask : null
     })
 
@@ -163,11 +162,11 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                 ...taskData,
                 [name] : [...taskData[name], files[0]]
             })
-        } else if (name === 'title' || name === 'body' || name === 'priority' || name === 'deadline') {
+        } else if (name === 'title' || name === 'body' || name === 'priority') {
             setTaskData({
                 ...taskData,
                 [name]: value
-            });            
+            });         
         } else {
             setTaskData({
                 ...taskData,
@@ -184,11 +183,27 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
         })
     }
 
-    const handleDataChange = (newValue: {startDate: string, endDate: string}) => {
+    //formate date to correct from moment js. from Sat Nov 18 2023 00:00:00 GMT+0300 (Москва, стандартное время) to 18.11.2023
+    //set this date to deadlineDate
+    // and set time to deadlineTime 
+
+    const handleDTPickerChange = (moment: any) => {
+        if(moment.target) {
+            setTaskData({
+                ...taskData,
+                deadlineTime: moment.target.value
+            })
+        } else {
+            const day = moment._d.getDate() < 10 ? `0${moment._d.getDate()}` : moment._d.getDate();
+            const month = moment._d.getMonth() < 9 ? `0${moment._d.getMonth() + 1}` : moment._d.getMonth() + 1;
+            const data = `${day}.${month}.${moment._d.getFullYear()}`
+            console.log(data);
         setTaskData({
             ...taskData,
-            deadline: newValue
-        })
+            deadlineDate: data
+        }) 
+        }
+
     }
 
     const deleteElement = ({target : { name, value }} : any) => {
@@ -220,19 +235,18 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
         const asyncCreateTask = async () => {
             const uuid = window.crypto.randomUUID();
             const formData = new FormData();
+            const deadline = convertToDateString(`${taskData.deadlineDate} ${taskData.deadlineTime}`);
 
             const body = {
                     ...taskData,
                     asiignees: taskData.asiignees.map((department: string) => Number(department.split('_')[0])),
                     carWashes: taskData.carWashes.map((carwash: string) => Number(carwash.split('_')[0])),
                     isClosed : false,
-                    deadline: taskData.deadline.startDate,
                     status: 1,
                     slug: uuid,
                     attachments: null,
+                    deadline: new Date(deadline),
             }
-
-            console.log(body);
             formData.append('data', JSON.stringify(body));
             taskData.attachments.forEach((attachment: any) => formData.append(`files.attachments`,attachment, attachment.name));
             try {
@@ -252,7 +266,6 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
         }
 
         asyncCreateTask();
-        //console.log(resultedObject);
     }
 
 
@@ -280,24 +293,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                     <CreateButton label="Create task" />
                     </div>
                 </div>
-                <div className=" border bg-black text-white w-4/12 flex flex-col h-125 justify-between p-5 rounded-md">
-                    <DropdownList taskData={taskData} handleChange={handleChange} name="priority" label="Приоритет" dataArr={priorityArr} />
-                    <DropdownList taskData={taskData} handleChange={handleChange} name='department' label="Отдел" dataArr={departmentArr} />
-                    <DropdownList taskData={taskData} handleChange={handleChange} name='category' label="Категория" dataArr={categoryArrs.categoryArr} />
-                    <DropdownList taskData={taskData} handleChange={handleChange} name='subcategory' label="Подкатегория" dataArr={categoryArrs.subcategoryArr} />
-                    <DropdownList taskData={taskData} handleChange={handleChange} name='asiignees' label="Исполнители" dataArr={userArr} />
-                    {taskData.asiignees.length ?
-                            <TaskItemList taskItems={taskData.asiignees} deleteElement={deleteElement} name="asiignees" />  
-                            : ''            
-                        }
-                    <DropdownList taskData={taskData} handleChange={handleChange} name='carWashes' label="АМС" dataArr={carWashArr} />
-                    {taskData.carWashes.length ?
-                            <TaskItemList taskItems={taskData.carWashes} deleteElement={deleteElement} name="carWashes" />  
-                            : ''            
-                        }
-                    <DataTimePicker handleChange={handleDataChange} name='deadline' value={taskData.deadline} />
-
-                </div>
+                    <TaskParameters taskData={taskData} handleChange={handleChange} deleteElement={deleteElement} handleDTPickerChange={handleDTPickerChange} priorityArr={priorityArr} departmentArr={departmentArr} categoryArrs={categoryArrs} userArr={userArr} carWashArr={carWashArr}/>
             </form>
         </main>
     )

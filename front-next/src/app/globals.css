@@ -192,3 +192,33 @@ span.flatpickr-weekday,
 .ql-snow {
   border: 0 !important;
 }
+
+.rdt {
+  width: 11rem;
+  margin-left: 0 !important;
+}
+
+.rdtPicker {
+  right: 20px !important;
+  top: 50px;
+  border-radius: 0.25rem;
+  background-color: #1C2434 !important;
+  color: white
+}
+
+.rdtPrev,
+.rdtSwitch,
+.rdtNext {
+  margin-top: 10px !important;   
+}
+
+.rdtPrev:hover,
+.rdtSwitch:hover,
+.rdtNext:hover,
+.dow:hover,
+.rdtDay:hover,
+.rdtTimeToggle:hover,
+.rdtBtn:hover {
+  background-color: #333A48 !important;
+  border-radius: 0.25rem;
+}

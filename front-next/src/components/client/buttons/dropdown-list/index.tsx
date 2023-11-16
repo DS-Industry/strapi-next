@@ -67,7 +67,7 @@ export default function DropdownList ({ label, dataArr, name, handleChange, task
     return (
         <div className=" w-full flex justify-between items-baseline">
             <label className=" w-1/2 flex " htmlFor="priority">{label}</label>
-            <div className=" flex w-44 flex-col justify-between items-center">
+            <div className=" flex w-39 flex-col justify-between items-center">
                 <button type='button' id="dropdownActionButton" 
                 className="flex group h-10 justify-between w-full items-baseline bg-black transition-all duration-300 text-white hover:bg-graydark rounded-md text-md px-3 py-2" 
                     onClick={() => {setDropdownOpen(!dropdownOpen)}}
