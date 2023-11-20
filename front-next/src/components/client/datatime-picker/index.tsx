@@ -13,8 +13,6 @@ interface IDataTimePicker {
 
 export default function DataTimePicker ({handleChange, name, value}: IDataTimePicker) {
 
-    console.log('this is value', value.length);
-
     const inputProps = {
         className: ' h-10 w-39 mx-0 bg-black box-border flex justify-end text-white placeholder:text-white z-0 relative hover:bg-graydark rounded-md px-3 py-2 focus:outline-none',
         placeholder: '-',

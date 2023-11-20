@@ -930,6 +930,7 @@ export interface ApiStatusStatus extends Schema.CollectionType {
     singularName: 'status';
     pluralName: 'statuses';
     displayName: 'Status';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -947,6 +948,7 @@ export interface ApiStatusStatus extends Schema.CollectionType {
       'oneToMany',
       'api::todo-template.todo-template'
     >;
+    title: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

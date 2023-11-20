@@ -21,11 +21,11 @@ const shortingStr = (str: string) => {
 
 export default function TaskItemList ({taskItems, deleteElement, name} : ITaskItemList) {
     return (
-        <ol className={` flex ${name === 'attachments' ? 'flex-col' : 'flex-row' } pt-2`}>
+        <ol className={` flex ${name === 'attachments' ? 'flex-col' : 'flex-row' } flex-wrap`}>
             {
                 taskItems.map((item: any, index: number) => {
                     return (
-                        <li key={index} className=" bg-gray-3 p-1 rounded-md text-black m-1">
+                        <li key={index} className=" bg-graydark p-1 text-xs rounded-md text-gray m-1">
                             <div className="flex justify-between items-center">
                                 <p className=" mr-1">{name === 'attachments' ? shortingStr(item.name) : item.split('_')[1]}</p>
                                 <label>

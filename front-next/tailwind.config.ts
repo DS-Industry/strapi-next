@@ -190,6 +190,15 @@ const config: Config = {
         280: "70rem",
         292.5: "73.125rem",
       },
+      minHeight: {
+        1: "3.5rem",
+        10: "10rem",
+        20: "20rem",
+        "1/2": "50%",
+        90: "22.5rem",
+        110: "45rem",
+        115: "132.5rem"
+      },
       maxHeight: {
         35: "8.75rem",
         70: "17.5rem",

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "status",
     "pluralName": "statuses",
-    "displayName": "Status"
+    "displayName": "Status",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -29,6 +30,9 @@
       "relation": "oneToMany",
       "target": "api::todo-template.todo-template",
       "mappedBy": "status"
+    },
+    "title": {
+      "type": "string"
     }
   }
 }

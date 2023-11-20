@@ -9,10 +9,9 @@ import { CarWashAttributes, CategoryAttributes, DepartmentAttributes, StrapiData
 import { useRouter } from "next/navigation";
 import TaskItemList from "../../task-item-list";
 import axios from "axios";
-import DropdownList from "../../buttons/dropdown-list";
-import DataTimePicker from "../../datatime-picker";
 import TaskParameters from "../../task-parameters";
-import { convertToDateString } from "@/utils/util";
+import { convertDateToCurrentDateWithoutTime, convertToDateString, dateToString } from "@/utils/util";
+import NavigationButton from "../../buttons/navigate-button";
 
 interface ITaskCreationForm {
     departmentArr: Array<StrapiData<DepartmentAttributes>>,
@@ -38,7 +37,7 @@ interface ITaskData {
     status: number | null,
     isClosed: boolean,
     isDeleted: boolean,
-    deadlineDate: string,
+    deadlineDate: string | Date,
     deadlineTime: string,
     parentTaskId: number | null
 
@@ -89,8 +88,8 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
         status: null,
         isClosed: false,
         isDeleted: false,
-        deadlineDate: '',
-        deadlineTime: '',
+        deadlineDate: convertDateToCurrentDateWithoutTime(new Date()),
+        deadlineTime: '19:00',
         parentTaskId: parentTask ? parentTask : null
     })
 
@@ -206,7 +205,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
 
     }
 
-    const deleteElement = ({target : { name, value }} : any) => {
+    const deleteElement = ({currentTarget : { name, value }} : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         let taskDataArray = [];
         switch (name) {
             case 'attachments' :
@@ -214,6 +213,9 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
             break;
             case 'asiignees' : 
             taskDataArray = taskData.asiignees
+            break;
+            case 'carWashes' : 
+            taskDataArray = taskData.carWashes
             break;
         }
         const filteredItemsArr = taskDataArray.filter((item : any) => {
@@ -291,6 +293,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                             : ''            
                         }
                     <CreateButton label="Create task" />
+                    <NavigationButton endpoint={"/protected/tasks"} label='Отменить' back={true} />
                     </div>
                 </div>
                     <TaskParameters taskData={taskData} handleChange={handleChange} deleteElement={deleteElement} handleDTPickerChange={handleDTPickerChange} priorityArr={priorityArr} departmentArr={departmentArr} categoryArrs={categoryArrs} userArr={userArr} carWashArr={carWashArr}/>

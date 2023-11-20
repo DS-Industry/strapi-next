@@ -29,7 +29,7 @@ export default function Attachment ({ attachments } : IAttachment) {
         const url = event.target.src.match(regexp)[1].replace(/%3A/g, ':').replace(/%2F/g, '/');
         setImageData({
             url,
-            width: event.target.width,
+            width: event.target.width *100,
             height: event.target.height,
             alt: event.target.alt
         });
@@ -59,14 +59,17 @@ export default function Attachment ({ attachments } : IAttachment) {
                 )
             })
         }
-          <div className={`${isOpen ?  'block' : 'hidden'} absolute w-auto h-auto flex top-50 left-30 justify-center`} >
-                <div className=" w-full h-full p-10 bg-black bg-opacity-80 rounded-lg flex flex-row justify-between items-start">
+          <div className={`${!isOpen && 'hidden'} z-999 absolute w-screen h-screen flex top-0 left-0 justify-center items-center bg-black bg-opacity-90`} >
+                <div className=" w-2/3 h-2/3 flex flex-row">
                     <Image
                         src={imageData.url} 
                         width={800} 
                         height={800} 
                         alt={`${imageData.alt}`}/>
-                    <button className=" pl-2 text-5xl text-white" onClick={handleClose}><MdClose /></button>    
+                    <div>
+                    <button className=" pl-2 text-5xl text-white" onClick={handleClose}><MdClose /></button>   
+                    </div>
+                     
                 </div>
                 
             </div> 
