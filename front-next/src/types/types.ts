@@ -85,8 +85,8 @@ export type StatusAttributes = {
     updatedAt: Date,
     publishedAt: Date
     tasks: StrapiResponseArray<TaskAttributes>,
-    taskTemplates:StrapiResponseArray<TaskTemplateAttributes>
-
+    taskTemplates:StrapiResponseArray<TaskTemplateAttributes>,
+    title: string
 }
 
 export type CommentAttributes = {
