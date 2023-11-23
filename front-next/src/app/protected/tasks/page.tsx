@@ -1,7 +1,6 @@
 import DropdownButton from "@/components/client/buttons/dropdown-button";
-import SortButton from "@/components/client/buttons/sort-button";
 import SearchInput from "@/components/client/inputs/search-input";
-import Tbody from "@/components/server/table-body";
+import Table from "@/components/server/table";
 import { authOptions } from "@/config/nextauth/auth"
 import { getServerSession } from "next-auth/next"
 
@@ -17,42 +16,7 @@ export default async function TaskListPage ({searchParams : { search, sortType, 
                 </div>
                 <SearchInput />
             </div>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" className="px-6 py-3">
-                            Link
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            <SortButton title="Name" name="title"/>
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Creator
-                            {/* <SortButton title="Creator" name="createdUserBy"/> */}
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Department
-{/*                             <SortButton title="Department" name="departments"/> */}
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            carWash
-                            {/* <SortButton title="Carwash" name="carWash"/> */}
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Priority
-                            {/* <SortButton title='Priority' name="priority"/> */}
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            Status
-                            {/* <SortButton title='Status' name="status"/> */}
-                        </th>
-                        <th scope="col" className="px-6 py-3">
-                            <SortButton title='Created At' name="createdAt"/>
-                        </th>
-                    </tr>
-                </thead>
-                <Tbody search={search} sortType={sortType} name={name} />
-            </table>
+            <Table search={search} sortType={sortType} name={name} isSubTaskList={false} />
         </main>
     )
 }

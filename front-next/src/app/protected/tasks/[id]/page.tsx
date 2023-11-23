@@ -4,12 +4,12 @@ import { dateToString } from "@/utils/util";
 import axios, { AxiosResponse } from "axios";
 import { getServerSession } from "next-auth";
 import parse from 'html-react-parser'
-import Attachment from "@/components/client/attachment";
 import NavigationButton from "@/components/client/buttons/navigate-button";
-import List from "@/components/client/list";
 /* import StatusComponent from "@/components/client/buttons/status-component";
 import StatusButton from "@/components/client/buttons/status-component/status-button"; */
 import StatusDropDownList from "@/components/client/buttons/status-component/status-dropdown-list";
+import Attachment from "@/components/client/attachment";
+import SubTask from "@/components/server/sub-task";
 
 export default async function SingleTaskPage ({params} : any) {
     const session = await getServerSession(authOptions);
@@ -44,10 +44,7 @@ export default async function SingleTaskPage ({params} : any) {
                         { task.data[0].attributes.attachments?.data && 
                             task.data[0].attributes.attachments.data.length > 0 && 
                             <Attachment attachments={task.data[0].attributes.attachments}/>}
-                        <div className=" flex w-full justify-between items-center mt-10">
-                            <NavigationButton label={"Создать подзадачу!"} endpoint={`/protected/tasks/create?parentTask=${task.data[0].id}`} />
-                            <List childTask={childTask} />
-                        </div>
+                        <SubTask parentId={task.data[0].id} childTask={childTask} />
                     </div>
                     <div>{/* comments, attachments, history */}</div>
                 </div>

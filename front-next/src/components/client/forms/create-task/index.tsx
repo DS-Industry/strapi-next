@@ -261,7 +261,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                     }
                 });
                 router.refresh();
-                router.push('/protected/tasks')
+                taskData.parentTaskId ? router.push(`/protected/tasks/${taskData.parentTaskId}`) : router.push('/protected/tasks')
             } catch (error) {
                 console.log(error);
             }
