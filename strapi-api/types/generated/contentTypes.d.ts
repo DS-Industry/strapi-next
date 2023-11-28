@@ -1035,7 +1035,7 @@ export interface ApiTaskTask extends Schema.CollectionType {
         '\u0417\u0430\u0434\u0430\u0447\u0430'
       ]
     >;
-    parentTaskId: Attribute.Relation<
+    parentTask: Attribute.Relation<
       'api::task.task',
       'oneToMany',
       'api::task.task'

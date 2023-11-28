@@ -112,7 +112,7 @@ export default function StatusDropDownList ({ taskStatus, taskId } : IStatusDrop
                                 !isLoading && statusData.title
                             }
                         </p>
-                    <svg className={`w-2.5 h-2.5 ml-2.5 transition-all duration-300 opacity-0 group-hover:opacity-100 ${dropdownOpen && 'rotate-180'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <svg className={`w-5.5 h-5.5 ml-2.5 transition-all duration-300 opacity-0 group-hover:opacity-100 ${dropdownOpen && 'rotate-180'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
                     </svg>
                 </button>    
@@ -120,7 +120,7 @@ export default function StatusDropDownList ({ taskStatus, taskId } : IStatusDrop
                 ref={dropdown}
                 onFocus={() => setDropdownOpen(true)}
                 onBlur={() => setDropdownOpen(false)}  
-                className={`z-30 absolute mt-11 right-24 ${!dropdownOpen ? ' hidden opacity-0' : 'opacity-100'} transition-opacity duration-300 bg-graydark divide-y divide-black rounded-md shadow w-70 `}>
+                className={`z-30 absolute mt-11 right-21 ${!dropdownOpen ? ' hidden opacity-0' : 'opacity-100'} transition-opacity duration-300 bg-graydark divide-y divide-black rounded-md shadow w-70 `}>
                 <ul className="py-1 text-sm text-gray-700 dark:text-gray-200 " aria-labelledby="dropdownActionButton">
                     { statusArr.map((status: StrapiData<StatusAttributes>, index: number) => {
                         return (

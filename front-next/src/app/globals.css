@@ -180,13 +180,43 @@ span.flatpickr-weekday,
   margin-top: 1rem;
   padding-left: 15px;
   padding-top: 10px;
+  min-height: 200px;
   flex-direction: column;
-  height: 300px;
   color: black;
   border-radius: 0.5rem;
   border-color: white;
   background-color: #64748B;
   background: white;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+.exclude-list-styling {
+  list-style-type: none;
+}
+
+ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+}
+
+ul {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+.quill-h-100 {
+  height: 100px;
+}
+
+.quill-h-300 {
+ height: 300px;
 }
 
 .ql-snow {

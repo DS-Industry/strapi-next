@@ -39,7 +39,7 @@ interface ITaskData {
     isDeleted: boolean,
     deadlineDate: string | Date,
     deadlineTime: string,
-    parentTaskId: number | null
+    parentTask: number | null
 
 }
 
@@ -90,7 +90,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
         isDeleted: false,
         deadlineDate: convertDateToCurrentDateWithoutTime(new Date()),
         deadlineTime: '19:00',
-        parentTaskId: parentTask ? parentTask : null
+        parentTask: parentTask ? parentTask : null
     })
 
     useEffect(() => {
@@ -261,7 +261,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                     }
                 });
                 router.refresh();
-                taskData.parentTaskId ? router.push(`/protected/tasks/${taskData.parentTaskId}`) : router.push('/protected/tasks')
+                taskData.parentTask ? router.push(`./${taskData.parentTask}`) : router.push('/protected/tasks')
             } catch (error) {
                 console.log(error);
             }
@@ -286,14 +286,14 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                             className=" w-full 
                                 mb-3 transition-colors duration-150 h-10 bg-gray border-bodydark2 text-black pl-2 rounded-md 
                                hover:border-gray focus:border hover:bg-bodydark1 focus:border-bodydark2 focus:outline-none" />
-                        <QuillEditor handleChange={handleQuillChange} />
+                        <QuillEditor handleChange={handleQuillChange} label="Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в этой задаче"/>
                         <AttachmentsInput handleChange={handleChange} />
                       {taskData.attachments.length ?
                             <TaskItemList taskItems={taskData.attachments} deleteElement={deleteElement} name="attachments" />  
                             : ''            
                         }
                     <CreateButton label="Create task" />
-                    <NavigationButton endpoint={"/protected/tasks"} label='Отменить' back={true} />
+                    <NavigationButton className="ml-3 transition-all duration-300 hover:bg-bodydark1 hover:opacity-80 opacity-60 text-graydark px-3 py-2 rounded-md" endpoint={taskData.parentTask ? `/protected/tasks/${parentTask}` : "/protected/tasks"} label='Отменить' back={true} />
                     </div>
                 </div>
                     <TaskParameters taskData={taskData} handleChange={handleChange} deleteElement={deleteElement} handleDTPickerChange={handleDTPickerChange} priorityArr={priorityArr} departmentArr={departmentArr} categoryArrs={categoryArrs} userArr={userArr} carWashArr={carWashArr}/>

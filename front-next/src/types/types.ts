@@ -37,7 +37,7 @@ export type TaskAttributes = {
     dueDate: Date,
     timeSpent: number,
     deadline: Date,
-    parentTask: StrapiResponseObject<TaskAttributes>,
+    parentTask: StrapiResponseArray<TaskAttributes>,
     asiignees: StrapiResponseArray<UserAttributes>,
     status: StrapiResponseObject<StatusAttributes>,
     department: StrapiResponseObject<DepartmentAttributes>,    
@@ -62,6 +62,7 @@ export type UserAttributes = {
     lastname: string,
     lastLoginAt: Date,
     name: string,
+    avatar: any
 }
 
 export type CarWashAttributes = {

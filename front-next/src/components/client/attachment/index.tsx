@@ -46,7 +46,7 @@ export default function Attachment ({ attachments } : IAttachment) {
                 width: event.currentTarget.width *100,
                 height: event.currentTarget.height,
                 alt: event.currentTarget.alt,
-                title: event.currentTarget.title.replace('large_', ''),
+                title: event.currentTarget.title.replace('medium_', ''),
                 attachmentIndex: Number(event.currentTarget.alt.replace('attachment ', ''))
             });
         }
@@ -101,11 +101,11 @@ export default function Attachment ({ attachments } : IAttachment) {
         const stepFrontOrBack = event.currentTarget.name === 'next' ? 1 : -1;
         const currentIndex = attachments.data.findIndex((attachment) => attachment.id === imageData.attachmentIndex);
             setImageData({
-                url: `${process.env.NEXT_PUBLIC_API_URL}${attachments.data[currentIndex + stepFrontOrBack].attributes.formats.large.url}`,
-                width: attachments.data[currentIndex + stepFrontOrBack].attributes.formats.large.width,
-                height: attachments.data[currentIndex + stepFrontOrBack].attributes.formats.large.height,
+                url: `${process.env.NEXT_PUBLIC_API_URL}${attachments.data[currentIndex + stepFrontOrBack].attributes.formats.medium.url}`,
+                width: attachments.data[currentIndex + stepFrontOrBack].attributes.formats.medium.width,
+                height: attachments.data[currentIndex + stepFrontOrBack].attributes.formats.medium.height,
                 alt: `attachment ${attachments.data[currentIndex + stepFrontOrBack].id}`,
-                title: attachments.data[currentIndex + stepFrontOrBack].attributes.formats.large.url.replace('/uploads/', ''),
+                title: attachments.data[currentIndex + stepFrontOrBack].attributes.formats.medium.url.replace('/uploads/', ''),
                 attachmentIndex: attachments.data[currentIndex + stepFrontOrBack].id
             })
     }
@@ -117,8 +117,10 @@ export default function Attachment ({ attachments } : IAttachment) {
             setIsDisabled('prev_next')
         } else if (imageData.attachmentIndex === lastIndex) {
             setIsDisabled('next');
-        } else  {
+        } else if (imageData.attachmentIndex === firstIndex)  {
             setIsDisabled('prev');
+        } else {
+            setIsDisabled('');
         }
     }, [imageData])
 

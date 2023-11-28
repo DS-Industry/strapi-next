@@ -2,22 +2,27 @@
 
 import Image from "next/image";
 
-export default function CustomImage ({ src } : {src : string}) {
+interface ICustomAvatarImage {
+  src: string,
+  width: number,
+}
 
-    const loader =  ({src} :{src: any}) => {
-        return `${src}`; 
+export default function CustomAvatarImage ({ src, width } : ICustomAvatarImage) {
+
+    const loader =  ({src, width} :{src: any, width: any}) => {
+        return `${src}?w=${width}`; 
     }
 
     return (
         <div className="relative drop-shadow-2 rounded-full">
-        <Image
-          loader={loader}
-          src={src}
-          width={160}
-          height={160}
-          className="rounded-full"
-          alt="profile"
-        />
+          <Image
+            loader={loader}
+            src={src}
+            width={width}
+            height={150}
+            alt="profile"
+            className=" w-10 h-10 rounded-full border-2 border-black object-cover"
+          />
       </div>
     )
 }

@@ -1,7 +1,5 @@
 'use client'
 
-import axios from "axios";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
 interface IDropdownList {
@@ -16,14 +14,6 @@ interface IDropdownList {
 export default function DropdownList ({ label, dataArr, name, handleChange, taskId, taskData } : IDropdownList) {
     const [ dropdownOpen, setDropdownOpen ] = useState<boolean>(false);
     const dropdown = useRef<any>(null);
-    const { data : session } = useSession();
-    const [ statusData, setStatusData ] = useState<{
-        id: string,
-        title: string
-    }>({
-        id: name === 'status' ? taskData.status.data.id : '',
-        title: name === 'status' ? taskData.status.data.attributes.name : ''
-    });
 
     useEffect(() => {
         const clickHandler = ({ target }: MouseEvent) => {

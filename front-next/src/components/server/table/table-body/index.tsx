@@ -22,6 +22,7 @@ export default async function Tbody ({ search, sortType, name, isSubTaskList, ch
         }
     });
 
+
     const dataArr = isSubTaskList ? childTask.data : data
 
     return (
@@ -31,7 +32,7 @@ export default async function Tbody ({ search, sortType, name, isSubTaskList, ch
                     return (
                         <tr key={index} className="bg-white border-b dark:bg-boxdark-2 dark:border-boxdark hover:bg-gray dark:hover:bg-graydark">
                             <td className="px-6 py-4">
-                                <NavigationButton endpoint={`tasks/${task.id}`} label={<RiExternalLinkLine />}/>
+                                <NavigationButton className="bg-primary border-2 hover:border-primary border-white  text-white font-medium rounded-lg text-sm px-4 py-1.5" endpoint={isSubTaskList ? `${task.id}` : `tasks/${task.id}`} label={<RiExternalLinkLine />}/>
                             </td>
                             <td className="px-6 py-4">{task.attributes.title}</td>
                             <td className="px-6 py-4">{task.attributes.createdUserBy.data.attributes.username}</td>
@@ -39,10 +40,10 @@ export default async function Tbody ({ search, sortType, name, isSubTaskList, ch
                                 <>
                                     <td className="px-6 py-4">{task.attributes.department.data.attributes.name}</td>
                                     <td className="px-6 py-4">{task.attributes.carWashes.data[0].attributes.slug}</td>
-                                    <td className="px-6 py-4">{task.attributes.priority}</td>
                                 </>
                                 )
                             }
+                            <td className="px-6 py-4">{task.attributes.priority}</td>
                             <td className="px-6 py-4">{task.attributes.status.data.attributes.name}</td>
                             <td className="px-6 py-4"> {
                                 !isSubTaskList ? 

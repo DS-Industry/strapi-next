@@ -10,8 +10,13 @@ import StatusButton from "@/components/client/buttons/status-component/status-bu
 import StatusDropDownList from "@/components/client/buttons/status-component/status-dropdown-list";
 import Attachment from "@/components/client/attachment";
 import SubTask from "@/components/server/sub-task";
+import Table from "@/components/server/table";
+import Tabs from "@/components/client/tabs";
+import Tab from "@/components/client/tabs/tab";
+import { PiPencilSimpleLineFill } from "react-icons/pi";
+import CommentComponent from "@/components/server/comment";
 
-export default async function SingleTaskPage ({params} : any) {
+export default async function SingleTaskPage ({ params } : any) {
     const session = await getServerSession(authOptions);
     const { data : task } : AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks?populate=*&filters[id][$eq]=${params.id}`,
     {
@@ -19,16 +24,15 @@ export default async function SingleTaskPage ({params} : any) {
             Authorization: `Bearer ${session?.user.jwt}`
         }
     });
-    const { data : childTask } : AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks?populate=*&filters[parentTaskId][id][$eq]=${task.data[0].id}`,
+    const { data : childTask } : AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks?populate=*&filters[parentTask][id][$eq]=${task.data[0].id}`,
     {
         headers: {
             Authorization: `Bearer ${session?.user.jwt}`
         }
-    });
-
+    }); 
     return (
         <main className=" flex h-full w-full flex-row justify-between">
-                <div className=" pr-5 w-7/12">
+                <div className=" pr-5 w-8/12">
                     <p className=" w-full flex justify-start items-center text-sm bg-gray text-body pl-2 rounded-md" 
                         >Cоздана {dateToString(task.data[0].attributes.createdAt)}, Обновлена {dateToString(task.data[0].attributes.updatedAt)}</p>
                     <div className=" h-1/2">
@@ -37,20 +41,68 @@ export default async function SingleTaskPage ({params} : any) {
                         >{task.data[0].attributes.title}</p>
                         {/* Add status button functionals */}
                         {/* <StatusComponent taskId={task.data[0].id} type="button" taskStatus={task.data[0].attributes.status.data} /> */}
-                        {/* <StatusButton taskId={task.data[0].id} taskStatus={task.data[0].attributes.status.data}  /> */}
+                        {/* <StatusButton taskId={task.data[0].id} taskStatus={task.data[0].attributes.status.data}  />  */}
                         <div className=" mt-5 p-2 border-2 min-h-1/3  border-white rounded-md">
                             {parse(task.data[0].attributes.body)}
                         </div>
                         { task.data[0].attributes.attachments?.data && 
                             task.data[0].attributes.attachments.data.length > 0 && 
-                            <Attachment attachments={task.data[0].attributes.attachments}/>}
-                        <SubTask parentId={task.data[0].id} childTask={childTask} />
+                            <Attachment attachments={task.data[0].attributes.attachments}/>
+                        }
+                        <div>
+                            <div className=" w-full mt-10 overflow-auto">
+                                {
+                                    task.data[0].attributes.parentTask.data.length > 0 ? 
+                                        '' : childTask.data.length > 0 ?
+                                        (
+                                            <SubTask 
+                                                parentId={task.data[0].id} 
+                                                isNotEmpty={childTask.data.length >= 0}>
+                                                <Table isSubTaskList={true} childTask={childTask} />
+                                            </SubTask>
+                                        ) :
+                                        (
+                                            <NavigationButton className=" hover:text-white bg-black text-white text-opacity-90 hover:text-opacity-100 hover:bg-graydark p-1 rounded-md transition-all duration-300" 
+                                            label={(
+                                                <div className=" w-auto flex items-center justify-between">
+                                                    <p className=" pr-2">Создать подзадачу</p>
+                                                    <PiPencilSimpleLineFill />
+                                                </div>
+                                            )} 
+                                            endpoint={`/protected/tasks/create?parentTask=${task.data[0].id}`} />
+                                        )
+                                }
+                            </div> 
+                            <div data-label='Комментарии'>
+                                <p className=" text-lg border-b border-primary text-black-2 ml-1 mt-5 pl-3">Комментарии</p>
+                                <CommentComponent taskId={task.data[0].id} />
+                            </div>
+{/*                            <Tabs>
+                                <Tab label="Комментарии">
+                                <div className="py-2">
+                                    <CommentComponent taskId={task.data[0].id} />
+                                </div>
+                                </Tab>
+                                                             <Tab label="Вложения">
+                                <div className="py-4">
+                                    <h2 className="text-lg font-medium mb-2">Tab 2 Content</h2>
+                                </div>
+                                </Tab>
+                                <Tab label="История">
+                                <div className="py-4">
+                                <h2 className="text-lg font-medium mb-2">Tab 3 Content</h2>
+                                <p className="text-gray-700">
+                                    history
+                                </p>
+                                </div>
+                                </Tab> 
+                            </Tabs>         */}
+                        </div>
                     </div>
-                    <div>{/* comments, attachments, history */}</div>
                 </div>
-                <div className=" bg-black text-white w-5/12 flex flex-col justify-evenly min-h-110 p-5 rounded-md">
-                    {/* <StatusComponent taskId={task.data[0].id} type="list" taskStatus={task.data[0].attributes.status.data} /> */}
-                    <div className="flex flex-row justify-evenly items-center ">
+                <div className=" bg-black text-white w-4/12 flex flex-col justify-evenly min-h-110 max-h-115 p-5 rounded-md">
+                    {/* <StatusComponent taskId={task.data[0].id} type="list" taskStatus={task.data[0].attributes.status.data} />  */}
+                    <div className="flex flex-row justify-evenly items-center">
                         <div className=" w-1/2 flex justify-start">
                             <p>Статус : </p>
                         </div>
@@ -140,7 +192,7 @@ export default async function SingleTaskPage ({params} : any) {
                                 })}</ul> 
                         </div>
                     </div>
-                </div>
+             </div> 
         </main>
     );
 }

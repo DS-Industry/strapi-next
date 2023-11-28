@@ -28,13 +28,13 @@ export default function TableHead ({isSubTaskList} : ITableHead) {
                             carWash
                             {/* <SortButton title="Carwash" name="carWash"/> */}
                         </th>
-                        <th scope="col" className="px-6 py-3 text-center">
-                            Priority
-                            {/* <SortButton title='Priority' name="priority"/> */}
-                        </th>
                     </>
                     )
                 }
+                <th scope="col" className="px-6 py-3 text-center">
+                    Priority
+                    {/* <SortButton title='Priority' name="priority"/> */}
+                </th>
                 <th scope="col" className="px-6 py-3 text-center">
                     Status
                     {/* <SortButton title='Status' name="status"/> */}
