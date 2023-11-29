@@ -15,7 +15,8 @@ interface ITaskParameters {
     userArr: Array<StrapiData<UserAttributes>>,
     carWashArr: Array<StrapiData<CarWashAttributes>>,
     status? : StrapiResponseObject<StatusAttributes>,
-    statusArr? : any
+    statusArr? : any,
+    edit?: boolean,
 }
 
 export default function TaskParameters ({ 
@@ -32,10 +33,9 @@ export default function TaskParameters ({
         statusArr
     } : ITaskParameters) {
 
-
-
     return (
         <div className=" border bg-black text-white w-4/12 flex flex-col min-h-90 h-auto justify-between p-5 rounded-md">
+
             { status && statusArr && statusArr.data.length > 0 ? 
                 <DropdownList taskData={status.data.attributes.name} handleChange={handleChange} name="status" label="Cтатус" dataArr={statusArr.data} />
                 :

@@ -5,9 +5,10 @@ import Image from "next/image";
 interface ICustomAvatarImage {
   src: string,
   width: number,
+  profilePage?: boolean
 }
 
-export default function CustomAvatarImage ({ src, width } : ICustomAvatarImage) {
+export default function CustomAvatarImage ({ src, width, profilePage=false } : ICustomAvatarImage) {
 
     const loader =  ({src, width} :{src: any, width: any}) => {
         return `${src}?w=${width}`; 
@@ -21,7 +22,7 @@ export default function CustomAvatarImage ({ src, width } : ICustomAvatarImage) 
             width={width}
             height={150}
             alt="profile"
-            className=" w-10 h-10 rounded-full border-2 border-black object-cover"
+            className={` ${profilePage ? 'w-40 h-40' : 'w-10 h-10'} rounded-full  object-cover`}
           />
       </div>
     )

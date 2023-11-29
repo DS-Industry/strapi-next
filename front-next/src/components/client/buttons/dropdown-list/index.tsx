@@ -60,7 +60,7 @@ export default function DropdownList ({ label, dataArr, name, handleChange, task
                 onFocus={() => setDropdownOpen(true)}
                 onBlur={() => setDropdownOpen(false)}  
                 className={`z-30 absolute mt-11 ${!dropdownOpen ? ' hidden opacity-0' : 'opacity-100'} transition-opacity duration-300 bg-graydark divide-y divide-black rounded-md shadow w-44 `}>
-                <ul className="py-1 text-sm text-gray-700 dark:text-gray-200 " aria-labelledby="dropdownActionButton">
+                <ul className="py-1 text-sm text-gray-700 dark:text-gray-200 exclude-list-styling" aria-labelledby="dropdownActionButton">
                     { 
                         dataArr.map((element, index: number) => {
                             return (

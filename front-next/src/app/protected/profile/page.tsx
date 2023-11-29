@@ -7,7 +7,7 @@ import CustomImage from "@/components/client/image";
 
 export default async function Profile () {
     const session = await getServerSession(authOptions);
-
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}${session?.user.avatar.formats.medium.url}`);
   return (
     <>
 
@@ -23,7 +23,11 @@ export default async function Profile () {
         </div>
         <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
           <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
-            <CustomImage src={`${session?.user.avatar}`} width={30} />
+            <CustomImage 
+              src={`${process.env.NEXT_PUBLIC_API_URL}${session?.user.avatar.formats.medium.url}`} 
+              width={session?.user.avatar.width || 800} 
+              profilePage={true}
+              />
           </div>
           <div className="mt-4">
             <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
@@ -63,7 +67,9 @@ export default async function Profile () {
                 pharetra ligula sed, aliquam lacus.
               </p>
             </div>
-            <LogoutButton/>
+            <div className=" w-full flex justify-end pr-10">
+              <LogoutButton/>
+            </div>
           </div>
         </div>
       </div>

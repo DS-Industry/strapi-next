@@ -13,11 +13,14 @@ declare module "next-auth" {
   interface Avatar {
     id: number,
     name: string,
-    alternativeText: string,
-    mime: string,
-    url: string,
-    createdAt: Date,
-    updatedAt: Date
+    width: number,
+    height: number,
+    formats: { 
+      [key in 'thumbnail' | 'small' | 'medium'] : {
+        name: string,
+        url: string
+      }
+    }
   }
 
   interface Session extends DefaultSession {

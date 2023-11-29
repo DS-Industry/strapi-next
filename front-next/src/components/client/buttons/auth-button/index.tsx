@@ -4,7 +4,9 @@ import { signOut, signIn } from "next-auth/react"
 export function LogoutButton () {
     const handleClick = () => signOut({ callbackUrl: process.env.NEXT_PUBLIC_URL })
     return (
-        <button className=" h-10 w-32 rounded-xl bg-activeColor text-textColor hover:bg-violet-800" onClick={handleClick} >
+        <button 
+            className=" h-10 w-32 bg-bodydark text-white rounded-xl text-textColor hover:bg-body transition-all duration-300" 
+            onClick={handleClick} >
             Log out
         </button>
     )

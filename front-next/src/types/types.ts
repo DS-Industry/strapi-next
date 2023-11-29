@@ -62,7 +62,7 @@ export type UserAttributes = {
     lastname: string,
     lastLoginAt: Date,
     name: string,
-    avatar: any
+    avatar: StrapiResponseObject<AttachmentsAttributes>
 }
 
 export type CarWashAttributes = {
@@ -97,16 +97,6 @@ export type CommentAttributes = {
     publishedAt: Date,
     createdUserBy: StrapiResponseObject<UserAttributes>,
     tasks: StrapiResponseObject<TaskAttributes>,
-}
-
-
-export type PriorityAttributes = {
-    name: string,
-    slug: string,
-    createdAt: Date,
-    updatedAt: Date,
-    publishedAt: Date,
-    taskTemplates: StrapiResponseArray<TaskTemplateAttributes>
 }
 
 export type DepartmentAttributes = {
@@ -174,6 +164,6 @@ export type TaskTemplateAttributes = {
     category: StrapiResponseObject<CategoryAttributes>,
     subCategory: StrapiResponseObject<SubCategoryAttributes>,
     status: StrapiResponseObject<StatusAttributes>,
-    priority: StrapiResponseObject<PriorityAttributes>,
+    priority: string,
 
 }

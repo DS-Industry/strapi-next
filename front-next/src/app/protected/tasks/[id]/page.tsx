@@ -11,10 +11,11 @@ import StatusDropDownList from "@/components/client/buttons/status-component/sta
 import Attachment from "@/components/client/attachment";
 import SubTask from "@/components/server/sub-task";
 import Table from "@/components/server/table";
-import Tabs from "@/components/client/tabs";
-import Tab from "@/components/client/tabs/tab";
+/* import Tabs from "@/components/client/tabs";
+import Tab from "@/components/client/tabs/tab"; */
 import { PiPencilSimpleLineFill } from "react-icons/pi";
 import CommentComponent from "@/components/server/comment";
+import TaskData from "@/components/server/task-data";
 
 export default async function SingleTaskPage ({ params } : any) {
     const session = await getServerSession(authOptions);
@@ -24,7 +25,7 @@ export default async function SingleTaskPage ({ params } : any) {
             Authorization: `Bearer ${session?.user.jwt}`
         }
     });
-    const { data : childTask } : AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks?populate=*&filters[parentTask][id][$eq]=${task.data[0].id}`,
+    const { data : childTask } : AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks?populate[createdUserBy][populate][avatar]=*&populate[status][populate][fields]=*&populate[priority][populate][fields]=*&filters[parentTask][id][$eq]=${task.data[0].id}`,
     {
         headers: {
             Authorization: `Bearer ${session?.user.jwt}`
@@ -52,7 +53,8 @@ export default async function SingleTaskPage ({ params } : any) {
                         <div>
                             <div className=" w-full mt-10 overflow-auto">
                                 {
-                                    task.data[0].attributes.parentTask.data.length > 0 ? 
+                                    task.data[0].attributes.parentTask.data.length > 0 
+                                    ? 
                                         '' : childTask.data.length > 0 ?
                                         (
                                             <SubTask 
@@ -60,8 +62,8 @@ export default async function SingleTaskPage ({ params } : any) {
                                                 isNotEmpty={childTask.data.length >= 0}>
                                                 <Table isSubTaskList={true} childTask={childTask} />
                                             </SubTask>
-                                        ) :
-                                        (
+                                        ) 
+                                    :   (
                                             <NavigationButton className=" hover:text-white bg-black text-white text-opacity-90 hover:text-opacity-100 hover:bg-graydark p-1 rounded-md transition-all duration-300" 
                                             label={(
                                                 <div className=" w-auto flex items-center justify-between">
@@ -77,7 +79,7 @@ export default async function SingleTaskPage ({ params } : any) {
                                 <p className=" text-lg border-b border-primary text-black-2 ml-1 mt-5 pl-3">Комментарии</p>
                                 <CommentComponent taskId={task.data[0].id} />
                             </div>
-{/*                            <Tabs>
+                            {/*<Tabs>
                                 <Tab label="Комментарии">
                                 <div className="py-2">
                                     <CommentComponent taskId={task.data[0].id} />
@@ -100,99 +102,19 @@ export default async function SingleTaskPage ({ params } : any) {
                         </div>
                     </div>
                 </div>
-                <div className=" bg-black text-white w-4/12 flex flex-col justify-evenly min-h-110 max-h-115 p-5 rounded-md">
-                    {/* <StatusComponent taskId={task.data[0].id} type="list" taskStatus={task.data[0].attributes.status.data} />  */}
-                    <div className="flex flex-row justify-evenly items-center">
-                        <div className=" w-1/2 flex justify-start">
-                            <p>Статус : </p>
-                        </div>
-                        <div className=" w-1/2 px-2 flex justify-start">
-                            <StatusDropDownList taskId={task.data[0].id} taskStatus={task.data[0].attributes.status.data} />
-                        </div>
-                    </div>
-                    <div className="flex flex-row justify-evenly ">
-                        <div className=" w-1/2 flex justify-start">
-                            <p>Приоритет : </p>
-                        </div>
-                        <div className=" w-1/2 px-4 flex justify-start">
-                            <p>{task.data[0].attributes.priority}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-row justify-evenly ">
-                        <div className=" w-1/2 flex justify-start">
-                            <p>Тип : </p>
-                        </div>
-                        <div className=" w-1/2 px-4 flex justify-start">
-                            <p>{task.data[0].attributes.type}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-row justify-evenly ">
-                        <div className=" w-1/2 flex justify-start">
-                            <p>Дедлайн : </p>
-                        </div>
-                        <div className=" w-1/2 px-4 flex justify-start">
-                            <p>{dateToString(task.data[0].attributes.deadline)}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-row justify-evenly ">
-                        <div className=" w-1/2 flex justify-start">
-                            <p>Отдел : </p>
-                        </div>
-                        <div className=" w-1/2 px-4 flex justify-start">
-                            <p>{task.data[0].attributes.department.data.attributes.name}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-row justify-evenly ">
-                        <div className=" w-1/2 flex justify-start">
-                            <p>Категория : </p>
-                        </div>
-                        <div className=" w-1/2 px-4 flex justify-start">
-                            <p>{task.data[0].attributes.category.data.attributes.name}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-row justify-evenly ">
-                        <div className=" w-1/2 flex justify-start">
-                            <p>Подкатегория : </p>
-                        </div>
-                        <div className=" w-1/2 px-4 flex justify-start">
-                            <p>{task.data[0].attributes.subcategory.data.attributes.name}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-row justify-evenly ">
-                        <div className=" w-1/2 flex justify-start">
-                            <p>Создатель : </p>
-                        </div>
-                        <div className=" w-1/2 px-4 flex justify-start">
-                            <p>{task.data[0].attributes.createdUserBy.data.attributes.username}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col justify-evenly ">
-                        <div className=" w-1/2 flex justify-start">                        
-                            <p>Исполнители : </p>
-                        </div>
-                        <div className=" w-full px-4 flex justify-start">
-                           <ul className="flex flex-col justify-start">
-                            {   task.data[0].attributes.asiignees.data.map((user: StrapiData<UserAttributes>, index: number) => {
-                                    return (
-                                        <li key={index}>{ user.attributes.username }</li>
-                                    )  
-                                })}</ul> 
-                        </div>
-                    </div>
-                    <div className="flex flex-col justify-evenly ">
-                        <div className=" w-1/2 flex justify-start">
-                            <p>Мойки : </p>
-                        </div>
-                        <div className=" w-full px-2 flex justify-start">
-                           <ul className="flex flex-col justify-start">
-                            {   task.data[0].attributes.carWashes.data.map((carWash: StrapiData<CarWashAttributes>, index: number) => {
-                                    return (
-                                        <li key={index}>{ carWash.attributes.name }</li>
-                                    )  
-                                })}</ul> 
-                        </div>
-                    </div>
-             </div> 
+                <TaskData 
+                    taskId={task.data[0].id} 
+                    taskStatus={task.data[0].attributes.status.data}
+                    priority={task.data[0].attributes.priority} 
+                    type={task.data[0].attributes.type} 
+                    deadline={task.data[0].attributes.deadline} 
+                    department={task.data[0].attributes.department.data.attributes.name} 
+                    category={task.data[0].attributes.category.data.attributes.name} 
+                    subcategory={task.data[0].attributes.subcategory.data.attributes.name} 
+                    creator={task.data[0].attributes.createdUserBy.data.attributes.username} 
+                    executors={task.data[0].attributes.asiignees.data}
+                    carWashes={task.data[0].attributes.carWashes.data}
+                    />
         </main>
     );
 }
