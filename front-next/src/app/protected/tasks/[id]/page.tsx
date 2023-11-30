@@ -16,21 +16,34 @@ import Tab from "@/components/client/tabs/tab"; */
 import { PiPencilSimpleLineFill } from "react-icons/pi";
 import CommentComponent from "@/components/server/comment";
 import TaskData from "@/components/server/task-data";
+import EditTask from "@/components/client/edit-task";
 
 export default async function SingleTaskPage ({ params } : any) {
     const session = await getServerSession(authOptions);
+    const headers = {
+            Authorization: `Bearer ${session?.user.jwt}`
+    }
+
     const { data : task } : AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks?populate=*&filters[id][$eq]=${params.id}`,
     {
-        headers: {
-            Authorization: `Bearer ${session?.user.jwt}`
-        }
+        headers
     });
     const { data : childTask } : AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks?populate[createdUserBy][populate][avatar]=*&populate[status][populate][fields]=*&populate[priority][populate][fields]=*&filters[parentTask][id][$eq]=${task.data[0].id}`,
     {
-        headers: {
-            Authorization: `Bearer ${session?.user.jwt}`
-        }
+        headers
     }); 
+
+    const [ { data  : departmentArr } , { data : carwashArr }, { data: userArr }] = await Promise.all([
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/departments`, {
+        headers
+    }), axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/car-washes`, {
+        headers
+    }), axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users`, {
+        headers
+    })
+]);
+
+
     return (
         <main className=" flex h-full w-full flex-row justify-between">
                 <div className=" pr-5 w-8/12">
@@ -102,17 +115,20 @@ export default async function SingleTaskPage ({ params } : any) {
                         </div>
                     </div>
                 </div>
-                <TaskData 
+                <EditTask 
                     taskId={task.data[0].id} 
-                    taskStatus={task.data[0].attributes.status.data}
+                    taskStatus={task.data[0].attributes.status.data} 
                     priority={task.data[0].attributes.priority} 
                     type={task.data[0].attributes.type} 
                     deadline={task.data[0].attributes.deadline} 
-                    department={task.data[0].attributes.department.data.attributes.name} 
-                    category={task.data[0].attributes.category.data.attributes.name} 
-                    subcategory={task.data[0].attributes.subcategory.data.attributes.name} 
+                    department={`${task.data[0].attributes.department.data.id}_${task.data[0].attributes.department.data.attributes.name}`} 
+                    category={`${task.data[0].attributes.category.data.id}_${task.data[0].attributes.category.data.attributes.name}`} 
+                    subcategory={`${task.data[0].attributes.subcategory.data.id}_${task.data[0].attributes.subcategory.data.attributes.name}`} 
                     creator={task.data[0].attributes.createdUserBy.data.attributes.username} 
-                    executors={task.data[0].attributes.asiignees.data}
+                    departmentArr={departmentArr.data}
+                    userArr={userArr}
+                    carWashArr={carwashArr.data}
+                    executors={task.data[0].attributes.asiignees.data} 
                     carWashes={task.data[0].attributes.carWashes.data}
                     />
         </main>

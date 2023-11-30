@@ -18,7 +18,7 @@ interface ITaskData {
 
 export default function TaskData ({taskId, taskStatus, priority, type, deadline, department, category, subcategory, creator, executors, carWashes}: ITaskData) {
     return (
-        <div className=" bg-black text-white w-4/12 flex flex-col justify-evenly min-h-110 max-h-115 p-5 rounded-md">
+        <div className=" bg-black text-white w-full flex flex-col justify-evenly min-h-110 max-h-115 p-5 rounded-md">
         {/* <StatusComponent taskId={task.data[0].id} type="list" taskStatus={task.data[0].attributes.status.data} />  */}
         <div className="flex flex-row justify-evenly items-center">
             <div className=" w-1/2 flex justify-start">

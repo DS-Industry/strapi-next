@@ -5,12 +5,12 @@ import { ChangeEvent, useEffect, useState } from "react";
 import QuillEditor from "../../quill";
 import AttachmentsInput from "../../inputs/attachments-input";
 import CreateButton from "../../buttons/create-button";
-import { CarWashAttributes, CategoryAttributes, DepartmentAttributes, StrapiData, SubCategoryAttributes, UserAttributes } from "@/types/types";
+import { CarWashAttributes, DepartmentAttributes, StrapiData, UserAttributes } from "@/types/types";
 import { useRouter } from "next/navigation";
 import TaskItemList from "../../task-item-list";
 import axios from "axios";
 import TaskParameters from "../../task-parameters";
-import { convertDateToCurrentDateWithoutTime, convertToDateString, dateToString } from "@/utils/util";
+import { convertDateToCurrentDateWithoutTime, convertToDateString } from "@/utils/util";
 import NavigationButton from "../../buttons/navigate-button";
 
 interface ITaskCreationForm {
@@ -25,7 +25,6 @@ interface ITaskData {
     title: string,
     body: string,
     type: string,
-    todos: Array<number> | null,
     category: string,
     subcategory: string,
     createdUserBy: string | null,
@@ -41,11 +40,6 @@ interface ITaskData {
     deadlineTime: string,
     parentTask: number | null
 
-}
-
-interface ICategories  {
-    categoryArr: Array<StrapiData<CategoryAttributes>>,
-    subcategoryArr: Array<StrapiData<SubCategoryAttributes>>
 }
 
 export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, type, parentTask } : ITaskCreationForm) {
@@ -65,10 +59,6 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
     ]
 
     const {data : session} = useSession();
-    const [ categoryArrs, setCategoryArrs ] = useState<ICategories>({
-        categoryArr: [],
-        subcategoryArr: [],
-    });
 
     const router = useRouter();
 
@@ -76,7 +66,6 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
         title: '',
         body: '',
         type: type === 'appeal' ? 'Обращение' : 'Задача',
-        todos: [],
         category: '',
         subcategory: '',
         createdUserBy: null,
@@ -103,51 +92,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
 
     }, [session])
 
-    useEffect(() => {
-        const getCategoryAsync = async () => {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/categories?populate[0]=department&filters[department][id][$eq]=${taskData.department}`, {
-                headers: {
-                    Authorization: `Bearer ${session?.user.jwt}`
-                }     
-            });
-            setCategoryArrs({
-                ...categoryArrs,
-                categoryArr: [...response.data.data]
-            }); 
-            setTaskData({
-                ...taskData,
-                category: '',
-                subcategory: ''
-            });         
-        }
-        if(taskData.department) {
-          getCategoryAsync();   
-        }
-        
-
-    },[taskData.department])
-
-    useEffect(() => {
-        const getSubCategoryAsync = async () => {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/subcategories?populate[0]=category&filters[category][id][$eq]=${taskData.category}`, {
-                headers: {
-                    Authorization: `Bearer ${session?.user.jwt}`
-                }     
-            });
-            setCategoryArrs({
-                ...categoryArrs,
-                subcategoryArr: [...response.data.data]
-            });
-            setTaskData({
-                ...taskData,
-                subcategory: ''
-            });           
-        }
-        if (taskData.category) {
-            getSubCategoryAsync();            
-        }
-    },[taskData.category])
-
+   
     const handleChange = ({target : { name, value, files }} : ChangeEvent<HTMLInputElement>) => {
         if (name === 'asiignees' || name === 'carWashes') {
             if ( !taskData[name].includes(value) ) {
@@ -172,7 +117,6 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                 [name]: Number(value.split('_')[0])
             })
         }
-
     }
 
     const handleQuillChange = (context: string) => {
@@ -185,25 +129,6 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
     //formate date to correct from moment js. from Sat Nov 18 2023 00:00:00 GMT+0300 (Москва, стандартное время) to 18.11.2023
     //set this date to deadlineDate
     // and set time to deadlineTime 
-
-    const handleDTPickerChange = (moment: any) => {
-        if(moment.target) {
-            setTaskData({
-                ...taskData,
-                deadlineTime: moment.target.value
-            })
-        } else {
-            const day = moment._d.getDate() < 10 ? `0${moment._d.getDate()}` : moment._d.getDate();
-            const month = moment._d.getMonth() < 9 ? `0${moment._d.getMonth() + 1}` : moment._d.getMonth() + 1;
-            const data = `${day}.${month}.${moment._d.getFullYear()}`
-            console.log(data);
-        setTaskData({
-            ...taskData,
-            deadlineDate: data
-        }) 
-        }
-
-    }
 
     const deleteElement = ({currentTarget : { name, value }} : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         let taskDataArray = [];
@@ -296,7 +221,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                     <NavigationButton className="ml-3 transition-all duration-300 hover:bg-bodydark1 hover:opacity-80 opacity-60 text-graydark px-3 py-2 rounded-md" endpoint={taskData.parentTask ? `/protected/tasks/${parentTask}` : "/protected/tasks"} label='Отменить' back={true} />
                     </div>
                 </div>
-                    <TaskParameters taskData={taskData} handleChange={handleChange} deleteElement={deleteElement} handleDTPickerChange={handleDTPickerChange} priorityArr={priorityArr} departmentArr={departmentArr} categoryArrs={categoryArrs} userArr={userArr} carWashArr={carWashArr}/>
+                    <TaskParameters taskData={taskData} setTaskData={setTaskData} handleChange={handleChange} deleteElement={deleteElement} departmentArr={departmentArr} userArr={userArr} carWashArr={carWashArr}/>
             </form>
         </main>
     )

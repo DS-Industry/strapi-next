@@ -7,11 +7,10 @@ interface IDropdownList {
     dataArr: any[],
     handleChange: any,
     name: string,
-    taskId?: string,
     taskData: any
 }
 
-export default function DropdownList ({ label, dataArr, name, handleChange, taskId, taskData } : IDropdownList) {
+export default function DropdownList ({ label, dataArr, name, handleChange, taskData } : IDropdownList) {
     const [ dropdownOpen, setDropdownOpen ] = useState<boolean>(false);
     const dropdown = useRef<any>(null);
 
@@ -47,10 +46,14 @@ export default function DropdownList ({ label, dataArr, name, handleChange, task
                         name === 'priority' ?
                         taskData[name] : 
                         name === 'asiignees' ? 
-                        dataArr.find((element) => `${element.id}_${element.username}` === taskData[name][0]).username : 
+                        dataArr.find((asiigner) => `${asiigner.id}_${asiigner.username}` === taskData[name][0]).username : 
                         name === 'carWashes' ?
-                        dataArr.find((element) => `${element.id}_${element.attributes.name}` === taskData[name][0]).attributes.slug : 
-                        dataArr.find((element) => element.id === taskData[name]).attributes.name}
+                        dataArr.find((carWash) => `${carWash.id}_${carWash.attributes.name}` === taskData[name][0]).attributes.slug : 
+                        dataArr.find((element) => {
+                            console.log('element ID ->', element.id)
+                            console.log(`Task data name -> ${name} value -> ${taskData[name]}`)
+                            return element.id === taskData[name]
+                            }).attributes.name}
                     <svg className={`w-2.5 h-2.5 ml-2.5 transition-all duration-300 opacity-0 group-hover:opacity-100 ${dropdownOpen && 'rotate-180'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
                     </svg>
