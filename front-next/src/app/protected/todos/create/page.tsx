@@ -3,7 +3,7 @@ import { authOptions } from "@/config/nextauth/auth";
 import axios from "axios";
 import { getServerSession } from "next-auth/next";
 
-export default async function CreateTaskPage ({ searchParams } : any) {
+export default async function CreateTodoPage ({ searchParams } : any) {
     const { user } : any = await getServerSession(authOptions);
     const headers = {
         Authorization: `Bearer ${user.jwt}`
@@ -19,11 +19,13 @@ export default async function CreateTaskPage ({ searchParams } : any) {
             headers
         })
     ]);
+    console.log('here below type: ');
+    console.log('type -> ', searchParams.type);
 
     return (
         <main>
             <TaskCreationForm 
-                type='Задача' 
+                type='appeal' 
                 parentTask={searchParams.parentTask}
                 userArr={users} 
                 departmentArr={department.data} 

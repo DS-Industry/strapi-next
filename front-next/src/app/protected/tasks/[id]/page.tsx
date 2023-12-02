@@ -15,7 +15,6 @@ import Table from "@/components/server/table";
 import Tab from "@/components/client/tabs/tab"; */
 import { PiPencilSimpleLineFill } from "react-icons/pi";
 import CommentComponent from "@/components/server/comment";
-import TaskData from "@/components/server/task-data";
 import EditTask from "@/components/client/edit-task";
 
 export default async function SingleTaskPage ({ params } : any) {
@@ -33,14 +32,19 @@ export default async function SingleTaskPage ({ params } : any) {
         headers
     }); 
 
-    const [ { data  : departmentArr } , { data : carwashArr }, { data: userArr }] = await Promise.all([
+    const [ { data  : departmentArr } , { data : carwashArr }, { data: userArr }, {data: categoryArr}, {data: subCategoryArr}] = await Promise.all([
         axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/departments`, {
         headers
     }), axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/car-washes`, {
         headers
     }), axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users`, {
         headers
-    })
+    }), axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/categories?populate[0]=department&filters[department][id][$eq]=${task.data[0].attributes.department.data.id}`, {
+        headers
+    }), axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/subcategories?populate[0]=category&filters[category][id][$eq]=${task.data[0].attributes.category.data.id}`, {
+        headers
+    }),
+
 ]);
 
 
@@ -124,12 +128,14 @@ export default async function SingleTaskPage ({ params } : any) {
                     department={`${task.data[0].attributes.department.data.id}_${task.data[0].attributes.department.data.attributes.name}`} 
                     category={`${task.data[0].attributes.category.data.id}_${task.data[0].attributes.category.data.attributes.name}`} 
                     subcategory={`${task.data[0].attributes.subcategory.data.id}_${task.data[0].attributes.subcategory.data.attributes.name}`} 
+                    categoryArr={categoryArr.data}
+                    subcategoryArr={subCategoryArr.data}
                     creator={task.data[0].attributes.createdUserBy.data.attributes.username} 
                     departmentArr={departmentArr.data}
                     userArr={userArr}
                     carWashArr={carwashArr.data}
-                    executors={task.data[0].attributes.asiignees.data} 
-                    carWashes={task.data[0].attributes.carWashes.data}
+                    executors={task.data[0].attributes.asiignees.data.map((executor: any) => `${executor.id}_${executor.attributes.username}`)} 
+                    carWashes={task.data[0].attributes.carWashes.data.map((carwash: StrapiData<CarWashAttributes>) => `${carwash.id}_${carwash.attributes.name}`)}
                     />
         </main>
     );

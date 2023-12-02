@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 interface IDropdownList {
     label: string,
-    dataArr: any[],
+    dataArr: any,
     handleChange: any,
     name: string,
     taskData: any
@@ -46,14 +46,10 @@ export default function DropdownList ({ label, dataArr, name, handleChange, task
                         name === 'priority' ?
                         taskData[name] : 
                         name === 'asiignees' ? 
-                        dataArr.find((asiigner) => `${asiigner.id}_${asiigner.username}` === taskData[name][0]).username : 
+                        dataArr.find((asiigner: any) => `${asiigner.id}_${asiigner.username}` === taskData[name][0]).username : 
                         name === 'carWashes' ?
-                        dataArr.find((carWash) => `${carWash.id}_${carWash.attributes.name}` === taskData[name][0]).attributes.slug : 
-                        dataArr.find((element) => {
-                            console.log('element ID ->', element.id)
-                            console.log(`Task data name -> ${name} value -> ${taskData[name]}`)
-                            return element.id === taskData[name]
-                            }).attributes.name}
+                        dataArr.find((carWash: any) => `${carWash.id}_${carWash.attributes.name}` === taskData[name][0]).attributes.slug : 
+                        dataArr.find((element: any) => element.id === taskData[name]).attributes.name}
                     <svg className={`w-2.5 h-2.5 ml-2.5 transition-all duration-300 opacity-0 group-hover:opacity-100 ${dropdownOpen && 'rotate-180'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
                     </svg>
@@ -65,7 +61,7 @@ export default function DropdownList ({ label, dataArr, name, handleChange, task
                 className={`z-30 absolute mt-11 ${!dropdownOpen ? ' hidden opacity-0' : 'opacity-100'} transition-opacity duration-300 bg-graydark divide-y divide-black rounded-md shadow w-44 `}>
                 <ul className="py-1 text-sm text-gray-700 dark:text-gray-200 exclude-list-styling" aria-labelledby="dropdownActionButton">
                     { 
-                        dataArr.map((element, index: number) => {
+                        dataArr.map((element: any, index: number) => {
                             return (
                                 <li key={index} className=" bg-graydark hover:bg-strokedark">
                                     <button 

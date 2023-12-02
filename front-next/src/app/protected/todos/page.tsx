@@ -5,7 +5,7 @@ import { authOptions } from "@/config/nextauth/auth";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 
-export default async function TodoListPage ({searchParams : { search, sortType, name, type='Задача' }} : {searchParams: { search: string, sortType: string, name: string, type: string }}) {
+export default async function TodoListPage ({searchParams : { search, sortType, name, type }} : {searchParams: { search: string, sortType: string, name: string, type: string }}) {
     const { user } : any = await getServerSession(authOptions);
     return (
         <main className="overflow-x-auto shadow-md sm:rounded-lg">

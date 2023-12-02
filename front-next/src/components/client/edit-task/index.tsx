@@ -5,7 +5,7 @@ import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import TaskParameters from "../task-parameters";
 import TaskData from "@/components/server/task-data";
 import axios from "axios";
-import { CarWashAttributes, DepartmentAttributes, StatusAttributes, StrapiData, UserAttributes } from "@/types/types";
+import { CarWashAttributes, CategoryAttributes, DepartmentAttributes, StatusAttributes, StrapiData, SubCategoryAttributes, UserAttributes } from "@/types/types";
 
 interface ITaskUpdatedData {
     category: number,
@@ -28,11 +28,13 @@ interface IEditTask {
     category: string,
     subcategory: string,
     creator: string,
+    categoryArr: StrapiData<CategoryAttributes>[],
+    subcategoryArr: StrapiData<SubCategoryAttributes>[],
     departmentArr: StrapiData<DepartmentAttributes>[],
     userArr: StrapiData<UserAttributes>[],
     carWashArr: StrapiData<CarWashAttributes>[],
-    executors: StrapiData<UserAttributes>[],
-    carWashes: StrapiData<CarWashAttributes>[]
+    executors: string[],
+    carWashes: string[]
 }
 
 export default function EditTask ({
@@ -48,16 +50,18 @@ export default function EditTask ({
         executors,
         carWashes,
         departmentArr,
+        categoryArr,
+        subcategoryArr,
         userArr,
         carWashArr
     }: IEditTask) {
     const [ taskUpdatedData, setTaskUpdatedData ] = useState<ITaskUpdatedData>({
         category: Number(category.split('_')[0]),
-        subcategory: 0 /* Number(subcategory.split('_')[0]) */,
-        carWashes: [],
+        subcategory: Number(subcategory.split('_')[0]),
+        carWashes: [...carWashes],
         priority: priority,
         department: Number(department.split('_')[0]),
-        asiignees: [],
+        asiignees: [...executors],
         deadlineDate: convertDateToCurrentDateWithoutTime(new Date()),
         deadlineTime: '19:00',
     })
@@ -120,7 +124,7 @@ export default function EditTask ({
     }
 
     useEffect(() => {
-        console.log(category.split('_')[0]);
+        console.log('subcategory id ', subcategory.split('_')[0]);
         console.log(departmentArr);
     })
 
@@ -134,7 +138,9 @@ export default function EditTask ({
                     deleteElement={deleteElement} 
                     departmentArr={departmentArr} 
                     userArr={userArr}
-                    carWashArr={carWashArr}/>
+                    carWashArr={carWashArr}
+                    initCategoryArr={categoryArr}
+                    initSubcategoryArr={subcategoryArr}/>
                 ) : (
                   <TaskData 
                     taskId={taskId} 
@@ -142,15 +148,15 @@ export default function EditTask ({
                     priority={priority} 
                     type={type} 
                     deadline={deadline} 
-                    department={department} 
-                    category={category} 
-                    subcategory={subcategory} 
-                    creator={creator} 
-                    executors={executors} 
-                    carWashes={carWashes} />  
+                    department={department.split('_')[1]} 
+                    category={category.split('_')[1]} 
+                    subcategory={subcategory.split('_')[1]} 
+                    creator={creator.split('_')[1]} 
+                    executors={executors.map((executor) => executor.split('_')[1])} 
+                    carWashes={carWashes.map((carWash) => carWash.split('_')[1])} />  
                 )
             }
-{/*             <div className=" w-full">
+            <div className=" w-full">
                 <button 
                     onClick={() => {
                         setIsEdit((prevValue : boolean) => {
@@ -160,7 +166,7 @@ export default function EditTask ({
                     className=" text-meta-1">
                         {isEdit ? 'Сохранить' : 'Редактировать' }
                 </button>
-            </div> */}
+            </div>
         </div>
     )
 }

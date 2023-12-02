@@ -12,8 +12,8 @@ interface ITaskData {
     category: string,
     subcategory: string,
     creator: string,
-    executors: StrapiData<UserAttributes>[],
-    carWashes: StrapiData<CarWashAttributes>[]
+    executors: string[],
+    carWashes: string[]
 }
 
 export default function TaskData ({taskId, taskStatus, priority, type, deadline, department, category, subcategory, creator, executors, carWashes}: ITaskData) {
@@ -90,9 +90,9 @@ export default function TaskData ({taskId, taskStatus, priority, type, deadline,
             </div>
             <div className=" w-full px-4 flex justify-start">
                <ul className="flex flex-col justify-start exclude-list-styling">
-                {   executors.map((user: StrapiData<UserAttributes>, index: number) => {
+                {   executors.map((user: string, index: number) => {
                         return (
-                            <li key={index}>{ user.attributes.username }</li>
+                            <li key={index}>{ user }</li>
                         )  
                     })}</ul> 
             </div>
@@ -103,9 +103,9 @@ export default function TaskData ({taskId, taskStatus, priority, type, deadline,
             </div>
             <div className=" w-full px-2 flex justify-start">
                <ul className="flex flex-col justify-start exclude-list-styling">
-                {   carWashes.map((carWash: StrapiData<CarWashAttributes>, index: number) => {
+                {   carWashes.map((carWash: string, index: number) => {
                         return (
-                            <li key={index}>{ carWash.attributes.name }</li>
+                            <li key={index}>{ carWash }</li>
                         )  
                     })}</ul> 
             </div>

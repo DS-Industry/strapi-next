@@ -2,11 +2,9 @@
 
 import { CarWashAttributes, CategoryAttributes, DepartmentAttributes, StatusAttributes, StrapiData, StrapiResponseObject, SubCategoryAttributes, UserAttributes } from "@/types/types";
 import DropdownList from "../buttons/dropdown-list";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent } from "react";
 import TaskItemList from "../task-item-list";
 import DataTimePicker from "../datatime-picker";
-import axios from "axios";
-import { useSession } from "next-auth/react";
 import { priorityArr } from "@/components/server/hard-data";
 
 interface ITaskParameters {
@@ -17,11 +15,8 @@ interface ITaskParameters {
     userArr: Array<StrapiData<UserAttributes>>,
     carWashArr: Array<StrapiData<CarWashAttributes>>,
     setTaskData: any
-}
-
-interface ICategories  {
-    categoryArr: Array<StrapiData<CategoryAttributes>>,
-    subcategoryArr: Array<StrapiData<SubCategoryAttributes>>
+    initCategoryArr: StrapiData<CategoryAttributes>[],
+    initSubcategoryArr: StrapiData<SubCategoryAttributes>[]
 }
 
 export default function TaskParameters ({ 
@@ -31,63 +26,11 @@ export default function TaskParameters ({
         departmentArr,  
         userArr, 
         carWashArr,
-        setTaskData
+        setTaskData,
+        initCategoryArr,
+        initSubcategoryArr
     } : ITaskParameters) {
 
-        const [ categoryArrs, setCategoryArrs ] = useState<ICategories>({
-            categoryArr: [],
-            subcategoryArr: [],
-        });
-        const {data : session} = useSession();
-
-        useEffect(() => {
-            const getCategoryAsync = async () => {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/categories?populate[0]=department&filters[department][id][$eq]=${taskData.department}`, {
-                    headers: {
-                        Authorization: `Bearer ${session?.user.jwt}`
-                    }     
-                });
-                console.log('category arr -> ');
-                console.log(response.data.data);
-                console.log('task category data -> ');
-                console.log(taskData.category)
-
-                setCategoryArrs({
-                    ...categoryArrs,
-                    categoryArr: [...response.data.data]
-                }); 
-                setTaskData({
-                    ...taskData,
-                    category: '',
-                    subcategory: ''
-                });         
-            }
-
-            if(taskData.department) {
-                getCategoryAsync();   
-            }
-        },[taskData.department])
-    
-        useEffect(() => {
-            const getSubCategoryAsync = async () => {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/subcategories?populate[0]=category&filters[category][id][$eq]=${taskData.category}`, {
-                    headers: {
-                        Authorization: `Bearer ${session?.user.jwt}`
-                    }     
-                });
-                setCategoryArrs({
-                    ...categoryArrs,
-                    subcategoryArr: [...response.data.data]
-                });
-                setTaskData({
-                    ...taskData,
-                    subcategory: ''
-                });           
-            }
-            if (taskData.category) {
-                getSubCategoryAsync();            
-            }
-        },[taskData.category])
 
         const handleDTPickerChange = (moment: any) => {
             if(moment.target) {
@@ -107,13 +50,13 @@ export default function TaskParameters ({
             }
         }
 
-
     return (
         <div className=" border bg-black text-white w-full flex flex-col min-h-90 h-auto justify-between p-5 rounded-md">
             <DropdownList taskData={taskData} handleChange={handleChange} name="priority" label="Приоритет" dataArr={priorityArr} />
             <DropdownList taskData={taskData} handleChange={handleChange} name='department' label="Отдел" dataArr={departmentArr} />
-            <DropdownList taskData={taskData} handleChange={handleChange} name='category' label="Категория" dataArr={categoryArrs.categoryArr} />
-            <DropdownList taskData={taskData} handleChange={handleChange} name='subcategory' label="Подкатегория" dataArr={categoryArrs.subcategoryArr} />
+            <DropdownList taskData={taskData} handleChange={handleChange} name='category' label="Категория" dataArr={initCategoryArr} />
+            <DropdownList taskData={taskData} handleChange={handleChange} name='subcategory' label="Подкатегория" 
+                dataArr={initSubcategoryArr} />
             <div>
                 <DropdownList taskData={taskData} handleChange={handleChange} name='asiignees' label="Исполнители" dataArr={userArr} />
                     { taskData.asiignees.length ?
