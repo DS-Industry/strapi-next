@@ -149,8 +149,8 @@ export default function Attachment ({ attachments } : IAttachment) {
                                 <Image
                                     className=""
                                     src={imageData.url} 
-                                    width={1000} 
-                                    height={1000} 
+                                    width={800} 
+                                    height={800} 
                                     alt={`${imageData.alt}`}/>}
                             </div> 
                         </div>

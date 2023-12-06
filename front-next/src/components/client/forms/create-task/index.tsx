@@ -5,18 +5,19 @@ import { ChangeEvent, useEffect, useState } from "react";
 import QuillEditor from "../../quill";
 import AttachmentsInput from "../../inputs/attachments-input";
 import CreateButton from "../../buttons/create-button";
-import { CarWashAttributes, CategoryAttributes, DepartmentAttributes, StrapiData, SubCategoryAttributes, UserAttributes } from "@/types/types";
+import { CarWashAttributes, DepartmentAttributes, StrapiData, UserAttributes } from "@/types/types";
 import { useRouter } from "next/navigation";
 import TaskItemList from "../../task-item-list";
 import axios from "axios";
 import TaskParameters from "../../task-parameters";
-import { convertDateToCurrentDateWithoutTime, convertToDateString } from "@/utils/util";
+import { convertDateToCurrentDateWithoutTime, convertToDateString, generateErrorMessage } from "@/utils/util";
 import NavigationButton from "../../buttons/navigate-button";
+import Toast from "../../toast";
 
 interface ITaskCreationForm {
     departmentArr: Array<StrapiData<DepartmentAttributes>>,
     carWashArr: Array<StrapiData<CarWashAttributes>>,
-    userArr: Array<StrapiData<UserAttributes>>,
+    initUserArr: Array<StrapiData<UserAttributes>>,
     type: string,
     parentTask: number,
 }
@@ -42,24 +43,18 @@ interface ITaskData {
 
 }
 
-interface ICategories  {
-    categoryArr: Array<StrapiData<CategoryAttributes>>,
-    subcategoryArr: Array<StrapiData<SubCategoryAttributes>>
-}
+export default function TaskCreationForm ({ departmentArr, carWashArr, type, parentTask, initUserArr } : ITaskCreationForm) {
 
-export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, type, parentTask } : ITaskCreationForm) {
     const {data : session} = useSession();
-    const [ categoryArrs, setCategoryArrs ] = useState<ICategories>({
-        categoryArr: [],
-        subcategoryArr: [],
-    });
-
     const router = useRouter();
+
+    const [ error, setError ] = useState<string>('');
+    const [ success, setSuccess ] = useState<string>('');
 
     const [ taskData, setTaskData ] = useState<ITaskData>({
         title: '',
         body: '',
-        type: type === 'appeal' ? 'Обращение' : 'Задача',
+        type: type,
         category: '',
         subcategory: '',
         createdUserBy: null,
@@ -86,51 +81,6 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
 
     }, [session])
 
-    useEffect(() => {
-        const getCategoryAsync = async () => {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/categories?populate[0]=department&filters[department][id][$eq]=${taskData.department}`, {
-                headers: {
-                    Authorization: `Bearer ${session?.user.jwt}`
-                }     
-            });
-            setCategoryArrs({
-                ...categoryArrs,
-                categoryArr: [...response.data.data]
-            }); 
-            setTaskData({
-                ...taskData,
-                category: '',
-                subcategory: ''
-            });         
-        }
-        if(taskData.department) {
-          getCategoryAsync();   
-        }
-        
-
-    },[taskData.department])
-
-    useEffect(() => {
-        const getSubCategoryAsync = async () => {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/subcategories?populate[0]=category&filters[category][id][$eq]=${taskData.category}`, {
-                headers: {
-                    Authorization: `Bearer ${session?.user.jwt}`
-                }     
-            });
-            setCategoryArrs({
-                ...categoryArrs,
-                subcategoryArr: [...response.data.data]
-            });
-            setTaskData({
-                ...taskData,
-                subcategory: ''
-            });           
-        }
-        if (taskData.category) {
-            getSubCategoryAsync();            
-        }
-    },[taskData.category])
-
     const handleChange = ({target : { name, value, files }} : ChangeEvent<HTMLInputElement>) => {
         if (name === 'asiignees' || name === 'carWashes') {
             if ( !taskData[name].includes(value) ) {
@@ -155,7 +105,6 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                 [name]: Number(value.split('_')[0])
             })
         }
-
     }
 
     const handleQuillChange = (context: string) => {
@@ -165,8 +114,8 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
         })
     }
 
-    //formate date to correct from moment js. from Sat Nov 18 2023 00:00:00 GMT+0300 (Москва, стандартное время) to 18.11.2023
-    //set this date to deadlineDate
+    // formate date to correct from moment js. from Sat Nov 18 2023 00:00:00 GMT+0300 (Москва, стандартное время) to 18.11.2023
+    // set this date to deadlineDate
     // and set time to deadlineTime 
 
     const deleteElement = ({currentTarget : { name, value }} : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -202,32 +151,41 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
             const uuid = window.crypto.randomUUID();
             const formData = new FormData();
             const deadline = convertToDateString(`${taskData.deadlineDate} ${taskData.deadlineTime}`);
-
             const body = {
                     ...taskData,
                     asiignees: taskData.asiignees.map((department: string) => Number(department.split('_')[0])),
                     carWashes: taskData.carWashes.map((carwash: string) => Number(carwash.split('_')[0])),
                     isClosed : false,
-                    status: 1,
+                    status: 2,
                     slug: uuid,
                     attachments: null,
                     deadline: new Date(deadline),
             }
+            const validationError = generateErrorMessage(setError, body);
             formData.append('data', JSON.stringify(body));
             taskData.attachments.forEach((attachment: any) => formData.append(`files.attachments`,attachment, attachment.name));
-            try {
-                const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`, 
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${session?.user.jwt}`,
-                        "Content-Type": "multipart/form-data"
-                    }
-                });
-                router.refresh();
-                taskData.parentTask ? router.push(`./${taskData.parentTask}`) : router.push('/protected/tasks')
-            } catch (error) {
-                console.log(error);
+            if (!validationError) {
+                try {
+                    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`, 
+                    formData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${session?.user.jwt}`,
+                            "Content-Type": "multipart/form-data"
+                        }
+                    });
+                    setSuccess(`${taskData.type} успешно ${taskData.type === 'Обращение' ? 'создано' : 'создана'}`);
+                    
+                    router.refresh();
+                    taskData.parentTask ? 
+                        router.push(`./${taskData.parentTask}`) : 
+                        taskData.type === 'Обращение' ? 
+                        router.push('/protected/tasks') : 
+                        router.push('/protected/todos');
+                } catch (error: any) {
+                    console.log(error);
+                    setError(error);
+                }
             }
         }
 
@@ -237,6 +195,8 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
 
     return (
         <main className=" justify-between flex h-screen">
+            <Toast text={error} closeToast={setError} type={"error"}/>
+            <Toast text={success} closeToast={setSuccess} type={"success"} />
             <form onSubmit={handleSubmit} className=" w-full h-1/2 min-h-fit flex flex-row justify-between" >
                 <div className=" pr-5 w-8/12">
                     <div className=" h-1/2">
@@ -260,16 +220,18 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, userArr, 
                     <NavigationButton className="ml-3 transition-all duration-300 hover:bg-bodydark1 hover:opacity-80 opacity-60 text-graydark px-3 py-2 rounded-md" endpoint={taskData.parentTask ? `/protected/tasks/${parentTask}` : "/protected/tasks"} label='Отменить' back={true} />
                     </div>
                 </div>
+                <div className=" w-4/12">
                     <TaskParameters 
                         taskData={taskData} 
                         setTaskData={setTaskData}
                         handleChange={handleChange} 
                         deleteElement={deleteElement} 
                         departmentArr={departmentArr} 
-                        initCategoryArr={categoryArrs.categoryArr} 
-                        initSubcategoryArr={categoryArrs.subcategoryArr} 
-                        userArr={userArr} 
+                        initCategoryArr={[]} 
+                        initSubcategoryArr={[]} 
+                        initUserArr={initUserArr} 
                         carWashArr={carWashArr}/>
+                </div>
             </form>
         </main>
     )

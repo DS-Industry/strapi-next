@@ -6,11 +6,12 @@ import { useState } from "react";
 interface ISortButton {
     name: string,
     title: string,
+    endpoint: string,
 }
 
 
 
-export default function SortButton ({name, title} : ISortButton) {
+export default function SortButton ({name, title, endpoint} : ISortButton) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [type, setType] = useState<string>('asc');
@@ -28,7 +29,7 @@ export default function SortButton ({name, title} : ISortButton) {
             setType('asc')
         }
         params.set('name',name);
-        router.push(`/protected/tasks?${params}`); 
+        router.push(`/protected/${endpoint}?${params}`); 
     }
 
 

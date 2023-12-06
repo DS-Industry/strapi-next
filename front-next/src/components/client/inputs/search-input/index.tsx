@@ -29,7 +29,7 @@ export default function SearchInput () {
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                 </svg>
             </div>
-            <input type="text" id="table-search-users" className="block p-2 pl-10 text-sm text-black border border-bodydark2 rounded-lg w-80 bg-whiter focus:border-primary focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search by name" onChange={handleChange} /> 
+            <input type="text" id="table-search-users" className="block p-2 pl-10 text-sm text-black border border-bodydark2 rounded-lg w-80 bg-whiter focus:border-primary focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Поиск по названию" onChange={handleChange} /> 
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import { authOptions } from "@/config/nextauth/auth";
-import { CarWashAttributes, StrapiData, StrapiResponseArray, TaskAttributes, UserAttributes } from "@/types/types";
+import { CarWashAttributes, StrapiData, StrapiResponseArray, TaskAttributes } from "@/types/types";
 import { dateToString } from "@/utils/util";
 import axios, { AxiosResponse } from "axios";
 import { getServerSession } from "next-auth";
@@ -77,7 +77,7 @@ export default async function SingleTaskPage ({ params } : any) {
                                             <SubTask 
                                                 parentId={task.data[0].id} 
                                                 isNotEmpty={childTask.data.length >= 0}>
-                                                <Table isSubTaskList={true} childTask={childTask} />
+                                                <Table isSubTaskList={true} data={childTask} endpoint=""/>
                                             </SubTask>
                                         ) 
                                     :   (

@@ -23,9 +23,46 @@ export function convertToDateString(inputDate: string): string {
     return dateString;
 }
 
+export function divideDateAndTime (inputDate: Date) {
+  const [datePart, timePart] = String(inputDate).split('T');
+  const [ year, month, day] = datePart.split('-'); 
+  const [ hour, minute, second ] = timePart.split(':');
+  const dateStrnig = `${day}.${month}.${year}`;
+  const timeString = `${hour}:${minute}`
+  return [ dateStrnig, timeString];
+}
+
 export function convertDateToCurrentDateWithoutTime(inputDate : Date): string {
 var dd = String(inputDate.getDate()).padStart(2, '0');
 var mm = String(inputDate.getMonth() + 1).padStart(2, '0'); //January is 0!
 var yyyy = inputDate.getFullYear();
 return dd + '.' + mm + '.' + yyyy;
 } 
+
+export function generateErrorMessage(setError: any, body: any) : boolean {
+  let validationError = false;
+  const translateObj = {
+    'priority' : 'Приоритет',
+    'title' : 'Название',
+    'department' : 'Отдел',
+    'category' : 'Категория',
+    'subcategory': 'Подкатегория',
+    'asiignees': 'Исполнители'
+}
+for (let key in body) {
+    if (((  
+        key === 'title' || 
+        key === 'department' || 
+        key === 'category' || 
+        key === 'subcategory' ) && 
+        body[key] === '' ) || 
+        (key === 'asiignees' && body[key].length === 0) ||
+        (key === 'priority' && body[key] === null)) {
+            console.log(body['priority']);
+            const translateValue = translateObj[key]
+        setError(`Поле ${translateValue} не должно быть пустым.`);
+        validationError=true;
+    }
+  }
+  return validationError 
+}

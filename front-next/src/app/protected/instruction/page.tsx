@@ -1,10 +1,17 @@
-export default function InsrtuctionPage () {
+import InstructionParameters from "@/components/client/instruction-parameter";
+import Wiki from "@/components/server/wiki";
+import { authOptions } from "@/config/nextauth/auth";
+import { getServerSession } from "next-auth";
+
+export default async function InsrtuctionPage () {
+    const session = await getServerSession(authOptions);
     return (
         <main>
-            <h1>
-                Instruction Page
-            </h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis nemo quam ipsum fugiat repellendus nostrum delectus veritatis voluptatibus, rerum laboriosam unde adipisci sed aperiam quos atque corporis omnis? Quis, corrupti.</p>
+
+            <div className=" flex justify-between">
+                <Wiki src="http://wiki.onvione.ru" />
+                <InstructionParameters session={session?.user} />
+            </div>
         </main>
     )
 }

@@ -25,7 +25,7 @@ export default function TaskItemList ({taskItems, deleteElement, name} : ITaskIt
             {
                 taskItems.map((item: any, index: number) => {
                     return (
-                        <li key={index} className=" bg-graydark p-1 text-xs rounded-md text-gray m-1">
+                        <li key={index} className=" bg-graydark p-1 text-xs rounded-md text-gray m-1 exclude-list-styling ">
                             <div className="flex justify-between items-center">
                                 <p className=" mr-1">{name === 'attachments' ? shortingStr(item.name) : item.split('_')[1]}</p>
                                 <label>

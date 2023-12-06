@@ -19,7 +19,22 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         jwt: async ({token, user}) => {
             if (user) {
-              token.user = user;
+                token.user = {
+                    id: user.id,
+                    jwt: user.jwt,
+                    name: user.name,
+                    lastname: user.lastname,
+                    email: user.email,
+                    username: user.username,
+                    avatar: user.avatar,
+                    role: user.role,
+                    department: {
+                        id: user.department.id, 
+                        name: user.department.name
+                    },
+                    createdAt: user.createdAt,
+                    updatedAt: user.updatedAt
+                }
             }
             return token;
           },
@@ -66,7 +81,6 @@ export const authOptions: NextAuthOptions = {
                     }
                 }) 
                 const fullDataUser = {...data.user,...fullInfoUser, jwt: data.jwt};
-                console.log(fullDataUser);
                 return fullDataUser ? fullDataUser : null
             } catch (error: any) {
                 const errorMessage = error.response.data.message[0].messages[0].message

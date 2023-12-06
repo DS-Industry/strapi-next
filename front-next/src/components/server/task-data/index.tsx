@@ -46,14 +46,6 @@ export default function TaskData ({taskId, taskStatus, priority, type, deadline,
         </div>
         <div className="flex flex-row justify-evenly ">
             <div className=" w-1/2 flex justify-start">
-                <p>Дедлайн : </p>
-            </div>
-            <div className=" w-1/2 px-4 flex justify-start">
-                <p>{dateToString(deadline)}</p>
-            </div>
-        </div>
-        <div className="flex flex-row justify-evenly ">
-            <div className=" w-1/2 flex justify-start">
                 <p>Отдел : </p>
             </div>
             <div className=" w-1/2 px-4 flex justify-start">
@@ -108,6 +100,14 @@ export default function TaskData ({taskId, taskStatus, priority, type, deadline,
                             <li key={index}>{ carWash }</li>
                         )  
                     })}</ul> 
+            </div>
+        </div>
+        <div className="flex flex-row justify-evenly ">
+            <div className=" w-1/2 flex justify-start">
+                <p>Дедлайн : </p>
+            </div>
+            <div className=" w-1/2 px-4 flex justify-start">
+                <p>{dateToString(deadline)}</p>
             </div>
         </div>
  </div> 

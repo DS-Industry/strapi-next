@@ -19,13 +19,11 @@ export default async function CreateTodoPage ({ searchParams } : any) {
             headers
         })
     ]);
-    console.log('here below type: ');
-    console.log('type -> ', searchParams.type);
 
     return (
         <main>
             <TaskCreationForm 
-                type='appeal' 
+                type='Задача' 
                 parentTask={searchParams.parentTask}
                 userArr={users} 
                 departmentArr={department.data} 

@@ -1,23 +1,56 @@
-import DropdownButton from "@/components/client/buttons/dropdown-button";
 import SearchInput from "@/components/client/inputs/search-input";
 import Table from "@/components/server/table";
 import { authOptions } from "@/config/nextauth/auth"
+import { StrapiResponseArray, TaskAttributes } from "@/types/types";
+import axios, { AxiosResponse } from "axios";
 import { getServerSession } from "next-auth/next"
 import Link from "next/link";
 
-export default async function TaskListPage ({searchParams : { search, sortType, name, type='Обращение' }} : {searchParams: { search: string, sortType: string, name: string, type: string }}) {
-    const { user } : any = await getServerSession(authOptions);
+export default async function TaskListPage ({searchParams : { search, sortType, name }} : {searchParams: { search: string, sortType: string, name: string }}) {
+    const session = await getServerSession(authOptions);
+
+    const { data: departmentTaskList }: AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/department/${session?.user.department.id}?type=Обращение`, {
+        headers: {
+            Authorization: `Bearer ${session?.user.jwt}`
+        }
+    });
+    const { data: personalTaskList }: AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/person/${session?.user.id}?type=Обращение`, {
+        headers: {
+            Authorization: `Bearer ${session?.user.jwt}`
+        }
+    });
+    const { data: ClosedTask }: AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/closed/${session?.user.department.id}?type=Обращение`, {
+        headers: {
+            Authorization: `Bearer ${session?.user.jwt}`
+        }
+    });
+
     return (
-        <main className="overflow-x-auto shadow-md sm:rounded-lg">
-            <p className=" mb-4 text-3xl text-boxdark font-semibold">Department {user.department.name}</p>
-            <div className="flex items-center justify-between bg-white dark:bg-gray-900 px-5 py-5">
-                <div className="flex justify-evenly items-center w-1/5">
-                <Link href="tasks/create?type=appeal" className="block rounded-md px-4 py-2 transition-all duration-300 bg-primary w-auto border-2 border-gray hover:border-primary text-white">Создать обращение</Link>
-                    {/* <NavigationButton endpoint="tasks/create" label="Create!" /> */}
-                </div>
-                <SearchInput />
+<main className="overflow-x-auto shadow-md sm:rounded-lg">
+            <div className="flex justify-evenly items-center w-full">
+                <p className="text-3xl text-boxdark font-semibold">Отдел {session?.user.department.name}</p>
+                    <Link href="tasks/create?type=Обращение" className="block rounded-md px-4 py-2 transition-all duration-300 bg-primary w-auto border-2 border-gray hover:border-primary text-white ">Создать Обращение</Link>
+                    <SearchInput />
             </div>
-            <Table search={search} type={type} sortType={sortType} name={name} isSubTaskList={false} />
+            <div>
+                <div className="flex items-center justify-start bg-white dark:bg-gray-900 py-5 mt-10 px-10">
+                    <p className=" text-2xl text-black-2">Обращения на отдел</p>
+                </div>
+                <Table data={departmentTaskList} isSubTaskList={false} endpoint="tasks"  />
+            </div>
+            <div>
+                <div className="flex items-center justify-between bg-white dark:bg-gray-900 px-10 py-5 mt-10">
+                    <p className=" text-2xl text-black-2" >Мои обращения</p>
+
+                </div>
+                <Table data={personalTaskList} isSubTaskList={false} endpoint="tasks" />
+            </div>
+            <div>
+                <div className="flex items-center justify-between bg-white dark:bg-gray-900 px-10 py-5 mt-10">
+                    <p className=" text-2xl text-black-2" >Закрытые обращения</p>
+                </div>
+                <Table data={ClosedTask} isSubTaskList={false} endpoint="tasks" />
+            </div>
         </main>
     )
 }

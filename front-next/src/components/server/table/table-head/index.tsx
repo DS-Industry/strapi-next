@@ -1,46 +1,47 @@
 import SortButton from "@/components/client/buttons/sort-button";
 
 interface ITableHead {
-    isSubTaskList: boolean
+    isSubTaskList: boolean,
+    endpoint: string,
 }
 
-export default function TableHead ({isSubTaskList} : ITableHead) {
+export default function TableHead ({isSubTaskList, endpoint } : ITableHead) {
     return (
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" className="px-1 py-1 text-center">
-                    Link
+                    Ссылка
                 </th>
                 <th scope="col" className="px-6 py-3 text-center">
-                { !isSubTaskList ?  <SortButton title="Name" name="title"/> : 'Name'}
+                { !isSubTaskList ?  <SortButton title="Название" name="title" endpoint={endpoint}/> : 'Название'}
                 </th>
                 <th scope="col" className="px-6 py-3 text-center">
-                    Creator
+                    Создатель
                     {/* <SortButton title="Creator" name="createdUserBy"/> */}
                 </th>
                 { !isSubTaskList && (
                     <>
                         <th scope="col" className="px-6 py-3 text-center">
-                            Department
+                            Отдел
                             {/* <SortButton title="Department" name="departments"/> */}
                         </th>
                         <th scope="col" className="px-6 py-3 text-center">
-                            carWash
+                            Мой-ка
                             {/* <SortButton title="Carwash" name="carWash"/> */}
                         </th>
                     </>
                     )
                 }
                 <th scope="col" className="px-6 py-3 text-center">
-                    Priority
+                    Приоритет
                     {/* <SortButton title='Priority' name="priority"/> */}
                 </th>
                 <th scope="col" className="px-6 py-3 text-center">
-                    Status
+                    Статус
                     {/* <SortButton title='Status' name="status"/> */}
                 </th>
                 <th scope="col" className="px-6 py-3 text-center">
-                    { !isSubTaskList ?  <SortButton title="Created At" name="title"/> : 'Updated At'}
+                    { !isSubTaskList ?  <SortButton title="Дата создания" name="title" endpoint={endpoint} /> : 'Дата создания'}
                 </th>
             </tr>
         </thead>

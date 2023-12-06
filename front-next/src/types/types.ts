@@ -96,7 +96,7 @@ export type CommentAttributes = {
     updatedAt: Date,
     publishedAt: Date,
     createdUserBy: StrapiResponseObject<UserAttributes>,
-    tasks: StrapiResponseObject<TaskAttributes>,
+    task: StrapiResponseObject<TaskAttributes>,
 }
 
 export type DepartmentAttributes = {

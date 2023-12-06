@@ -28,14 +28,19 @@ declare module "next-auth" {
     jwt: JWT,
   }
   interface User extends DefaultUser {
-    id: string,
+    id?: string,
     username: string,
     email: string,
     role: Role,
     createdAt: Date,
     updatedAt: Date,
     avatar: Avatar,
-    jwt: string,
+    jwt?: string,
+    lastname: string,
+    department: {
+      id: number,
+      name: string
+    },
   } 
   interface AdapterUser extends User {}
   interface JWT extends DefaultJWT {
@@ -45,5 +50,12 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
     user: User,
+    name?: string | null,
+    lastname: string,
+    username: string,
+    createdAt: Date,
+    updatedAt: Date,
+    role: string,
+    avatar: string
   }
 }

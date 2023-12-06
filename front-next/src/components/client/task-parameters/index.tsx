@@ -1,18 +1,20 @@
 'use client'
 
-import { CarWashAttributes, CategoryAttributes, DepartmentAttributes, StatusAttributes, StrapiData, StrapiResponseObject, SubCategoryAttributes, UserAttributes } from "@/types/types";
+import { CarWashAttributes, CategoryAttributes, DepartmentAttributes, StrapiData, SubCategoryAttributes, UserAttributes } from "@/types/types";
 import DropdownList from "../buttons/dropdown-list";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import TaskItemList from "../task-item-list";
 import DataTimePicker from "../datatime-picker";
 import { priorityArr } from "@/components/server/hard-data";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 interface ITaskParameters {
     taskData: any,
     handleChange: (event: ChangeEvent<HTMLInputElement>) => void,
     deleteElement: any,
     departmentArr: Array<StrapiData<DepartmentAttributes>>,
-    userArr: Array<StrapiData<UserAttributes>>,
+    initUserArr: Array<StrapiData<UserAttributes>>,
     carWashArr: Array<StrapiData<CarWashAttributes>>,
     setTaskData: any
     initCategoryArr: StrapiData<CategoryAttributes>[],
@@ -24,12 +26,78 @@ export default function TaskParameters ({
         handleChange, 
         deleteElement, 
         departmentArr,  
-        userArr, 
+        initUserArr, 
         carWashArr,
         setTaskData,
         initCategoryArr,
         initSubcategoryArr
     } : ITaskParameters) {
+
+        const { data: session } = useSession();
+
+        const [ ChangedTaskArrs, setChangedTaskArrs ] = useState({
+            categoryArr: initCategoryArr,
+            subcategoryArr: initSubcategoryArr,
+            userArr: initUserArr
+        })
+
+        const [ isInitValues, setIsInitValues ] = useState<boolean>(true);
+
+        useEffect(() => {
+            const getCategoryAndUserAsync = async () => {
+                const categories = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/categories?populate[0]=department&filters[department][id][$eq]=${taskData.department}`, {
+                    headers: {
+                        Authorization: `Bearer ${session?.user.jwt}`
+                    }     
+                });
+                const users = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users?filters[department][id][$eq]=${taskData.department}`, {
+                    headers: {
+                        Authorization: `Bearer ${session?.user.jwt}`
+                    }
+                });
+                setChangedTaskArrs({
+                    ...ChangedTaskArrs,
+                    categoryArr: [...categories.data.data],
+                    userArr: [...users.data]
+                }); 
+
+                if (!isInitValues) {
+                    setTaskData({
+                        ...taskData,
+                        category: '',
+                        subcategory: '',
+                        asiignees: []
+                    });     
+                }    
+            }
+            if(taskData.department) {
+              getCategoryAndUserAsync();   
+            }
+        },[taskData.department])
+    
+        useEffect(() => {
+            const getSubCategoryAsync = async () => {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/subcategories?populate[0]=category&filters[category][id][$eq]=${taskData.category}`, {
+                    headers: {
+                        Authorization: `Bearer ${session?.user.jwt}`
+                    }     
+                });
+                setChangedTaskArrs({
+                    ...ChangedTaskArrs,
+                    subcategoryArr: [...response.data.data]
+                });
+                
+                if (!isInitValues) {
+                    setTaskData({
+                        ...taskData,
+                        subcategory: ''
+                    });  
+                }
+            }
+            if (taskData.category) {
+                getSubCategoryAsync();            
+            }
+        },[taskData.category])
 
 
         const handleDTPickerChange = (moment: any) => {
@@ -50,15 +118,46 @@ export default function TaskParameters ({
             }
         }
 
+        const handleTaskParameterItem = (event: ChangeEvent<HTMLInputElement>) => {
+            handleChange(event);
+            setIsInitValues(false);
+            console.log(taskData);
+        }
+
     return (
         <div className=" border bg-black text-white w-full flex flex-col min-h-90 h-auto justify-between p-5 rounded-md">
-            <DropdownList taskData={taskData} handleChange={handleChange} name="priority" label="Приоритет" dataArr={priorityArr} />
-            <DropdownList taskData={taskData} handleChange={handleChange} name='department' label="Отдел" dataArr={departmentArr} />
-            <DropdownList taskData={taskData} handleChange={handleChange} name='category' label="Категория" dataArr={initCategoryArr} />
-            <DropdownList taskData={taskData} handleChange={handleChange} name='subcategory' label="Подкатегория" 
-                dataArr={initSubcategoryArr} />
+            <DropdownList 
+                taskData={taskData} 
+                handleChange={handleTaskParameterItem} 
+                name="priority" 
+                label="Приоритет" 
+                dataArr={priorityArr} />
+            <DropdownList 
+                taskData={taskData} 
+                handleChange={handleTaskParameterItem} 
+                name='department' 
+                label="Отдел" 
+                dataArr={departmentArr} />
+            <DropdownList 
+                taskData={taskData} 
+                handleChange={handleTaskParameterItem} 
+                name='category' 
+                label="Категория" 
+                dataArr={ChangedTaskArrs.categoryArr} />
+            <DropdownList 
+                taskData={taskData} 
+                handleChange={handleTaskParameterItem} 
+                name='subcategory' 
+                label="Подкатегория" 
+                dataArr={ChangedTaskArrs.subcategoryArr} />
             <div>
-                <DropdownList taskData={taskData} handleChange={handleChange} name='asiignees' label="Исполнители" dataArr={userArr} />
+                <DropdownList 
+                    taskData={taskData} 
+                    handleChange={handleTaskParameterItem} 
+                    name='asiignees' 
+                    label="Исполнители" 
+                    dataArr={ChangedTaskArrs.userArr} />
+
                     { taskData.asiignees.length ?
                         <TaskItemList taskItems={taskData.asiignees} deleteElement={deleteElement} name="asiignees" />  
                             : (
@@ -69,7 +168,12 @@ export default function TaskParameters ({
                     }   
             </div>
             <div>
-                <DropdownList taskData={taskData} handleChange={handleChange} name='carWashes' label="АМС" dataArr={carWashArr} />
+                <DropdownList 
+                    taskData={taskData} 
+                    handleChange={handleTaskParameterItem} 
+                    name='carWashes' 
+                    label="АМС" 
+                    dataArr={carWashArr} />
                     {taskData.carWashes.length ?
                             <TaskItemList taskItems={taskData.carWashes} deleteElement={deleteElement} name="carWashes" />  
                             : (
@@ -79,7 +183,10 @@ export default function TaskParameters ({
                             )                   
                     }
             </div>
-            <DataTimePicker handleChange={handleDTPickerChange} name="deadline" value={`${taskData.deadlineDate} ${taskData.deadlineTime}`} />
+            <DataTimePicker 
+                handleChange={handleDTPickerChange} 
+                name="deadline" 
+                value={`${taskData.deadlineDate} ${taskData.deadlineTime}`} />
         </div>
     )
 }

@@ -23,9 +23,9 @@ export default async function CreateTaskPage ({ searchParams } : any) {
     return (
         <main>
             <TaskCreationForm 
-                type='Задача' 
+                type='Обращение' 
                 parentTask={searchParams.parentTask}
-                userArr={users} 
+                initUserArr={users} 
                 departmentArr={department.data} 
                 carWashArr={carwash.data} />
         </main>
