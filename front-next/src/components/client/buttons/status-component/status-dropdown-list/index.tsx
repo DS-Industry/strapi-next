@@ -3,7 +3,7 @@
 import { StatusAttributes, StrapiData, StrapiResponseArray, StrapiResponseObject, TaskAttributes } from "@/types/types";
 import axios, { AxiosResponse } from "axios";
 import { useSession } from "next-auth/react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 

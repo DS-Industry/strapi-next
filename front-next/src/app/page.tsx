@@ -15,11 +15,8 @@ export default async function Home() {
         </div>
         <div className=' w-full flex justify-evenly items-center'>
           <div className=' w-1/3'>
-            <p className=' text-5xl'>Lorem ipsum dolor sit amet consectetur</p>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem voluptate sunt dolor neque ea consectetur. Nesciunt tempore, itaque fuga saepe, incidunt obcaecati nostrum tempora at explicabo rem numquam quasi magni. Praesentium, vero hic dolores in, deserunt nihil optio, incidunt autem obcaecati veritatis ipsam nulla. Iste dolor, soluta aspernatur ipsa fugiat neque aut?</p>
-          </div>
-          <div className=' w-1/3'>
-            <Image  src={Hero} alt='hero img' />
+            <p className=' text-5xl'>Система Help Desk</p>
+            <p>Help Desk - это инструмент, предназначенный для систематического контроля, управления и отслеживания выполнения задач в проекте или организации. Он обеспечивает возможность создания, назначения, приоритезации и мониторинга задач, а также позволяет командам эффективно сотрудничать, устанавливать сроки и следить за прогрессом проектов.</p>
           </div>
         </div>  
       </main>

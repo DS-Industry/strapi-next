@@ -11,8 +11,8 @@
     "start:dev": "concurrently \"yarn workspace strapi-api develop\" \"yarn workspace front-next dev\"",
     "start:front:dev": "yarn workspace front-next dev",
     "start:back:dev": "yarn workspace strapi-api develop",
-    "start:prod": "concurrently \"yarn workspace strapi-api start\" \"yarn workspace strapi-api start start\"",
-    "build": "concurrently \"yarn workspace server build\" \"yarn workspace front-next build\""
+    "start:prod": "concurrently \"yarn workspace strapi-api start\" \"yarn workspace front-text start \"",
+    "build": "concurrently \"yarn workspace strapi-api build\" \"yarn workspace front-next build\""
 },
   "dependencies": {
     "concurrently": "^8.2.1"
