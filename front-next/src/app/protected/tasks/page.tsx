@@ -2,14 +2,14 @@ import SearchInput from "@/components/client/inputs/search-input";
 import Table from "@/components/server/table";
 import { authOptions } from "@/config/nextauth/auth"
 import { StrapiResponseArray, TaskAttributes } from "@/types/types";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { getServerSession } from "next-auth/next"
 import Link from "next/link";
 
 export default async function TaskListPage ({searchParams : { search, sortType, name }} : {searchParams: { search: string, sortType: string, name: string }}) {
     const session = await getServerSession(authOptions);
 
-    const [{ data: departmentTaskList }, { data: personalTaskList }, { data: ClosedTask } ] : StrapiResponseArray<TaskAttributes>[] = await Promise.all([
+    const [{ data: departmentTaskList }, { data: personalTaskList }, { data: ClosedTask }, {data: createdByMeTask} ] : StrapiResponseArray<TaskAttributes>[] = await Promise.all([
         axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/department/${session?.user.department.id}?type=Обращение`, {
             headers: {
                 Authorization: `Bearer ${session?.user.jwt}`
@@ -21,6 +21,11 @@ export default async function TaskListPage ({searchParams : { search, sortType, 
             }
         }),
         axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/closed/${session?.user.department.id}?type=Обращение`, {
+            headers: {
+                Authorization: `Bearer ${session?.user.jwt}`
+            }
+        }),
+        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/createdUserBy/${session?.user.id}?type=Обращение`, {
             headers: {
                 Authorization: `Bearer ${session?.user.jwt}`
             }
@@ -48,6 +53,13 @@ export default async function TaskListPage ({searchParams : { search, sortType, 
 
                 </div>
                 <Table data={personalTaskList} isSubTaskList={false} endpoint="tasks" />
+            </div>
+            <div>
+                <div className="flex items-center justify-between bg-white dark:bg-gray-900 px-10 py-5 mt-10">
+                    <p className=" text-2xl text-black-2" >Cозданные мной обращения</p>
+
+                </div>
+                <Table data={createdByMeTask} isSubTaskList={false} endpoint="tasks" />
             </div>
             <div>
                 <div className="flex items-center justify-between bg-white dark:bg-gray-900 px-10 py-5 mt-10">

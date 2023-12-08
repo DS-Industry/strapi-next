@@ -9,7 +9,7 @@ import Link from "next/link";
 export default async function TodoListPage ({searchParams : { search, sortType, name }} : {searchParams: { search: string, sortType: string, name: string, table: string, tableValue: string }}) {
 
     const session  = await getServerSession(authOptions);
-    const [{ data: departmentTaskList },{ data: personalTaskList }, { data: closedTask }  ] : StrapiResponseArray<TaskAttributes>[] = await Promise.all([
+    const [{ data: departmentTaskList },{ data: personalTaskList }, { data: closedTask }, { data: createdByMeTask }  ] : StrapiResponseArray<TaskAttributes>[] = await Promise.all([
         axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/department/${session?.user.department.id}?type=Задача`, {
             headers: {
                 Authorization: `Bearer ${session?.user.jwt}`
@@ -24,11 +24,16 @@ export default async function TodoListPage ({searchParams : { search, sortType, 
             headers: {
                 Authorization: `Bearer ${session?.user.jwt}`
             }
+        }),
+        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/createdUserBy/${session?.user.id}?type=Задача`, {
+            headers: {
+                Authorization: `Bearer ${session?.user.jwt}`
+            }
         })
     ])
 
     return (
-        <main className="overflow-x-auto shadow-md sm:rounded-lg">
+        <main className="overflow-x-auto shadow-md sm:rounded-lg max-w-full">
             <div className="flex justify-evenly items-center w-full">
                 <p className="text-3xl text-boxdark font-semibold">Отдел {session?.user.department.name}</p>
                     <Link href="todos/create?type=Задача" className="block rounded-md px-4 py-2 transition-all duration-300 bg-primary w-auto border-2 border-gray hover:border-primary text-white ">Создать задачу</Link>
@@ -46,6 +51,13 @@ export default async function TodoListPage ({searchParams : { search, sortType, 
 
                 </div>
                 <Table data={personalTaskList} isSubTaskList={false} endpoint="todos" />
+            </div>
+            <div>
+                <div className="flex items-center justify-between bg-white dark:bg-gray-900 px-10 py-5 mt-10">
+                    <p className=" text-2xl text-black-2" >Cозданные мной задачи</p>
+
+                </div>
+                <Table data={createdByMeTask} isSubTaskList={false} endpoint="todos" />
             </div>
             <div>
                 <div className="flex items-center justify-between bg-white dark:bg-gray-900 px-10 py-5 mt-10">
