@@ -36,7 +36,7 @@ export const LoginForm = () => {
 
       setLoading(false);
       if (res?.ok) {
-        if (callbackUrl === `${process.env.NEXT_PUBLIC_URL}/`) {
+        if (callbackUrl === `${process.env.NEXT_PUBLIC_URL}`) {
           callbackUrl += 'protected/home';
         }
         router.refresh();

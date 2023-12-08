@@ -17,7 +17,7 @@ const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
 
 const modules = {
     toolbar: [
-      [{ header: '1' }, { header: '2' }, { font: [] }],
+      [{ header: '1' }, { header: '2' }],
       ['bold', 'italic', 'underline', 'strike'],
       [
         { list: 'ordered' },

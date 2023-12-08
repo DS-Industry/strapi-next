@@ -16,6 +16,8 @@ import Tab from "@/components/client/tabs/tab"; */
 import { PiPencilSimpleLineFill } from "react-icons/pi";
 import CommentComponent from "@/components/server/comment";
 import EditTask from "@/components/client/edit-task";
+import AttachmentsInput from "@/components/client/inputs/attachments-input";
+import { RiExternalLinkLine } from "react-icons/ri";
 
 export default async function SingleTaskPage ({ params } : any) {
     const session = await getServerSession(authOptions);
@@ -52,7 +54,20 @@ export default async function SingleTaskPage ({ params } : any) {
         <main className=" flex h-full w-full flex-row justify-between">
                 <div className=" pr-5 w-8/12">
                     <p className=" w-full flex justify-start items-center text-sm bg-gray text-body pl-2 rounded-md" 
-                        >Cоздана {dateToString(task.data[0].attributes.createdAt)}, Обновлена {dateToString(task.data[0].attributes.updatedAt)}</p>
+                        >Cоздана {dateToString(task.data[0].attributes.createdAt)}, Обновлена {dateToString(task.data[0].attributes.updatedAt)}
+                        {
+                            task.data[0].attributes.parentTask && 
+                            task.data[0].attributes.parentTask.data.length > 0 && 
+                            task.data[0].attributes.parentTask.data[0].id && 
+                                <NavigationButton 
+                                    endpoint={`/protected/tasks/${task.data[0].attributes.parentTask.data[0].id}`} 
+                                    label={
+                                        <p className=" flex items-center gap-2 ">
+                                            Перейти к родительской задаче <RiExternalLinkLine />
+                                        </p>
+                                    } 
+                                    className=" hover:text-white ml-5 bg-black text-white text-opacity-90 hover:text-opacity-100 hover:bg-graydark p-1 rounded-md transition-all duration-300"/>}
+                        </p>
                     <div className=" h-1/2">
                         <p 
                             className=" w-full flex items-center mb-3 text-4xl h-12 bg-gray text-black border-white pl-2 rounded-md" 
@@ -69,26 +84,31 @@ export default async function SingleTaskPage ({ params } : any) {
                         }
                         <div>
                             <div className=" w-full mt-10 overflow-auto">
+                                <AttachmentsInput taskId={task.data[0].id} attachmentsArray={task.data[0].attributes.attachments ? task.data[0].attributes.attachments : {data: []}}/>
                                 {
                                     task.data[0].attributes.parentTask.data.length > 0 
                                     ? 
                                         '' : childTask.data.length > 0 ?
                                         (
-                                            <SubTask 
-                                                parentId={task.data[0].id} 
-                                                isNotEmpty={childTask.data.length >= 0}>
-                                                <Table isSubTaskList={true} data={childTask} endpoint=""/>
-                                            </SubTask>
+                                            <div>
+                                                <SubTask 
+                                                    parentId={task.data[0].id} 
+                                                    isNotEmpty={childTask.data.length >= 0}>
+                                                    <Table isSubTaskList={true} data={childTask.data} endpoint=""/>
+                                                </SubTask>
+                                            </div>
                                         ) 
                                     :   (
-                                            <NavigationButton className=" hover:text-white bg-black text-white text-opacity-90 hover:text-opacity-100 hover:bg-graydark p-1 rounded-md transition-all duration-300" 
-                                            label={(
-                                                <div className=" w-auto flex items-center justify-between">
-                                                    <p className=" pr-2">Создать подзадачу</p>
-                                                    <PiPencilSimpleLineFill />
-                                                </div>
-                                            )} 
-                                            endpoint={`/protected/tasks/create?parentTask=${task.data[0].id}`} />
+                                            <div>
+                                                <NavigationButton className=" hover:text-white bg-black text-white text-opacity-90 hover:text-opacity-100 hover:bg-graydark p-1 rounded-md transition-all duration-300" 
+                                                label={(
+                                                    <div className=" w-auto flex items-center justify-between">
+                                                        <p className=" pr-2">Создать подзадачу</p>
+                                                        <PiPencilSimpleLineFill />
+                                                    </div>
+                                                )} 
+                                                endpoint={`/protected/todos/create?parentTask=${task.data[0].id}`} />
+                                            </div>
                                         )
                                 }
                             </div> 

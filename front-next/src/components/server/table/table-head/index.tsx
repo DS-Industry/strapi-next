@@ -26,7 +26,7 @@ export default function TableHead ({isSubTaskList, endpoint } : ITableHead) {
                             {/* <SortButton title="Department" name="departments"/> */}
                         </th>
                         <th scope="col" className="px-6 py-3 text-center">
-                            Мой-ка
+                            Исполнитель
                             {/* <SortButton title="Carwash" name="carWash"/> */}
                         </th>
                     </>
@@ -41,7 +41,10 @@ export default function TableHead ({isSubTaskList, endpoint } : ITableHead) {
                     {/* <SortButton title='Status' name="status"/> */}
                 </th>
                 <th scope="col" className="px-6 py-3 text-center">
-                    { !isSubTaskList ?  <SortButton title="Дата создания" name="title" endpoint={endpoint} /> : 'Дата создания'}
+                    { !isSubTaskList ?  <SortButton title="Дата создания" name="createdAt" endpoint={endpoint} /> : 'Дата создания'}
+                </th>
+                <th scope="col" className="px-6 py-3 text-center">
+                    { !isSubTaskList ?  <SortButton title="Cрок выполнения" name="deadline" endpoint={endpoint} /> : 'Дата создания'}
                 </th>
             </tr>
         </thead>

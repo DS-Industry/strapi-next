@@ -1,12 +1,10 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import QuillEditor from "../../quill"
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import SingleComment from "../../single-comment";
-import { dateToString } from "@/utils/util";
 
 interface ICommentInput {
     taskId: number
@@ -43,6 +41,7 @@ export default function CommentInput ({ taskId }: ICommentInput) {
     });
 
     const handleChange = (context: string) => {
+        console.log(context);
         setComment((prevComment : IComment) => {
             return {
                 ...prevComment,
@@ -82,28 +81,13 @@ export default function CommentInput ({ taskId }: ICommentInput) {
         }
         createCommentAsync();
     }
-/* 
-    useEffect(() => {
-        const userCommentData = localStorage.getItem('userCommentData');
-        if (userCommentData) {
-            console.log(userCommentData);
-            const [ url, context, createdAt, ownerName ] = userCommentData.split('|');
-            console.log(createdAt);
-            setResComment({
-                url,
-                context,
-                createdAt: new Date(createdAt),
-                ownerName
-            })
-        }
-    }, []) */
 
     return (
         <div className=" mt-5">
             <QuillEditor handleChange={handleChange} label="Если нужно что-то уточнить, напишите комментарий" openEditorEx={true} loading={loading}/>
             <button 
                 onClick={handleClick} 
-                className={`${!comment.text ? ' invisible' : 'visible' } transition-all duration-300 w-auto flex justify-end`}>{
+                className={`${!comment.text ? ' invisible' : 'visible' } transition-all duration-300 w-auto flex justify-end mt-2 px-2 py-1 bg-primary text-white rounded-md opacity-80 hover:opacity-100`}>{
                 loading ? (
                     <div className=" animate-pulse h-10 w-full bg-graydark rounded-md">
                     </div>

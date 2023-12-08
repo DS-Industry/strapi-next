@@ -36,12 +36,13 @@ export default function StatusDropDownList ({ taskStatus, taskId } : IStatusDrop
         const updateTaskStatusAsync = async () => {
             try {
                 setIsLoading(true);
-                console.log('this event target value in handle click', event.currentTarget.value);
                 let id = Number(event.currentTarget.value) === 10 ? 3 : Number(event.currentTarget.value);
+                const data = {
+                    status: id,
+                    isClosed: id === 8 ? true : false
+                }
                 const {data : { data : task }}: AxiosResponse<StrapiResponseObject<TaskAttributes>> = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskId}?populate=status`, {
-                    data : {
-                        status: id
-                    }
+                    data
                 },{
                     headers: {
                         Authorization : `Bearer ${session?.user.jwt}`

@@ -136,21 +136,14 @@ export type SubCategoryAttributes = {
 export type AttachmentsAttributes = {
     name: string,
     alternativeText: string,
-    captiom: string,
+    caption: string,
+    width: number,
+    height: number,
     createdAt: Date,
     updatedAt: Date,
     mime: string,
     size: number,
     url: string,
-    formats: {
-        [type in 'thumbnail' | 'small' | 'medium' | 'large'] : {
-            name: string,
-            width: number,
-            height: number,
-            url: string,
-            mime: string
-        }
-    }
 }
 
 export type TaskTemplateAttributes = {

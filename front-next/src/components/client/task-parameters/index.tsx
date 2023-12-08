@@ -18,7 +18,8 @@ interface ITaskParameters {
     carWashArr: Array<StrapiData<CarWashAttributes>>,
     setTaskData: any
     initCategoryArr: StrapiData<CategoryAttributes>[],
-    initSubcategoryArr: StrapiData<SubCategoryAttributes>[]
+    initSubcategoryArr: StrapiData<SubCategoryAttributes>[],
+    isEdit?: boolean
 }
 
 export default function TaskParameters ({ 
@@ -30,7 +31,8 @@ export default function TaskParameters ({
         carWashArr,
         setTaskData,
         initCategoryArr,
-        initSubcategoryArr
+        initSubcategoryArr,
+        isEdit=false
     } : ITaskParameters) {
 
         const { data: session } = useSession();
@@ -125,7 +127,7 @@ export default function TaskParameters ({
         }
 
     return (
-        <div className=" border bg-black text-white w-full flex flex-col min-h-90 h-auto justify-between p-5 rounded-md">
+        <div className={`border bg-black text-white w-full flex flex-col min-h-90 h-auto justify-between p-5 ${ isEdit && 'pt-15' } rounded-md`}>
             <DropdownList 
                 taskData={taskData} 
                 handleChange={handleTaskParameterItem} 

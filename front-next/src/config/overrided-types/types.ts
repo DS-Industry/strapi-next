@@ -1,4 +1,4 @@
-import { DefaultSession, DefaultUser, User } from "next-auth";
+import { DefaultSession, DefaultUser, Role, User } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 
 
@@ -15,12 +15,7 @@ declare module "next-auth" {
     name: string,
     width: number,
     height: number,
-    formats: { 
-      [key in 'thumbnail' | 'small' | 'medium'] : {
-        name: string,
-        url: string
-      }
-    }
+    url: string,
   }
 
   interface Session extends DefaultSession {

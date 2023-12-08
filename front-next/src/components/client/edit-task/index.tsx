@@ -165,7 +165,25 @@ export default function EditTask ({
         <div className=" w-4/12">
             <Toast text={error} closeToast={setError} type={"error"}/>
             <Toast text={success} closeToast={setSuccess} type={"success"}/>
+            { creator === session?.user.username &&
+                <div className=" absolute w-4/12 flex justify-end pr-8 mb-10">
+                    <button 
+                        onClick={() => {
+                            if (isEdit) {
+                                updateTicket();
+                            } else {
+                                setIsEdit((prevValue : boolean) => {
+                                    return !prevValue
+                                })
+                            }
+                        }}
+                        className=" text-white p-2 hover:bg-graydark rounded-md mt-2 transition-all duration-300">
+                            {isEdit ? 'Сохранить' : <p className=" flex flex-row items-center gap-3"><PiNotePencilBold /></p> }
+                    </button>
+                </div>
+            }
             { isEdit ? (
+               
                 <TaskParameters 
                     taskData={taskUpdatedData}
                     setTaskData={setTaskUpdatedData} 
@@ -175,7 +193,8 @@ export default function EditTask ({
                     initUserArr={userArr}
                     carWashArr={carWashArr}
                     initCategoryArr={categoryArr}
-                    initSubcategoryArr={subcategoryArr}/>
+                    initSubcategoryArr={subcategoryArr}
+                    isEdit={true}/>
                 ) : (
                   <TaskData 
                     taskId={taskId} 
@@ -190,23 +209,6 @@ export default function EditTask ({
                     executors={executors.map((executor) => executor.split('_')[1])} 
                     carWashes={carWashes.map((carWash) => carWash.split('_')[1])} />  
                 )
-            }
-            { creator === session?.user.username &&
-                <div className=" w-full">
-                    <button 
-                        onClick={() => {
-                            if (isEdit) {
-                                updateTicket();
-                            } else {
-                                setIsEdit((prevValue : boolean) => {
-                                    return !prevValue
-                                })
-                            }
-                        }}
-                        className=" text-black p-2 hover:bg-bodydark rounded-md mt-2 transition-all duration-300">
-                            {isEdit ? 'Сохранить' : <p className=" flex flex-row items-center gap-3">Редактировать <PiNotePencilBold /></p> }
-                    </button>
-                </div>
             }
         </div>
     )

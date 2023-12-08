@@ -74,9 +74,9 @@ export default function DropdownList ({ label, dataArr, name, handleChange, task
                                     </button>
                                 </li>
                             )})
-                    }
-                </ul>
-            </div>            
+                        }
+                    </ul>
+                </div>            
             </div>
         </div>
     )

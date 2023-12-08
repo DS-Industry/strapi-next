@@ -19,7 +19,7 @@ export default async function CommentList ({comments, homePage=false} : IComment
            {comments.map((comment: StrapiData<CommentAttributes>, index: number) => {
                 return (
                     <div key={index} className="group flex w-full items-center justify-between mt-2 hover:bg-bodydark1  transition-all duration-300 p-2 rounded-md">
-                        <SingleComment url={comment.attributes.createdUserBy.data.attributes.avatar.data.attributes.formats.large.url} name={comment.attributes.createdUserBy.data.attributes.name} createdAt={comment.attributes.createdAt} text={comment.attributes.text} responseUser={{url: ''}} />
+                        <SingleComment url={comment.attributes.createdUserBy.data.attributes.avatar.data.attributes.url} name={comment.attributes.createdUserBy.data.attributes.name} createdAt={comment.attributes.createdAt} text={comment.attributes.text} responseUser={{url: ''}} />
                         <div>
                             {/* <ResponseButton 
                                     commentOwnerAvatarUrl={comment.attributes.createdUserBy.data.attributes.avatar.data.attributes.formats.large.url} 
@@ -33,7 +33,7 @@ export default async function CommentList ({comments, homePage=false} : IComment
                                     session && (Number(session.user.id) === comment.attributes.createdUserBy.data.id) ? 
                                     (<DeleteButton deletedId={comment.id}/> ) :
                                     '' :
-                                    (<NavigationButton endpoint={`/protected/'tasks'}/${comment.attributes.task.data.id}`} label={<RiExternalLinkLine />} className="bg-primary border-2 hover:border-primary border-white  text-white font-medium rounded-lg text-sm px-4 py-1.5" />)
+                                    (<NavigationButton endpoint={`/protected/tasks/${comment.attributes.task.data.id}`} label={<RiExternalLinkLine />} className="bg-primary border-2 hover:border-primary border-white  text-white font-medium rounded-lg text-sm px-4 py-1.5" />)
                             }
                         </div>                     
                     </div>

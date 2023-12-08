@@ -13,18 +13,19 @@ interface ISingleComment {
 
 export default function SingleComment ({url, name, createdAt, text, responseUser} : ISingleComment) {
     return (
-        <div className=" flex flex-row justify-evenly items-start ">
-        <CustomAvatarImage width={100} src={`${process.env.NEXT_PUBLIC_API_URL}${url}`} />
+        <div className=" flex flex-row justify-evenly items-start "> {
+            url ? <CustomAvatarImage width={100} src={url} /> : name
+        }
         <div className=" ml-5 flex flex-col justify-center items-start">
             <div>
                 <div className=" text-md text-body flex flex-row ">
                     <p>{name} </p>
                     <p className=" mx-3">×</p>
-                    {
+{/*                     {
                         responseUser.url && (
                             <CustomAvatarImage width={100} src={`${process.env.NEXT_PUBLIC_API_URL}${responseUser.url}`}/>
                         )
-                    }
+                    } */}
                     <p>{dateToString(createdAt)}</p>    
                 </div> 
             </div>

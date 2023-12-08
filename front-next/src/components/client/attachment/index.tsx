@@ -46,7 +46,7 @@ export default function Attachment ({ attachments } : IAttachment) {
                 width: event.currentTarget.width *100,
                 height: event.currentTarget.height,
                 alt: event.currentTarget.alt,
-                title: event.currentTarget.title.replace('medium_', ''),
+                title: event.currentTarget.title.replace('thumbnail_', ''),
                 attachmentIndex: Number(event.currentTarget.alt.replace('attachment ', ''))
             });
         }
@@ -101,11 +101,11 @@ export default function Attachment ({ attachments } : IAttachment) {
         const stepFrontOrBack = event.currentTarget.name === 'next' ? 1 : -1;
         const currentIndex = attachments.data.findIndex((attachment) => attachment.id === imageData.attachmentIndex);
             setImageData({
-                url: `${process.env.NEXT_PUBLIC_API_URL}${attachments.data[currentIndex + stepFrontOrBack].attributes.formats.medium.url}`,
-                width: attachments.data[currentIndex + stepFrontOrBack].attributes.formats.medium.width,
-                height: attachments.data[currentIndex + stepFrontOrBack].attributes.formats.medium.height,
+                url: attachments.data[currentIndex + stepFrontOrBack].attributes.url,
+                width: attachments.data[currentIndex + stepFrontOrBack].attributes.width,
+                height: attachments.data[currentIndex + stepFrontOrBack].attributes.height,
                 alt: `attachment ${attachments.data[currentIndex + stepFrontOrBack].id}`,
-                title: attachments.data[currentIndex + stepFrontOrBack].attributes.formats.medium.url.replace('/uploads/', ''),
+                title: attachments.data[currentIndex + stepFrontOrBack].attributes.name,
                 attachmentIndex: attachments.data[currentIndex + stepFrontOrBack].id
             })
     }
@@ -149,8 +149,8 @@ export default function Attachment ({ attachments } : IAttachment) {
                                 <Image
                                     className=""
                                     src={imageData.url} 
-                                    width={800} 
-                                    height={800} 
+                                    width={600} 
+                                    height={600} 
                                     alt={`${imageData.alt}`}/>}
                             </div> 
                         </div>

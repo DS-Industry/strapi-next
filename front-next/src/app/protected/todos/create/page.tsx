@@ -25,7 +25,7 @@ export default async function CreateTodoPage ({ searchParams } : any) {
             <TaskCreationForm 
                 type='Задача' 
                 parentTask={searchParams.parentTask}
-                userArr={users} 
+                initUserArr={users} 
                 departmentArr={department.data} 
                 carWashArr={carwash.data} />
         </main>

@@ -35,7 +35,7 @@ export default function Toast ({text, closeToast, type} : IToast) {
 
     return (
     <div
-        className={`mx-auto mb-4 transition-all ease-in-out duration-1000 ${text ? 'block absolute top-15 opacity-100 transition-all ease-in-out duration-300' : 'hidden opacity-0'} w-96 max-w-full rounded-lg bg-clip-padding text-sm text-textColor shadow-lg shadow-black/5`}
+        className={`mx-auto mb-4 transition-all ease-in-out duration-1000 ${text ? 'block absolute top-15 left-5 opacity-100 transition-all ease-in-out duration-300' : 'hidden opacity-0'} w-96 max-w-full rounded-lg bg-clip-padding text-sm text-textColor shadow-lg shadow-black/5`}
         role="alert"
         aria-live="assertive"
         aria-atomic="true"

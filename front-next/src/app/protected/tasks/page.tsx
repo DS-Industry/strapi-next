@@ -9,21 +9,25 @@ import Link from "next/link";
 export default async function TaskListPage ({searchParams : { search, sortType, name }} : {searchParams: { search: string, sortType: string, name: string }}) {
     const session = await getServerSession(authOptions);
 
-    const { data: departmentTaskList }: AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/department/${session?.user.department.id}?type=Обращение`, {
-        headers: {
-            Authorization: `Bearer ${session?.user.jwt}`
-        }
-    });
-    const { data: personalTaskList }: AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/person/${session?.user.id}?type=Обращение`, {
-        headers: {
-            Authorization: `Bearer ${session?.user.jwt}`
-        }
-    });
-    const { data: ClosedTask }: AxiosResponse<StrapiResponseArray<TaskAttributes>> = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/closed/${session?.user.department.id}?type=Обращение`, {
-        headers: {
-            Authorization: `Bearer ${session?.user.jwt}`
-        }
-    });
+    const [{ data: departmentTaskList }, { data: personalTaskList }, { data: ClosedTask } ] : StrapiResponseArray<TaskAttributes>[] = await Promise.all([
+        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/department/${session?.user.department.id}?type=Обращение`, {
+            headers: {
+                Authorization: `Bearer ${session?.user.jwt}`
+            }
+        }),
+        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/person/${session?.user.id}?type=Обращение`, {
+            headers: {
+                Authorization: `Bearer ${session?.user.jwt}`
+            }
+        }),
+        axios.get(`${process.env.NEXT_PUBLIC_URL}/api/search/${search}/${sortType}/${name}/closed/${session?.user.department.id}?type=Обращение`, {
+            headers: {
+                Authorization: `Bearer ${session?.user.jwt}`
+            }
+        })
+    ])
+
+    console.log(departmentTaskList);
 
     return (
 <main className="overflow-x-auto shadow-md sm:rounded-lg">

@@ -178,7 +178,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, type, par
                     
                     router.refresh();
                     taskData.parentTask ? 
-                        router.push(`./${taskData.parentTask}`) : 
+                        router.push(`/protected/tasks/${taskData.parentTask}`) : 
                         taskData.type === 'Обращение' ? 
                         router.push('/protected/tasks') : 
                         router.push('/protected/todos');
@@ -211,7 +211,7 @@ export default function TaskCreationForm ({ departmentArr, carWashArr, type, par
                                 mb-3 transition-colors duration-150 h-10 bg-gray border-bodydark2 text-black pl-2 rounded-md 
                                hover:border-gray focus:border hover:bg-bodydark1 focus:border-bodydark2 focus:outline-none" />
                         <QuillEditor handleChange={handleQuillChange} label="Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в этой задаче"/>
-                        <AttachmentsInput handleChange={handleChange} />
+                        <AttachmentsInput handleChange={handleChange} attachmentsArray={{data: []}} />
                       {taskData.attachments.length ?
                             <TaskItemList taskItems={taskData.attachments} deleteElement={deleteElement} name="attachments" />  
                             : ''            
