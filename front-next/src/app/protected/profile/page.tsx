@@ -7,8 +7,6 @@ import CustomImage from "@/components/client/image";
 
 export default async function Profile () {
     const session = await getServerSession(authOptions);
-
-    console.log(session?.user)
   return (
     <>
       <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

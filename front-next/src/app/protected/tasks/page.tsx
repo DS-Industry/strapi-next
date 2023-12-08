@@ -32,8 +32,6 @@ export default async function TaskListPage ({searchParams : { search, sortType, 
         })
     ])
 
-    console.log(departmentTaskList);
-
     return (
 <main className="overflow-x-auto shadow-md sm:rounded-lg">
             <div className="flex justify-evenly items-center w-full">

@@ -18,8 +18,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  console.log(session?.user.role);
-
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
 

@@ -50,7 +50,6 @@ export default function AttachmentsInput ({ handleChange, taskId, attachmentsArr
                         Authorization: `Bearer ${session?.user.jwt}`,
                     }
                 })
-                console.log(updatedTask.data.data);
                 router.refresh();
             } catch (error) {
                 console.log(error);

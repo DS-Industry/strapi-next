@@ -112,7 +112,6 @@ export default function TaskParameters ({
                 const day = moment._d.getDate() < 10 ? `0${moment._d.getDate()}` : moment._d.getDate();
                 const month = moment._d.getMonth() < 9 ? `0${moment._d.getMonth() + 1}` : moment._d.getMonth() + 1;
                 const data = `${day}.${month}.${moment._d.getFullYear()}`
-                console.log(data);
             setTaskData({
                 ...taskData,
                 deadlineDate: data
@@ -123,7 +122,6 @@ export default function TaskParameters ({
         const handleTaskParameterItem = (event: ChangeEvent<HTMLInputElement>) => {
             handleChange(event);
             setIsInitValues(false);
-            console.log(taskData);
         }
 
     return (

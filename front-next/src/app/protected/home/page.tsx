@@ -26,8 +26,6 @@ export default async function Home () {
         })
     ]);
 
-    console.log(session?.user.department.id);
-
     return (
         <main>
             <p className="text-title-xl text-black-2">Главная</p>

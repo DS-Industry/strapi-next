@@ -41,7 +41,6 @@ export default function CommentInput ({ taskId }: ICommentInput) {
     });
 
     const handleChange = (context: string) => {
-        console.log(context);
         setComment((prevComment : IComment) => {
             return {
                 ...prevComment,

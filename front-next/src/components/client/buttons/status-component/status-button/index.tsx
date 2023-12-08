@@ -32,9 +32,7 @@ export default function StatusButton ({taskStatus, taskId} : IStatusButton) {
         const updateTaskStatusAsync = async () => {
             try {
                 setIsLoading(true);
-                console.log('this event target value in handle click', event.currentTarget.value);
                 let id = Number(event.currentTarget.value) === 10 ? 3 : Number(event.currentTarget.value);
-                console.log(id);
                 const {data : { data : task }}: AxiosResponse<StrapiResponseObject<TaskAttributes>> = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskId}?populate=status`, {
                     data : {
                         status: id
@@ -86,10 +84,6 @@ export default function StatusButton ({taskStatus, taskId} : IStatusButton) {
     return !isLoading && statusArr && statusArr.length > 0 ? (
         <div className="flex w-2/3 justify-between ml-2">
             {statusArr.map((status: StrapiData<StatusAttributes>, index: number) => {
-                console.log('-------------  STATUS in STATUS BUTTON start  --------------');
-                console.log('status id in Status Button ', statusId);
-                console.log('status Array in Status Button ', statusArr)
-                console.log('-------------  STATUS in Status BUTTON end  --------------');
                 return status.id > Number(statusId) && (
                     <button 
                         className=" bg-primary text-white px-3 py-1 border-2 border-white rounded-md transition-opacity duration-300 hover:border-primary" 

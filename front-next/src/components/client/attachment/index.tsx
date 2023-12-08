@@ -63,7 +63,6 @@ export default function Attachment ({ attachments } : IAttachment) {
 
     const handleDownloadingImageClick = () => {
         const downloadImageAsync = async () => {
-            console.log('this is url -> ', imageData.url);
             try {
                 await axios.get(imageData.url, {
                    responseType: 'arraybuffer',
@@ -73,8 +72,6 @@ export default function Attachment ({ attachments } : IAttachment) {
                     'Accept' : 'image/*'
                    }
                 }).then(response => {
-                    console.log('here');
-                    console.log(response.data);
                     const url = window.URL.createObjectURL(new Blob([response.data]));
                     const link = document.createElement('a');
                     link.href = url;

@@ -58,7 +58,6 @@ for (let key in body) {
         body[key] === '' ) || 
         (key === 'asiignees' && body[key].length === 0) ||
         (key === 'priority' && body[key] === null)) {
-            console.log(body['priority']);
             const translateValue = translateObj[key]
         setError(`Поле ${translateValue} не должно быть пустым.`);
         validationError=true;

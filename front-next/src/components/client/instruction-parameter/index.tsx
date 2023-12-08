@@ -65,7 +65,6 @@ export default function InstructionParameters () {
                             Authorization: `Bearer ${session?.user.jwt}`
                         }
                     })
-                    console.log(response);
                     setSuccess('Закрытое обращение успешно создано!');
                     router.push('/protected/tasks');
                 } catch (error: any) {

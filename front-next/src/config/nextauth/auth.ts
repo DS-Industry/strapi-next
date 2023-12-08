@@ -74,7 +74,6 @@ export const authOptions: NextAuthOptions = {
                     identifier: credentials && credentials.email,
                     password: credentials && credentials.password
                 })
-                console.log('this is jwt', data.jwt);
                 const { data : fullInfoUser } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me?populate=*`, {
                     headers: {
                         Authorization: `Bearer ${data.jwt}`

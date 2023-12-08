@@ -95,8 +95,6 @@ export default function EditTask ({
                             Authorization: `Bearer ${session?.user.jwt}`
                         }
                     });
-                    console.log(response);
-                    console.log(creator);
                     router.refresh();
                     setSuccess('Обновление прошло успешно.')
                     setIsEdit(false);
@@ -155,11 +153,6 @@ export default function EditTask ({
             [name] : [...filteredItemsArr]
         })
     }
-
-    useEffect(() => {
-        console.log('subcategory id ', subcategory.split('_')[0]);
-        console.log(deadline);
-    })
 
     return (
         <div className=" w-4/12">

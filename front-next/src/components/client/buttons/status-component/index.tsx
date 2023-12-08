@@ -35,9 +35,7 @@ export default function StatusComponent ({taskId, type, taskStatus} : IStatusBut
         const updateTaskStatusAsync = async () => {
             try {
                 setIsLoading(true);
-                console.log('this event target value in handle click', event.currentTarget.value);
                 let id = Number(event.currentTarget.value) === 10 ? 3 : Number(event.currentTarget.value);
-                console.log(id);
                 const {data : { data : task }}: AxiosResponse<StrapiResponseObject<TaskAttributes>> = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskId}?populate=status`, {
                     data : {
                         status: id
