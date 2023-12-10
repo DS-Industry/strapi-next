@@ -4,15 +4,15 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "strapi-api",
-    "front-next"
+    "strapi",
+    "next"
   ],
   "scripts": {
-    "start:dev": "concurrently \"yarn workspace strapi-api develop\" \"yarn workspace front-next dev\"",
-    "start:front:dev": "yarn workspace front-next dev",
-    "start:back:dev": "yarn workspace strapi-api develop",
-    "start:prod": "concurrently \"yarn workspace strapi-api start\" \"yarn workspace front-next start \"",
-    "build": "concurrently \"yarn workspace strapi-api build\" \"yarn workspace front-next build\""
+    "start:dev": "concurrently \"yarn workspace strapi develop\" \"yarn workspace next dev\"",
+    "start:front:dev": "yarn workspace next dev",
+    "start:back:dev": "yarn workspace strapi develop",
+    "start:prod": "concurrently \"yarn workspace strapi start\" \"yarn workspace next start \"",
+    "build": "concurrently \"yarn workspace strapi build\" \"yarn workspace next build\""
 },
   "dependencies": {
     "concurrently": "^8.2.1"
