@@ -5,7 +5,7 @@
   "description": "A Strapi application",
   "scripts": {
     "develop": "strapi develop",
-    "start": "NODE_ENV=production strapi start",
+    "start": "strapi -v && NODE_ENV=production strapi start",
     "build": "NODE_ENV=production strapi build",
     "strapi": "strapi"
   },
@@ -16,6 +16,7 @@
     "@strapi/strapi": "4.14.3",
     "better-sqlite3": "8.6.0",
     "pg": "^8.11.3",
+    "pg-connection-string": "^2.6.2",
     "strapi-provider-upload-yandex-cloud": "^2.0.5"
   },
   "author": {

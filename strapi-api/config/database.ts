@@ -1,5 +1,7 @@
 import path from 'path';
 
+const parse = require("pg-connection-string").parse;
+
 export default ({ env }) => {
   const client = env('DATABASE_CLIENT', 'sqlite');
 
