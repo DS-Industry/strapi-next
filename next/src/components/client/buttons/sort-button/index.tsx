@@ -17,7 +17,7 @@ export default function SortButton ({name, title, endpoint} : ISortButton) {
     const [type, setType] = useState<string>('asc');
 
     const handleClick = () => {
-        const params = new URLSearchParams(searchParams);
+        const params = new URLSearchParams(Array.from(searchParams.entries()));
         if (type === 'asc') {
             params.set('sortType',type);
             setType('desc');

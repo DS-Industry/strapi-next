@@ -11,7 +11,7 @@ export default function SearchInput () {
     const pathName = usePathname();
     const handleChange = useCallback(debounce(
         ({ target : { value } } : ChangeEvent<HTMLInputElement>) => {
-                const params = new URLSearchParams(searchParams);
+                const params = new URLSearchParams(Array.from(searchParams.entries()));
                 if(value.length) params.set('search', value);
                 router.push(`${pathName}?${params}`);
         }, 500), [])
