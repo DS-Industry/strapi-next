@@ -16,6 +16,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "next": "13.4.9",
+    "@next/env": "12.0.7",
     "next-auth": "4.23.2",
     "react": "18",
     "react-datetime": "3.2.0",
